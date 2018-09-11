@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+		<title>大兴东VIP用户查询系统</title>
+
+		<link href="<?=VIPU_CSS;?>bootstrap.min.css" rel="stylesheet">
+		<link href="<?=VIPU_AWE;?>css/font-awesome.css" rel="stylesheet">
+		<link href="<?=VIPU_CSS;?>animate.css" rel="stylesheet">
+		<link href="<?=VIPU_CSS;?>style.css" rel="stylesheet">
+		<link href="<?=VIPU_CSS;?>sweetalert/sweetalert.css" rel="stylesheet">
+		<link rel="stylesheet" href="<?=VIPU_CSS;?>select.css">
+
+	</head>
+
+	<body>
+		<div id="wrapper" class="select-wrapper">
+			<div class="wrapper wrapper-content animated fadeInRight">
+				<div class="row">
+					<div class="select-logo">
+						<div>
+							<img src="<?=VIPU_IMG;?>logo.png"/>
+						</div>
+						<div class="select-title">
+							大兴东VIP用户查询系统
+						</div>
+					</div>
+					<form action="/Member/result" method="POST">
+						<div class="row">
+							<div class="select-box">
+								<div class="col-sm-5">
+									<div class="input-group m-b">
+										<div class="input-group-btn">
+											<button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button" aria-expanded="false">身份证 <span class="caret"></span><input type="hidden" value="1" class="select-value" name="card_type"/></button>
+
+											<ul class="dropdown-menu">
+												<?php $cardTypes = ['身份证号','驾照','军官证','港澳通行证','大陆通行证','签证','护照'];?>
+												<?php for($i=0;$i<count($cardTypes);$i++):?>
+												<li><a href="javascript:;" value="<?=$i+1;?>">{$cardTypes[$i]}</a></li>
+												<?php endfor;?>
+
+											</ul>
+										</div>
+										<input type="text" name="id" value="{$id}" class="form-control"></div>
+								</div>
+
+								<div class="col-sm-4">
+									<div class="form-group">
+										<input type="text" id="price" name="card_number" value="{$card_number}" placeholder="卡号" class="form-control">
+									</div>
+								</div>
+								<div class="col-sm-3">
+									<button class="btn btn-w-m btn-primary" type="submit" name="sub" value="1">搜索</button>
+								</div>
+							</div>
+							<?php if(isset($error)):?>
+							<div class="tip">
+								<span>
+									{$error}
+								</span>
+							</div>
+							<?php endif;?>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<include file="Public/public_template/footer.html"/>
+		</div>
+
+		<!-- Mainly scripts -->
+		<script src="<?=VIPU_JS;?>jquery-2.1.1.js"></script>
+		<script src="<?=VIPU_JS;?>bootstrap.min.js"></script>
+		<script src="<?=VIPU_JS;?>plugins/metisMenu/jquery.metisMenu.js"></script>
+		<script>
+$(function(){
+	$(".dropdown-menu li").click(function(){
+		var content = $(this).find("a").html();
+		var value = $(this).find("a").attr("value");
+		$(".dropdown-toggle").html(''+content+' <span class="caret"></span><input type="hidden" value="'+value+'" name="card_type" class="select-value"/>')
+	});
+});
+		</script>
+	</body>
+
+</html>

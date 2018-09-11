@@ -1,0 +1,290 @@
+<include file="Public/public_template/dxheader.html"/>
+<div class="row wrapper white-bg">
+	<div class="col-lg-10">
+		<p class="wrapper-title"><i class="fa fa-recycle"></i> 退款</p>
+	</div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight member_lists card_lists_table">
+	<div class="row">
+
+		<div class="col-lg-6">
+			<div class="ibox float-e-margins">
+				<div class="ibox-title">
+					<h5>可返总金额</h5>
+				</div>
+				<div class="ibox-content ibox-heading">
+					<h3><i class="fa fa-rmb"></i><i> {$refund}元</i>
+						<div class="stat-percent text-navy">{:toCn($refund)}</div>
+					</h3>
+				</div>
+				<div class="ibox-content">
+					<div>
+						<div class="pull-right text-right">
+							<?php if($total != 0):?>
+							<button type="button" class="btn btn-outline btn-danger btn-sm" onclick="pin({$card_id})"><i class="fa fa-recycle"></i> 退款</button>
+							<?php else:?>
+							<button class="btn  btn-sm" type="button" disabled=""><i class="fa fa-ban"></i>退款</button> 
+							<?php endif;?>
+						</div>
+						<h4> 单独计算每笔的可取的最大金额，然后累加 </h4>
+						<small class="m-r">说明：总余额－罚金</small>
+					</div>
+				</div>
+			</div>
+		</div>
+<!--
+		<div class="col-lg-4">
+			<div class="ibox float-e-margins">
+				<div class="ibox-title">
+					<h5>总余额</h5>
+				</div>
+				<div class="ibox-content ibox-heading">
+					<h3><i class="fa fa-rmb"></i><i> {$total}元</i>
+						<div class="stat-percent text-navy">{:toCn($total)}</div>
+					</h3>
+				</div>
+				<div class="ibox-content">
+					<div>
+						<h4>帐户总余额</h4>
+						<small class="m-r">说明：余额＋赠送金额</small>
+					</div>
+				</div>
+			</div>
+		</div>
+-->
+
+
+
+
+
+
+		<div class="col-lg-6">
+			<div class="ibox float-e-margins">
+				<div class="ibox-title">
+					<h5>总罚金</h5>
+				</div>
+				<div class="ibox-content ibox-heading">
+					<h3><i class="fa fa-rmb"></i><i> {$fine}元</i>
+						<div class="stat-percent text-navy">{:toCn($fine)}</div>
+					</h3>
+				</div>
+				<div class="ibox-content">
+					<div>
+						<h4>只是充值表里面的总罚金字段累加</h4>
+						<small class="m-r">说明：退款罚金＋未到期赠送金额</small>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="ibox-content">
+		<table class="table table-striped table-bordered table-hover dataTables-example dataTable dtr-inline" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid">
+			<thead>
+				<tr>
+					<th>创建时间</th>
+					<th>到期时间</th>
+					<th>类型</th>
+					<th>充值金额</th>
+					<th>赠送金额</th>
+					<th>总罚金</th>
+					<th>余额</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php $ar = C("products");?>
+				<foreach name='lists' item='list'>
+				<tr role="row">
+					<td><?=date('Y-m-d',$list['create_time']);?></td>
+					<td><?=date('Y-m-d',$list['deadline']);?></td>
+
+					<td>
+						<?php if(isset($ar[$list['period']])):?>
+						{$ar[$list['period']]}
+						<?php endif;?>
+
+					</td>
+
+					<td>{$list['money_log']}元</td>
+					<td>{$list['present']}元</td>
+					<td>{$list['fine']}元</td>
+					<td>{$list['total']} 元</td>
+					<?php if($list['type'] == 1):?>
+					<!--
+	     <td> 
+
+	     <button type="button" onclick="refund({$list['recharge_log_id']})" class="btn btn-outline btn-primary btn-sm"><i class="fa fa-recycle"></i> 退款</button>
+	     </td>
+					-->
+
+
+					<td class="refund_item"> 
+						<div class="col-sm-8"><input type="text" class="form-control refund_content" required="" placeholder="退款不能超过{$list['refund']}元" max="{$list['refund']}"></div>
+						<button type="button" onclick="refund({$list['recharge_log_id']},this)" class="btn btn-outline btn-primary btn-sm" style="margin-top:5px;"><i class="fa fa-recycle"></i> 退款</button>
+					</td>
+
+					<?php else:?>
+					<td> 
+						<button type="button" class="btn btn-outline btn-default btn-sm"><i class="fa fa-file-text-o"></i> 已退款</button>
+
+						<?php endif;?>
+					</td>
+				</tr>
+				</foreach>
+			</tbody>
+		</table>
+		{$page}
+	</div>
+</div>
+
+
+<include file="Public/public_template/footer.html"/>
+</div>
+</div>
+
+<!-- Mainly scripts -->
+<script src="<?=VIP_JS;?>jquery-2.1.1.js"></script>
+<script src="<?=VIP_JS;?>bootstrap.min.js"></script>
+<script src="<?=VIP_JS;?>plugins/metisMenu/jquery.metisMenu.js"></script>
+
+
+
+<!-- Peity -->
+
+
+<!-- Custom and plugin javascript -->
+<script src="<?=VIP_JS;?>inspinia.js"></script>
+<script src="<?=VIP_JS;?>plugins/pace/pace.min.js"></script>
+<script src="<?=VIP_JS;?>plugins/sweetalert/sweetalert.min.js"></script>
+<?php if(isset($ok)):?>
+<script>
+function suc(){
+	swal({
+		title: "退款成功",
+		text: "",
+		type: "success"
+	}),function(rs){
+		if(rs){
+		}
+	};
+}
+</script>
+<?php endif;?>
+
+<script> $(".nav_list_3").addClass("active"); </script>
+
+
+<script>
+
+
+function refund(recharge_log_id,refund){
+	var parents = $(refund).parents(".refund_item");
+	var maxValue = Number($(parents).find(".refund_content").attr("max"));
+	var value = Number($(parents).find(".refund_content").val());
+	if(value <= 0){
+		swal({
+			title: "数值不正确",
+			// text: "You will not be able to recover this imaginary file!",
+			type: "warning",
+			showCancelButton: "取消",
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "确认",
+			closeOnConfirm: false,
+		});
+
+		return false;
+
+
+
+	}
+	if(value>maxValue){
+		swal({
+			title: "超额",
+			// text: "You will not be able to recover this imaginary file!",
+			type: "warning",
+			showCancelButton: "取消",
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "确认",
+			closeOnConfirm: false,
+		});
+
+		return false;
+
+
+
+	}
+	swal({
+		title: "确定退款吗?",
+		// text: "You will not be able to recover this imaginary file!",
+		type: "warning",
+		showCancelButton: "取消",
+		confirmButtonColor: "#DD6B55",
+		confirmButtonText: "确认",
+		closeOnConfirm: false
+	},function(rs){
+		if(rs){
+			$.ajax({
+				"url":"/Member/refundOne.html",
+				"data":{"recharge_log_id":recharge_log_id,'money':value},
+				"success":function(data){
+					if(data == 1){
+						window.location.href="/Member/refund/card_id/{$card_id}/ok/1";
+					}
+					else{
+						swal({
+							title: "退款失败",
+							// text: "You will not be able to recover this imaginary file!",
+							type: "warning",
+							showCancelButton: "取消"});
+
+					}
+
+
+
+
+
+
+
+
+				}
+			});
+		}
+	});
+}
+
+
+function pin(card_id){
+	swal({
+		title: "确定退全款吗?",
+		// text: "You will not be able to recover this imaginary file!",
+		type: "warning",
+		showCancelButton: "取消",
+		confirmButtonColor: "#DD6B55",
+		confirmButtonText: "确认",
+		closeOnConfirm: false
+	},function(rs){
+		if(rs){
+			$.ajax({
+				"url":"{:U('Member/pinCard')}",
+				"data":{"card_id":card_id},
+				"success":function(data){
+					window.location.href= window.location.href;;
+
+
+
+
+
+
+
+
+				}
+			});
+		}
+	});
+}
+</script>
+
+<script> <?php foreach($error as $k => $v):?> $(".tr_<?=$k?>").css({"color":"red"}); <?php endforeach;?> </script>
+
+</body>
+</html>

@@ -1,0 +1,92 @@
+<include file="Public/public_template/dxheader.html"/>
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+
+    <!-- Main content -->
+    <section class="content">
+			
+			
+	<div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+			<div class="box-header">
+				 <h3 class="box-title"><b>管理员管理</b></h3>
+				<a href="{:U('Index/managerAdd')}"><button class="submit btn btn-info pull-right" type="button" >添加管理员</button></a>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="example2" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                  <th>姓名</th>
+                  <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <foreach name='users' item='user'>
+					<tr>
+						
+						<td>{$user.mname}</td>
+						<td>
+							<if condition=" $user['mid'] eq  1">
+							<input type="button" value="删除" class='btn btn-primary' disabled>
+							<else /> 
+							<a href="{:U('Index/doManagerDel', array('id'=>$user['mid'],'name'=>$user['mname']))}" onclick="if(!confirm('确认删除吗')){return false}" class='btn btn-primary'>删除</a>
+							</if>
+							<a href="{:U('Index/managerUpdate', array('id'=>$user['mid']))}" class='btn btn-primary'>修改密码</a>
+						</td>
+					</tr>				
+				</foreach>	                         
+                </tbody>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+	<div class="box-footer">
+				<a href="{:U('Index/lists')}"  class="btn btn-default" >返回</a>
+
+			</div>
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+<include file="Public/public_template/footer.html"/>
+<!-- 制作图表js -->
+<script src="__PUBLIC__/js/Chart.js"></script>
+
+<script type="text/javascript">
+	//删除
+	function del(obj,id){
+		$.post("{:U('Index/del')}", { id: id},
+		   function(data){
+				if(data==1){
+					location.href("{:U('Index/search')}");
+				}
+		   });
+	}
+	//修改
+	function update(){
+		location.href("{:U('Index/update')}");
+	}
+	//Date picker
+	$('#start_time').datepicker({
+	  autoclose: true,
+	  format: "yyyy-mm-dd",
+	});
+	$('#end_time').datepicker({
+	  autoclose: true,
+	  format: "yyyy-mm-dd",
+	});
+</script>
+<script type="text/javascript">
+	$('.submit').click(function(){
+		$(this).parents('form').attr('action', $(this).attr('action'));
+		$(this).parents('form').submit();
+	})
+</script>

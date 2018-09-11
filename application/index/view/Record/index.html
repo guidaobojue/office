@@ -1,0 +1,267 @@
+﻿
+<include file="Public/public_template/dxheader.html"/>
+
+<div class="row wrapper white-bg">
+	<div class="col-lg-12">
+		<p class="wrapper-title pull-left"><i class="fa fa-desktop"></i> 消费查询</p>
+
+	</div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight card_lists_table">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="ibox float-e-margins">
+
+				<div class="ibox-content">
+					<form  action="{:U('Record/dlist')}" method="GET" name="form1">
+						<div class="row">
+							<div class="col-sm-2 tr_area">
+								<div class="form-group">
+									<select name="area" id="status" class="form-control" onchange="changeSelect(this.selectedIndex)"></select>
+									</select>
+								</div>
+							</div>
+							<div class="col-sm-2">
+								<div class="form-group">
+									<select name="location" id="status" class="form-control">
+									</select>
+								</div>
+							</div>
+							<div class="col-sm-2">
+								<div class="form-group">
+									<input type="text" name="username" value="{$username}" placeholder="姓名" class="form-control">
+								</div>
+							</div>
+							<div class="col-sm-2">
+								<div class="form-group">
+
+									<input type="text" name="card_number" value="{$card_number}" placeholder="卡号" class="form-control">
+								</div>
+							</div>
+
+						</div>
+						<div class="row">
+							<div class="col-sm-2">
+								<div class="input-group m-b">
+									<input type="text"  name="money_up" value="{$money_up}" placeholder="金额上限" class="form-control">
+									<span class="input-group-addon">元</span>
+								</div>
+							</div>
+							<div class="col-sm-2">
+								<div class="input-group m-b">
+									<input type="text" name="money_down" value="{$money_down}" placeholder="金额下限" class="form-control">
+									<span class="input-group-addon">元</span>
+								</div>
+							</div>
+							<div class="col-sm-2">
+								<div class="form-group">
+									<input type="text" class="form-control"  name="start_time" value="{$start_time}"  placeholder="开始时间"  id="start">
+								</div>
+							</div>
+							<div class="col-sm-2">
+								<div class="form-group">
+									<input type="text" class="form-control" placeholder="结束时间" name="end_time" value="{$end_time}" id="end">
+								</div>
+							</div>
+							<button class="btn btn-w-m btn-primary" type="submit" name="sub" value="1">搜索</button>
+							<div class="col-sm-2 pull-right tooltip-demo" style="text-align:right;line-height:35px;">
+								<a href="javascript:doPrint()" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="" data-original-title="打印"><i class="fa fa-print"></i> </a>
+								<a  href="/Record/xlxs?{$print}" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="" data-original-title="导出"><i class="fa fa-file-excel-o"></i> </a>
+							</div>
+						</div>
+
+					</form>
+					<!--startprint-->
+					<table class="table table-striped table-bordered table-hover dataTables-example dataTable dtr-inline" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid">
+						<thead>
+							<tr>
+								<th>序号</th>
+								<th>时间</th>
+								<th>用户名</th>
+								<th>费用</th>
+								<th>园区</th>
+								<th>营业点</th>
+								<th>备注</th>
+							</tr>
+						</thead>
+						<tbody>
+									<foreach name='lists' item='list'>
+									<tr role="row">
+										<td>{$list['card_log_id']}</td>
+										<td><?=date('Y-m-d H:i:s',$list['create_time']);?></td>
+										<td>{$list['username']}</td>
+										<td>{$list['spend']} 元</td>
+										<td>{$list['area']}</td>
+										<td>{$list['location']}</td>
+										<td class="remark">{$list['comment']}</td>
+									</tr>
+									</foreach>
+						</tbody>
+					</table>
+					<div class="col-lg-12 col-bottom-padding">
+						<div class="wrapper-title-right pull-left label label-warning">
+						消费合计:{$total} 元
+						</div>
+					<!--endprint-->
+						{$page}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<include file="Public/public_template/footer.html"/>
+</div>
+</div>
+
+<!---->
+<script src="/Public/Template/plugins/datepicker/bootstrap-datepicker.js"></script>
+
+
+
+<!-- Peity -->
+
+
+<!-- Custom and plugin javascript -->
+
+
+
+<script type="text/javascript">
+var arr_province = ["请选择园区", '大兴东酒店', '大兴东游乐场', '大兴东电玩城', '大兴东演艺中心', '大兴东会议中心', '大兴东会展中心', '大兴东生产中心'];
+var arr_city = [
+	["请选择营业点"],
+	['盛世中华酒店'],
+	['餐饮', '商超', '门票'],
+	['游戏币消费', '其他产品消费'],
+	['门票', '餐饮', '商超'],
+	['会议场馆', '餐饮',],
+	['一层消费', '二层消费', '三层消费', '四层消费'],
+	['酒', '水', '饮料', '土特产', '综合'],
+];
+
+
+//网页加载完成，初始化菜单
+window.onload = init;//传入函数地址
+function init(){
+	//首先获取对象
+	var province = document.form1.area;
+	var city = document.form1.location;
+
+	//指定省份中<option>标记的个数
+	province.length = arr_province.length;
+
+	//循环将数组中的数据写入<option>标记中
+	for(var i=0;i<arr_province.length;i++){
+		province.options[i].text = arr_province[i];
+		province.options[i].value = arr_province[i];
+	}
+
+	//修改省份列表的默认选择项
+	var index = 0;
+	province.selectedIndex = index;
+
+	//指定城市中<option>标记的个数
+	city.length = arr_city[index].length;
+
+	//循环将数组中的数据写入<option>标记中
+	for (var j = 0; j<arr_city[index].length;j++) {
+		city.options[j].text = arr_city[index][j];
+		city.options[j].value = arr_city[index][j];
+	}
+
+}
+
+function  changeSelect(index){
+	//选择对象
+	var city = document.form1.location;
+	//修改省份列表的选择项
+	form1.area.selectedIndex = index;
+
+	//指定城市中<option>标记的个数
+	city.length = arr_city[index].length;
+
+	//循环将数组中的数据写入<option>标记中
+	for (var j = 0; j<arr_city[index].length;j++) {
+		city.options[j].text = arr_city[index][j];
+		city.options[j].value = arr_city[index][j];
+	}
+}
+function doPrint() {   
+	bdhtml=window.document.body.innerHTML;   
+	sprnstr="<!--startprint-->";   
+	eprnstr="<!--endprint-->";   
+	prnhtml=bdhtml.substr(bdhtml.indexOf(sprnstr)+17);   
+	prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr));   
+	window.document.body.innerHTML=prnhtml;  
+	window.print();   
+}
+
+	$('#start_time').datepicker({
+	  autoclose: true,
+	  format: "yyyy-mm-dd",
+	});
+	$('#end_time').datepicker({
+	  autoclose: true,
+	  format: "yyyy-mm-dd",
+	});
+</script>
+<script> <?php foreach($error as $k => $v):?> $(".tr_<?=$k?>").css({"color":"red"}); <?php endforeach;?> </script>
+
+
+<script src="/Public/layui/layui.js"></script>
+<script type="text/javascript">
+//当前日期
+function now(){
+	d=new Date();
+	d = +d + 1000*60*60*24;
+	d = new Date();
+	//return d;
+	//格式化
+	return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+}
+var startTime = now();
+var endTime;
+layui.use('laydate', function(){
+	var laydate = layui.laydate;
+
+	laydate.render({
+		elem:"#start",
+		//min:now(),
+		done: function(value, date){ //选择日期完毕的回调
+
+			// carArea.times = times;
+			// startTime=value;
+
+		}
+	});
+	laydate.render({
+		elem:"#end",
+		//min:now(),
+		done: function(value, date){ //选择日期完毕的回调
+
+			// carArea.times = times;
+			// startTime=value;
+
+		}
+	});
+
+});
+
+</script>
+<script> $(".nav_list_4").addClass("active"); </script>
+<!---->
+
+
+
+<!-- Peity -->
+
+
+<!-- Custom and plugin javascript -->
+<script src="<?=VIP_JS;?>inspinia.js"></script>
+<script src="<?=VIP_JS;?>echarts.min.js"></script>
+<script src="<?=VIP_JS;?>plugins/pace/pace.min.js"></script>
+
+</body>
+</html>
+

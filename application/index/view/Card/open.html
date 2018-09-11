@@ -1,0 +1,276 @@
+﻿<include file="Public/public_template/dxheader.html"/>
+
+<div class="row wrapper white-bg">
+	<div class="col-lg-10">
+		<p class="wrapper-title"> <i class="fa fa-credit-card"></i> 开卡</p>
+
+	</div>
+	<div class="col-lg-2">
+
+	</div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="ibox float-e-margins">
+				<div class="ibox-title">
+					<h5>信息录入</h5>
+				</div>
+				<div class="ibox-content">
+					<form method="POST" name="form1"  action="/Card/open"  class="form-horizontal" enctype="multipart/form-data">
+						<div class="form-group" > 
+							<div class="col-sm-6 tr_username">
+								<label class="col-sm-3 control-label">姓名</label>
+								<div class="col-sm-6"><input type="text" class="form-control" name="username" value="{$username}" required="">
+									<?php if(isset($error['username'])):?><label id="-error" class="error" for="">{$error['username']}.</label><?php endif;?>
+								</div>
+							</div>
+							<div class="col-sm-6 tr_telephone">
+								<label class="col-sm-3 control-label">电话</label>
+								<div class="col-sm-6"><input type="text" class="form-control" name="telephone" value="{$telephone}" required="">
+									<?php if(isset($error['telephone'])):?><label id="-error" class="error" for="">{$error['telephone']}.</label><?php endif;?>
+								</div>
+							</div>
+						</div>
+						<div class="hr-line-dashed"></div>
+						<div class="form-group" > 
+							<div class="col-sm-6 tr_card_number">
+								<label class="col-sm-3 control-label">卡号</label>
+								<div class="col-sm-6"><input type="text" class="form-control" name="card"  required="" value="{$card}">
+									<?php if(isset($error['card_number'])):?><label id="-error" class="error" for="">{$error['card_number']}.</label><?php endif;?>
+								</div>
+							</div>
+							<div class="col-sm-6 tr_money">
+								<label class="col-sm-3 control-label">充值</label>
+								<div class="col-sm-6">
+									<div class="input-group">
+										<input type="text" class="form-control" name="money" value="<?php if(!empty($money)):?><?=$money;?><?php else:?>0.00<?php endif;?>">
+										<span class="input-group-addon">元</span>
+									</div>
+										<?php if(isset($error['money'])):?><label id="-error" class="error" for="">{$error['money']}.</label><?php endif;?>
+								</div>
+							</div>
+
+						</div>
+						<div class="hr-line-dashed"></div>
+						<div class="form-group" > 
+							<div class="col-sm-6 tr_id">
+								<label class="col-sm-3 control-label">证件号</label>
+								<div class="col-sm-6">
+									<div class="input-group m-b">
+										<div class="input-group-btn">
+											<button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button" aria-expanded="false">身份证 
+												<span class="caret"></span>
+												<input type="hidden" value="1" class="select-value" name="card_type"/>
+											</button>
+											<ul class="dropdown-menu">
+												<?php $cardTypes = ['身份证号','驾照','军官证','港澳通行证','大陆通行证','签证','护照'];?>
+												<?php for($i=0;$i<count($cardTypes);$i++):?>
+												<li><a href="javascript:;" value="<?=$i+1;?>">{$cardTypes[$i]}</a></li>
+												<?php endfor;?>
+
+											</ul>
+										</div>
+											<input type="text" name="id" value="{$value}" class="form-control"/>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-6 tr_id">
+								<label class="col-sm-3 control-label">产品</label>
+								<div class="col-sm-6">
+									<div class="input-group m-b">
+										<div class="input-group-btn">
+											<select name="exp" id="status" class="form-control">
+
+												<?php $ar = C("products");?>
+
+												<?php foreach($ar as $k =>$i):?>
+												<?php if($i == $card['exp']):?>
+												<option selected  value="{$k}">{$i}</option>
+												<?php else:?>
+												<option value="{$k}">{$i}</option>
+												<?php endif;?>
+												<?php endforeach;?>
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="hr-line-dashed"></div>
+						<div class="form-group" > 
+							<div class="col-sm-6 tr_old">
+								<label class="col-sm-3 control-label">类型</label>
+								<div class="col-sm-6">
+									<div class="input-group m-b">
+										<div class="input-group-btn">
+											<select name="isOld" id="status" class="form-control">
+												<option value="0">新客户</option>
+												<option value="1">老客户</option>
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="hr-line-dashed"></div>
+
+						<!--
+						<div class="form-group" > 
+							<div class="col-sm-6 tr_card_p">
+								<label class="col-sm-3 control-label">证件正面</label>
+								<div class="col-sm-8">
+									<div class="upload-inner">
+										<input type="file" class="input-box" name="upload-file" id="upload-file" data-toggle="modal" data-target="#myModal6" title="支持jpg、jpeg、gif、png格式，文件小于10M" />
+										<button class="btn btn-warning index-submit upload-btn" >上传照片</NOtton>
+									</div>
+
+									<div class="cropped" name="cp">
+										<img src="<?=VIP_IMG;?>zheng.jpg"/>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-6 tr_card_f">
+								<label class="col-sm-3 control-label">证件背面</label>
+								<div class="col-sm-8">
+									<div class="upload-inner">
+										<input type="file" class="input-box" name="upload-file" id="upload-file2" data-toggle="modal" data-target="#myModal6" title="支持jpg、jpeg、gif、png格式，文件小于10M" />
+										<button class="btn btn-warning index-submit upload-btn" >上传照片</NOtton>
+									</div>
+
+									<div class="cropped" name="cf">
+										<img src="<?=VIP_IMG;?>back.jpg"/>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal inmodal fade" id="myModal6" tabindex="-1" role="dialog" aria-hidden="true">
+							<div class="modal-dialog modal-sm">
+								<div class="modal-content">
+									<div class="modal-header" style="padding: 15px 15px;">
+										<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+									 class="sr-only">Close</span></button>
+										<h4 class="modal-title" style="font-size: 20px;">选择裁剪区域</h4>
+									</div>
+									<div class="modal-body">
+										<div class="imageBox">
+											<div class="thumbBox"></div>
+											<div class="spinner" style="display: none">
+											</div>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" id="btnZoomIn" class="btn btn-primary f-l"><i class="fa fa-search-plus"
+									      style="font-size:16px;"></i>
+										</button>
+										<button type="button" id="btnZoomOut" class="btn btn-primary f-l"><i class="fa fa-search-minus"
+									       style="font-size:16px;"></i>
+										</button>
+										<button type="button" class="btn btn-white" data-dismiss="modal">取消</button>
+										<button id="btnCrop" type="button" class="btn btn-primary" data-dismiss="modal">裁切</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="hr-line-dashed"></div>
+						-->
+
+						<div class="form-group" >
+							<div class=" col-sm-6">
+								<div class="col-sm-3">
+								</div>
+							<div class="col-sm-6">
+								<button class="btn btn-primary index-submit" name="sub" value="1"  type="submit">提&nbsp;&nbsp;交</button>
+							</div>
+							</div>
+						</div>
+
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<include file="Public/public_template/footer.html"/>
+
+</div>
+
+<script>
+
+$(window).load(function() {
+
+	var imgBox_cropped;
+	var flag = false;
+	var options =
+	{
+		thumbBox: '.thumbBox',
+		spinner: '.spinner',
+		// imgSrc: 'img/timg.jpg',
+		zoomOnWheel:false
+	}
+	var cropper = $('.imageBox').cropbox(options);
+	$('.imageBox').cropbox("disable");
+	$('#upload-file,#upload-file2').on('change', function(){
+		imgBox_cropped = $(this).parents(".col-sm-8").find(".cropped");
+
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			options.imgSrc = e.target.result;
+			cropper = $('.imageBox').cropbox(options);
+		}
+		flag = true;
+		reader.readAsDataURL(this.files[0]);
+		// this.files = [];
+	})
+	$('#btnCrop').on('click', function(){
+		var img = cropper.getDataURL();
+		imgBox_cropped.html('');
+		imgBox_cropped.append('<img src="'+img+'" align="absmiddle" style="width:100%;margin-top:4px;" ><input type="hidden" class="img-value" value="'+img+'" name="'+imgBox_cropped.attr("name")+'"/>')
+	})
+	$('#btnZoomIn').on('click', function(){
+		cropper.zoomIn();
+	})
+	$('#btnZoomOut').on('click', function(){
+		cropper.zoomOut();
+	});
+
+
+});
+</script>
+		<script> $(".nav_list_2").addClass("active"); </script>
+		<script> <?php foreach($error as $k => $v):?> $(".tr_<?=$k?>").css({"color":"red"}); <?php endforeach;?> </script>
+
+		<script>
+$(function(){
+	$(".dropdown-toggle").click(function(){
+		$(".dropdown-menu").show();
+
+	});
+	$(".dropdown-menu li").click(function(){
+		var content = $(this).find("a").html();
+		var value = $(this).find("a").attr("value");
+		$(".dropdown-toggle").html(''+content+' <span class="caret"></span><input type="hidden" value="'+value+'" name="card_type" class="select-value"/>')
+		$(".dropdown-menu").hide();
+	});
+});
+		</script>
+
+
+
+
+		<?php if(isset($ok)):?>
+		<script>
+swal({
+	title: "开卡成功",
+	text: "",
+	type: "success"
+});
+		</script>
+		<?php endif;?>
+
+
+
+		</body>
+		</html>

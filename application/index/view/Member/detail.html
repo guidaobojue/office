@@ -1,0 +1,100 @@
+<include file="Public/public_template/dxheader.html"/>
+
+<div class="row wrapper white-bg">
+	<div class="col-lg-10">
+		<p class="wrapper-title"><i class="fa fa-file-text-o"></i> 会员信息</p>
+	</div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight card_lists_table fuck">
+	<div class="row">
+		<!--<div class="col-lg-4">-->
+		<!--<div class="ibox float-e-margins">-->
+		<!--<div class="ibox-title">-->
+		<!--<h5>信息</h5>-->
+		<!--</div>-->
+		<!--<div class="ibox-content index-top-content">-->
+		<!--<div class="left pull-left">-->
+		<!--<p>姓名：空空如也</p>-->
+		<!--<p>电话：18542224405</p>-->
+
+		<!--<p>身份证号：131023198905242612</p>-->
+		<!--<p>卡号：5684598</p>-->
+		<!--<p>开卡时间：2018-08-17</p>-->
+
+		<!--<p>充值总额：9404.00元</p>-->
+		<!--<p>余额(充＋赠)：9408元</p>-->
+
+		<!--</div>-->
+		<!--</div>-->
+		<!--</div>-->
+		<!--</div>-->
+		<?php $ids= ['身份证号','驾照','军官证','港澳通行证','大陆通行证','签证','护照']; $id_type = $user['id_type'] -1 ; $card_type  =  isset($ids[$id_type]) ? $ids[$id_type] : $ids[0]; ?>
+		<div class="col-lg-4 col-md-6 col-sm-10">
+			<div class="widget lazur-bg p-xl">
+
+				<h2>
+					{$user['username']}
+				</h2>
+				<ul class="list-unstyled m-t-md">
+					<li>
+						<label>电话:</label>
+						<em>{$user['telephone']}</em>
+					</li>
+					<li>
+						<label>{$card_type}:</label>
+						<em>{$user['id']}</em>
+					</li>
+					<li>
+						<label>类型:</label>
+						<?php if($user['isold'] == 1):?>
+						<em>老客户</em>
+						<?php else:?>
+						<em>新客户</em>
+						<?php endif;?>
+					</li>
+				</ul>
+			</div>
+			<div class="widget red-bg p-xl ">
+				<ul class="list-unstyled m-t-md">
+					<li >
+						<label>卡号:</label>
+						<em>{$card['card_number']}</em>
+					</li>
+					<li>
+						<label>开卡时间:</label>
+						<em>{:date("Y-m-d",$card['create_time'])}</em>
+					</li>
+					<li>
+						<label>总充值:</label>
+						<em>{$card['total_recharge']}</em> 元
+					</li>
+					<li>
+						<label>帐户总额:</label>
+						<em>{$card['money']+$card['present']}</em> 元
+						<em>{:toCn($card['money']+$card['present'])}</em> 元
+					</li>
+					<li>
+						<label>可用余额:</label>
+						<em>{$available} 元</em>
+						<em>{:toCn($available)} 元</em>
+					</li>
+				</ul>
+			</div>
+
+
+
+		</div>
+	</div>
+</div>
+
+
+
+<include file="Public/public_template/footer.html"/>
+</div>
+</div>
+
+
+</body>
+</html>
+
+

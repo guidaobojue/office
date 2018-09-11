@@ -1,0 +1,46 @@
+<include file="Public/public_template/dxheader.html"/>
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+
+    <!-- Main content -->
+    <section class="content">
+		<div  >
+				<form method="post" action="">
+					<h4>人员添加</h4>
+					<div class="col-sm-2">
+						姓名：<input type="text" class="form-control" id="username" name="username"  placeholder="姓名" ><br>
+					</div>
+					<div class="col-sm-2">
+						密码：<input type="text" class="form-control" id="pwd" name="pwd" value="123456"  placeholder="密码" ><br>
+					</div>
+					<div class="col-sm-2">
+					工作地点：<select name="address" class="form-control" id="">
+									<option value="" >请选择工作地点
+								<option value="北京">北京
+								<option value="安顺">安顺
+						  </select>
+					</div>
+					
+					<div class="col-sm-1">
+							<button class="submit btn btn-info pull-right" type="button" action="{:U('Index/doUserAdd')}" style="margin-top:20px">添加</button>
+					</div>
+				</form>
+			</div>
+		<div class="box-footer" style="margin-top:100px";>
+				<a href="javascript:" onclick="window.history.go(-1)" class="btn btn-default">返回</a>
+		</div>	
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+<include file="Public/public_template/footer.html"/>
+<!-- 制作图表js -->
+<script src="__PUBLIC__/js/Chart.js"></script>
+<script type="text/javascript">
+ 
+  $('.submit').click(function(){
+		$(this).parents('form').attr('action', $(this).attr('action'));
+		$(this).parents('form').submit();
+	})
+</script>

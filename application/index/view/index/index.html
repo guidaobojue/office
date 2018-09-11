@@ -1,0 +1,227 @@
+﻿{include file="./static/public_template/dxheader.html"/}
+<div class="row wrapper white-bg">
+	<div class="col-lg-10">
+		<p class="wrapper-title"><i class="fa fa-th-large"></i> 欢迎进入__TITLE__</p>
+	</div>
+	<div class="col-lg-2">
+
+	</div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+	<div class="row">
+		<div class="col-lg-4">
+			<div class="ibox float-e-margins">
+				<div class="ibox-title">
+					<h5>开卡总数</h5>
+				</div>
+				<div class="ibox-content index-top-content">
+					<h1 class="no-margins">{$card_total}</h1>
+					<div class="stat-percent font-bold text-success">100% <i class="fa fa-level-up"></i></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-4">
+			<div class="ibox float-e-margins">
+				<div class="ibox-title">
+					<h5>正常卡数</h5>
+				</div>
+				<div class="ibox-content index-top-content">
+					<h1 class="no-margins">{$card_normal}</h1>
+					<div class="stat-percent font-bold text-info"><?=floor(100 * $card_normal / $card_total);?>% <i class="fa fa-level-up"></i></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-4">
+			<div class="ibox float-e-margins">
+				<div class="ibox-title">
+					<h5>冻结卡数</h5>
+				</div>
+				<div class="ibox-content index-top-content">
+					<h1 class="no-margins">{$card_freeze}</h1>
+					<div class="stat-percent font-bold text-danger"><?=100 - floor(100 * $card_normal/ $card_total);?>% <i class="fa fa-bolt"></i></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-6">
+			<div class="ibox ">
+				<div class="ibox-title">
+					<h5>营业点</h5>
+				</div>
+				<div class="ibox-content">
+					<div class="dd" id="nestable">
+						<ol class="dd-list">
+							<li class="dd-item " data-id="1">
+								<button data-action="expand" type="button" class="nestable-button">Collapse</button>
+								<div class="dd-handle">酒店</div>
+								<ol class="dd-list">
+									<li class="dd-item" data-id="3">
+										<div class="dd-handle">- 盛世中华酒店</div>
+									</li>
+								</ol>
+							</li>
+							<li class="dd-item" data-id="6">
+								<button data-action="expand" type="button" class="nestable-button">Collapse</button>
+								<div class="dd-handle">生产中心</div>
+								<ol class="dd-list">
+									<li class="dd-item" data-id="3">
+										<div class="dd-handle">- 酒</div>
+									</li>
+									<li class="dd-item" data-id="3">
+										<div class="dd-handle">- 水</div>
+									</li>
+									<li class="dd-item" data-id="3">
+										<div class="dd-handle">- 饮料</div>
+									</li>
+									<li class="dd-item" data-id="3">
+										<div class="dd-handle">- 土特产</div>
+									</li>
+									<li class="dd-item" data-id="3">
+										<div class="dd-handle">- 综合</div>
+									</li>
+								</ol>
+							</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-6">
+			<div class="ibox ">
+				<div class="ibox-title">
+					<h5><?=date("Y",time());?>年近期办卡情况</h5>
+				</div>
+				<div class="ibox-content">
+					<div class="dd" id="barsDemo" style="width:100%;height:263px;">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> 
+</div>
+
+<include file="Public/public_template/footer.html"/>
+</div>
+
+<script>
+$(function(){
+	// nestable-button
+	$("#nestable>.dd-list li").click(function(){
+		if($(this).hasClass("active")){
+			$(this).removeClass("active");
+		}else{
+			$(this).addClass("active");
+			$(this).siblings("li").removeClass("active");
+			var button = $(this).find(".nestable-button");
+
+		};
+		$(".nestable-button").attr('data-action',"expand");
+		if(button.attr('data-action')=="expand"){
+			button.attr('data-action',"collapse");
+		}else{
+			button.attr('data-action',"expand");
+		};
+
+	});
+});
+</script>
+
+
+
+<script src="<?=VIP_JS;?>echarts.min.js"></script>
+<script>
+$(function () {
+	initData();
+});
+
+//生成数据
+function initData() {
+	var legendData = ['新增卡数', '冻结卡数'];
+	var bgColorList = ['rgb(26, 179, 148)', 'rgb(202, 202, 202)'];
+	var axisLabel = {$card_key};
+	var seriesValue = [];
+
+	for (var i = 0; i < legendData.length; i++) {
+		var arrData = {$card_values};
+		var seriesDataVal = null;
+		seriesDataVal = {
+			barWidth: 10,//柱状条宽度
+			name:legendData[i],
+			type:'bar',
+			itemStyle: {
+				normal: {
+					color: bgColorList[i]
+				}
+			},
+			label: {
+				normal: {
+					show: true, //显示数据
+					position: 'top'//显示数据位置 'top/right/left/insideLeft/insideRight/insideTop/insideBottom'
+				}
+			} ,
+			data:arrData
+		};
+		seriesValue.push(seriesDataVal);
+	}
+
+	buildChart(legendData, axisLabel, seriesValue);
+
+}
+
+//生成Echarts图形
+function buildChart(legendData, axisLabel, seriesValue) {
+	var chart = document.getElementById('barsDemo');
+	var echart = echarts.init(chart);
+
+        var option = {
+            tooltip : {
+                trigger: 'axis',
+                axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                    type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            legend: {
+                data:['新增卡数','冻结卡数']
+            },
+            color : ['#1ab394',"rgb(202, 202, 202)"],
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis : [
+                {
+                    type : 'category',
+		    data : {$card_key}
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value'
+                }
+            ],
+            series : [
+                {
+                    name:'新增卡',
+                    type:'bar',
+		    data:{$card_values}
+                },
+                {
+                    name:'冻结',
+                    type:'bar',
+                    stack: '广告',
+		    data:{$card_freeze_values}
+                },
+               
+            ]
+        };
+
+	window.onresize = echart.resize;
+	echart.setOption(option);
+}
+</script>
+<script> $(".nav_list_1").addClass("active"); </script>
+</body>
+</html>

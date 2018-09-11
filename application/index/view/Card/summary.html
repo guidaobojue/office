@@ -1,0 +1,187 @@
+﻿<include file="Public/public_template/dxheader.html"/>
+	
+<div class="row wrapper white-bg">
+	<div class="col-lg-10">
+		<p class="wrapper-title"><i class="fa fa-bar-chart-o"></i> 开卡统计</p>
+	</div>
+	<div class="col-lg-2">
+
+	</div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+	<form method="POST"  action="/Card/summary">
+		<div class="ibox-content">
+			<div class="row">
+				<div class="col-lg-12"  >
+
+					<div class="col-sm-2">
+						<div class="form-group">
+							<input type="text" id="start" name="start_time"  placeholder="开始时间" class="form-control" value="{$start_time}" autocomplete="off">
+						</div>
+					</div>
+					<div class="col-sm-2">
+						<div class="form-group">
+
+							<input type="text" id="end" name="end_time" placeholder="结束时间" class="form-control" value="{$end_time}" autocomplete="off">
+						</div>
+					</div>
+					<div class="col-sm-2">
+						<div class="form-group">
+							<select name="type" id="status" class="form-control">
+								<?php $arr=[ "1"=> "按年查询", "2"=>"按月查询", "3"=>"按日查询"];?>
+								<?php foreach($arr as $k => $v):?>
+								<option <?php if($type == $k):?> selected <?php endif;?>value="<?=$k;?>"><?=$v;?></option>
+								<?php endforeach;?>
+							</select>
+						</div>
+					</div>
+					<button class="btn btn-w-m btn-primary" name="sub" value="1"  type="submit">搜索</button>
+					<div id="container" style="min-width: 100%; height: 400px; overflow: hidden; text-align: left;"></div>
+					<div  class="charts-btn">
+						<span>
+							卡数总计:{$total}张
+						</span>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</form>
+</div>
+<div class="col-lg-12 col-bottom-padding">
+
+
+</div>
+<include file="Public/public_template/footer.html"/>
+</div>
+
+<script src="<?=VIP_JS;?>jquery-2.1.1.js"></script>
+<script src="<?=VIP_JS;?>bootstrap.min.js"></script>
+<script src="<?=VIP_JS;?>plugins/metisMenu/jquery.metisMenu.js"></script>
+<!---->
+
+
+
+<!-- Peity -->
+
+
+<!-- Custom and plugin javascript -->
+<script src="<?=VIP_JS;?>inspinia.js"></script>
+<script src="<?=VIP_JS;?>plugins/pace/pace.min.js"></script>
+<script src="<?=VIP_JS;?>echarts.min.js"></script>
+<script>
+var echart=echarts.init(document.getElementById('container'));
+var option={
+	baseOption:{
+		title:{
+			text:'开卡统计-{$cn}',
+			subtext:''
+		},
+		legend:{
+			data:['开卡数']
+		},
+		xAxis:{
+			data:{$title}
+		},
+		color : ['#1ab394',"#ed5565"],
+
+		yAxis:{
+
+		},
+		tooltip:{
+			show:true,
+			formatter:'时间:{b}<br />卡数:{c}'
+		},
+		series:[{
+			name:'卡数',
+			type:'bar',
+			data:{$body},
+			markLine:{
+				data:[
+				{type:'average',name:'平均值',itemStyle:{
+										normal:{
+											color:"#1c84c6"
+										}
+									}}
+				]
+			},
+			barWidth:30
+		},]
+	},
+	media:[
+	{
+		//小与1000像素时候响应
+		query:{
+			maxWidth:1000
+		},
+		option:{
+			title:{
+				show:true,
+				text:'开卡统计-{$cn}',
+			}
+		}
+	}
+	]
+};
+//每次窗口大小改变的时候都会触发onresize事件，这个时候我们将echarts对象的尺寸赋值给窗口的大小这个属性，从而实现图表对象与窗口对象的尺寸一致的情况
+window.onresize = echart.resize;
+echart.setOption(option);
+</script>
+
+<script>
+function doPrint() {   
+	bdhtml=window.document.body.innerHTML;   
+	sprnstr="<!--startprint-->";   
+	eprnstr="<!--endprint-->";   
+	prnhtml=bdhtml.substr(bdhtml.indexOf(sprnstr)+17);   
+	prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr));   
+	window.document.body.innerHTML=prnhtml;  
+	window.print();   
+}
+</script>
+
+<script> $(".nav_list_7").addClass("active"); </script>
+		<!--endprint-->
+
+<script src="/Public/layui/layui.js"></script>
+<script type="text/javascript">
+//当前日期
+function now(){
+	d=new Date();
+	d = +d + 1000*60*60*24;
+	d = new Date();
+	//return d;
+	//格式化
+	return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+}
+var startTime = now();
+var endTime;
+layui.use('laydate', function(){
+	var laydate = layui.laydate;
+
+	laydate.render({
+		elem:"#start",
+		//min:now(),
+		done: function(value, date){ //选择日期完毕的回调
+
+			// carArea.times = times;
+			// startTime=value;
+
+		}
+	});
+	laydate.render({
+		elem:"#end",
+		//min:now(),
+		done: function(value, date){ //选择日期完毕的回调
+
+			// carArea.times = times;
+			// startTime=value;
+
+		}
+	});
+
+});
+
+</script>
+</body>
+</html>

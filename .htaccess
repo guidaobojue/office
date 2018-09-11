@@ -1,0 +1,6 @@
+<IfModule mod_rewrite.c>
+	RewriteEngine on
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule ^(.*)$ /public/index.php?route=$1 [QSA,PT]
+</IfModule>
+

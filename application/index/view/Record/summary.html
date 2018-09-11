@@ -1,0 +1,135 @@
+﻿<include file="Public/public_template/dxheader.html"/>
+<div class="row wrapper white-bg">
+	<div class="col-lg-10">
+		<p class="wrapper-title"><i class="fa fa-line-chart "></i> 消费统计</p>
+	</div>
+	<div class="col-lg-2">
+
+	</div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+	<div class="ibox-content">
+		<div class="row">
+			<div class="col-lg-12"  >
+				<ul class="tab">
+					<li <?php if($type ==1):?> class="active" <?php endif;?> onclick="javascript:window.location.href='/Record/summary'">
+						按部门统计
+					</li>
+					<li <?php if($type ==2):?> class="active" <?php endif;?>  onclick="javascript:window.location.href='/Record/summary?type=2'">
+						按时间统计
+					</li>
+				</ul>
+				<div>
+					<div id="container" style="min-width: 100%; height: 400px; overflow: hidden; text-align: left;"></div>
+					<div  class="charts-btn">
+						<span>
+							消费合计:{$total}元
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<include file="Public/public_template/footer.html"/>
+</div>
+
+<script>
+var echart=echarts.init(document.getElementById('container'));
+var option={
+	<?php if($type == 1):?>
+		baseOption:{
+			title:{
+				text:'消费统计',
+				subtext:''
+			},
+			legend:{
+				data:['部门','销售金额']
+			},
+			xAxis:{
+				data:{$title}
+			},
+			color : ['#1ab394',"#ed5565"],
+
+			yAxis:{
+
+			},
+			tooltip:{
+				show:true,
+				formatter:'金额:{c}<br />'
+			},
+			series:[
+			{ name:'部门', type:'bar', data:{$body}, 
+				markLine: { 
+					data:[ {type:'average',name:'平均值',itemStyle:{ normal:{ color:"#1c84c6" } }} ]
+				},
+				barWidth:30,
+
+			},
+			]
+		},
+	<?php else:?>
+		baseOption:{
+			title:{
+				text:'消费统计',
+				subtext:''
+			},
+			legend:{
+				data:['日期','销售金额']
+			},
+			xAxis:{
+				data:{$title}
+			},
+			color : ['#1ab394',"#ed5565"],
+
+			yAxis:{
+
+			},
+			tooltip:{
+				show:true,
+				formatter:'金额:{c}<br />'
+			},
+			series:[{
+				name:'日期',
+				type:'bar',
+				data:{$body},
+				markLine:{
+					data:[
+					{type:'average',name:'平均值',itemStyle:{
+											normal:{
+												color:"#1c84c6"
+											}
+										}}
+					]
+				},
+				barWidth:30,
+			},
+			]
+		},
+	<?php endif;?>
+		media:[
+		{
+			//小与1000像素时候响应
+			query:{
+				maxWidth:1000
+			},
+			option:{
+				title:{
+					show:true,
+					text:'消费统计'
+				}
+			}
+		}
+		]
+};
+//每次窗口大小改变的时候都会触发onresize事件，这个时候我们将echarts对象的尺寸赋值给窗口的大小这个属性，从而实现图表对象与窗口对象的尺寸一致的情况
+window.onresize = echart.resize;
+echart.setOption(option);
+</script>
+<script> $(".nav_list_6").addClass("active"); </script>
+</body>
+</html>
+
+
+

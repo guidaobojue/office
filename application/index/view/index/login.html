@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>__TITLE__</title>
+    <link href="<?=VIP_CSS;?>bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="<?=VIP_CSS;?>animate.css" rel="stylesheet">
+    <link href="<?=VIP_CSS;?>style.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?=VIP_CSS;?>content.css">
+
+    <style>
+body,html{
+	width: 100%;
+	height: 100%;
+	position: relative;
+	background-size: 100% 100%;
+	overflow: hidden;
+}
+    </style>
+</head>
+
+<body class="gray-bg">
+	<div class="middle-box text-center loginscreen animated fadeInDown">
+		<div class="login">
+			<div class="login-logo">
+			</div>
+			<h3 class="login-title">__TITLE__</h3>
+			<form class="m-t" method="POST" role="form" action="/index/index/login">
+				<div class="form-group tr_uname">
+					<input type="text" name="uname"  class="form-control" placeholder="用户名" required="">
+				</div>
+				<div class="form-group tr_pwd">
+					<input type="password" name="pwd" class="form-control" placeholder="密码" required="">
+				</div>
+				<button type="submit" class="btn btn-primary block full-width m-b">登录</button>
+
+			</form>
+		</div>
+	</div>
+	{if condition="!empty($error)"}
+	<script> <?php foreach($error as $k => $v):?> $(".tr_<?=$k?>").css({"color":"red"}); <?php endforeach;?> </script>
+	{/if}
+
+	<!-- Mainly scripts -->
+	<script src="<?=VIP_JS;?>jquery-2.1.1.js"></script>
+	<script src="<?=VIP_JS;?>bootstrap.min.js"></script>
+
+
+</body>
+
+</html>

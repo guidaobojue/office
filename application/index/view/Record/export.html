@@ -1,0 +1,149 @@
+<include file="Public/public_template/dxheader.html"/>
+<div class="row wrapper white-bg">
+	<div class="col-lg-10">
+		<p class="wrapper-title">Excel上传</p>
+	</div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight member_lists  card_lists_table">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="ibox float-e-margins">
+
+				<div class="ibox-content">
+					<form method="POST" name="form1" action="/Record/export" class="form-horizontal" enctype="multipart/form-data">
+						<div class="col-lg-8">
+							<div class="fileinput fileinput-new input-group" data-provides="fileinput">
+								<div class="form-control" data-trigger="fileinput">
+									<i class="glyphicon glyphicon-file fileinput-exists"></i>
+									<span class="fileinput-filename"></span>
+								</div>
+								<span class="input-group-addon  btn-file">
+									<span class="fileinput-new">浏览excel</span>
+									<input type="file" name="file" style="opacity:0;">
+								</span>
+								<a href="javascript:form1.submit()" class="input-group-addon  fileinput-exists confirm">确定</a>
+								<a href="#" class="input-group-addon  fileinput-exists" data-dismiss="fileinput">移除</a>
+							</div>
+						</div>
+					</form>
+					<div class="col-lg-4">
+						<span class="" style="line-height:35px">查看范例： </span>
+						<span class="text-danger">
+							<a class="text-danger" href="/example.xlsx">
+								<i class="fa fa-play text-danger fa-rotate-90"></i> example.xlsx
+							</a>
+						</span>
+					</div>
+				</div>
+				<div class="ibox-content">
+					<table class="table table-striped table-bordered table-hover dataTables-example dataTable dtr-inline" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid">
+						<thead>
+							<tr>
+								<th>序号</th>
+								<th>记录在案时间</th>
+								<th>总数</th>
+								<th>成功</th>
+								<th>失败</th>
+								<th>状态</th>
+								<th>经办人</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<foreach name='lists' item='data'>
+							<tr role="row">
+								<td>{$data['document_id']}</td>
+								<td>{:date("Y-m-d H:i:s",$data['create_time'])} </td> 
+								<td>{$data['total']} </td> 
+								<td>{$data['success']}</td>
+								<td>{$data['total'] - $data['success']} </td> 
+
+								<?php if($data['status'] == 1):?>
+								<td >已处理</td>
+								<?php else:?>
+								<td id="s_{$data['document_id']}">未结</td>
+								<?php endif;?>
+
+								<td >{$data['adminname']}</td>
+
+
+								<td>
+
+									<a  href="/Record/exportList/document_id/{$data['document_id']}">
+										<button type="button" class="btn btn-outline btn-danger btn-sm"><i class="fa fa-times"></i>
+											错误日志
+										</button>
+									</a>
+
+									<?php if($data['status'] == 0):?>
+									<a  href="javascript:know({$data['document_id']})">
+
+										<button class="btn btn-outline btn-primary btn-sm" type="button"><i class="fa fa-envelope-o"></i> 已读</button>
+									</a>
+									<?php endif;?>
+								</td>
+
+
+
+							</tr>
+							</foreach>
+						</tbody>
+					</table>
+					{$page}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<include file="Public/public_template/footer.html"/>
+</div>
+</div>
+</div>
+
+<script>
+function know(document_id){
+
+	swal({
+		title: "确定设为已读吗?",
+		// text: "You will not be able to recover this imaginary file!",
+		type: "warning",
+		showCancelButton: "取消",
+		confirmButtonColor: "#DD6B55",
+		confirmButtonText: "确认",
+		closeOnConfirm:true 
+	},function(rs){
+		$.ajax({
+			"url":"/Record/docKnow",
+			"type":"POST",
+			"dataType":"json",
+			"data":{"document_id":document_id},
+			"success":function(){
+				$("#s_"+document_id).html("已处理");
+
+			}
+		});
+	});
+
+
+
+
+}
+</script>
+
+
+
+<?php if(isset($ok)):?>
+<script>
+swal({
+	title: "导入成功",
+	text: "",
+	type: "success"
+});
+</script>
+<?php endif;?>
+
+
+<script> $(".nav_list_8").addClass("active"); </script>
+
+</body>
+</html>
