@@ -1,4 +1,7 @@
 .idea
+*.swp
+*.swo
 composer.lock
 *.log
-thinkphp
+office.sql
+xls

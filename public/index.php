@@ -22,6 +22,9 @@ define("VIP_JS","/public/static/vip/js/");
 define("VIP_IMG","/public/static/vip/img/");
 define('VIP_AWE',"/public/static/vip/font-awesome/css/");
 define('DP_CSS',"/public/static/Template/");
+define("DL","/");
+define("PO",".");
+define("WEB_DIR",dirname(__DIR__));
 
 
 session_start();
