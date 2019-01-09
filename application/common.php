@@ -26,18 +26,15 @@ function filename($filename){
 }
 
 function readExcel($file){
-	include "../extend/PHPExcel/PHPExcel.php";
-	include "../extend/PHPExcel/PHPExcel/IOFactory.php";
-	include "../extend/PHPExcel/PHPExcel/Settings.php";
+	require_once "../extend/PHPExcel/PHPExcel.php";
+	require_once "../extend/PHPExcel/PHPExcel/IOFactory.php";
+	require_once "../extend/PHPExcel/PHPExcel/Settings.php";
 
 	$objPHPExcel = \PHPExcel_IOFactory::load($file);
 
 	\PHPExcel_Settings::setZipClass(\PHPExcel_Settings::PCLZIP);
-
-
-	$objPHPExcel = \PHPExcel_IOFactory::load($file);
-
 	$height = $rowCnt = $objPHPExcel->getSheet(0)->getHighestRow(); 
+
 
 	if($height < 2){
 		return false;
@@ -45,12 +42,13 @@ function readExcel($file){
 
 	$width = $objPHPExcel->getSheet(0)->getHighestColumn();
 	$width = \PHPExcel_Cell::columnIndexFromString($width);
+	if($width > 26)
+		$width = 26;
 	for($i=0;$i<=$width-1;$i++){
 		$key[] = chr(ord('A') + $i);
 	}
 
 	$data= [];
-
 
 	foreach($key as $k => $v){
 		$title[]=  $objPHPExcel->getSheet(0) ->getCell($v."1")->getFormattedValue();
@@ -69,6 +67,10 @@ function readExcel($file){
 
 
 function writeExcel($data,$title = null){
+	require_once "../extend/PHPExcel/PHPExcel.php";
+	require_once "../extend/PHPExcel/PHPExcel/IOFactory.php";
+	require_once "../extend/PHPExcel/PHPExcel/Settings.php";
+
 	error_reporting(E_ALL);
 	ini_set('display_errors', TRUE);
 	ini_set('display_startup_errors', TRUE);
@@ -89,8 +91,6 @@ function writeExcel($data,$title = null){
 	#var_dump($keys,$title);
 	#exit;
 	$list = array_combine($keys,$title);
-
-
 
 	//卡号 	时间 	金额 	接待人员 	接待部门 	员工工号
 
@@ -129,14 +129,14 @@ function writeExcel($data,$title = null){
 	// Miscellaneous glyphs, UTF-8
 
 			/*
-		$objPHPExcel->getActiveSheet()->setCellValue('A8',"Hello\nWorld");
-		$objPHPExcel->getActiveSheet()->getRowDimension(8)->setRowHeight(-1);
-		$objPHPExcel->getActiveSheet()->getStyle('A8')->getAlignment()->setWrapText(true);
+	$objPHPExcel->getActiveSheet()->setCellValue('A8',"Hello\nWorld");
+	$objPHPExcel->getActiveSheet()->getRowDimension(8)->setRowHeight(-1);
+	$objPHPExcel->getActiveSheet()->getStyle('A8')->getAlignment()->setWrapText(true);
 			 */
 
 
 	// Rename worksheet
-	$objPHPExcel->getActiveSheet()->setTitle('丰台科技');
+	$objPHPExcel->getActiveSheet()->setTitle('南院科技');
 
 
 	// Set active sheet index to the first sheet, so Excel opens this as the first sheet
@@ -163,12 +163,12 @@ function writeExcel($data,$title = null){
 }
 
 
-function combine($data,$dbs){
+function combine($data,$dbs,$columns){
 	$width = count($data[0]);
 	for($i=0;$i<count($data);$i++){
-		$street = searchAddress($data[$i][6],$dbs);
+		$street = searchAddress($data[$i][$columns],$dbs);
 		if(empty($street))
-			$street = searchName($data[$i][0],$dbs);
+			$street = searchName($data[$i][$columns],$dbs);
 		$data[$i][$width] = $street;
 	}
 
@@ -192,6 +192,21 @@ function searchAddress($name,$list){
 		}
 	}
 	return $rs;
+}
+
+
+function upload($name){
+	if(!isset($_FILES[$name])){
+		return false;
+	}
+	$file = $_FILES[$name];
+	$tmp_name =  $file['tmp_name'];
+	$names = filename($file['name']);
+	$suf = $names['name'];
+	$ex = $names['exp'];
+	$suf = "up_".md5($suf.time()).".".$ex;
+	$rs=  move_uploaded_file($tmp_name, $uploads_dir."/".$suf);
+	return $suf;
 }
 
 

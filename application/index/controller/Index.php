@@ -14,6 +14,10 @@ class Index extends \think\Controller
 
 	public function index()
 	{
+		if(!isset($_SESSION['user'])){
+			$this->redirect("/index/index/login");
+			return true;
+		}
 		$this->card_number = 10;
 		$this->assign("card_key",'123');
 		$this->assign("card_values",'123');
@@ -38,18 +42,19 @@ class Index extends \think\Controller
 			$rs = $userModel->login($uname,$pwd);
 
 			if($rs){
-				$this->display("index");
+				$this->redirect("/index/index/index");
 			}
 			else{
 				$this->error['uname'] = 'username error';
 				$this->assign("error",$this->error);
-				$this->display("login");
+				return $this->fetch("login");
 			}
 
 		}
 		else{
-				$this->display("login");
+				return $this->fetch("login");
 		}
+				return $this->fetch("login");
 	}
 
 	public function register(){

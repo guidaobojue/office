@@ -25,8 +25,6 @@ define('DP_CSS',"/public/static/Template/");
 define("DL","/");
 define("PO",".");
 define("WEB_DIR",dirname(__DIR__));
-
-
 session_start();
 require __DIR__ . '/../thinkphp/start.php';
 
