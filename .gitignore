@@ -5,3 +5,5 @@ composer.lock
 *.log
 office.sql
 xls
+public/upload/*
+upload/*
