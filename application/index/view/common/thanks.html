@@ -1,0 +1,108 @@
+{include file="./static/public_template/dxheader.html"/}
+<style>
+.user_img{
+	width:100px;
+}
+</style>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+
+	<!-- Main content -->
+	<section class="content">
+
+		<div class="row">
+			<div class="col-lg-10">
+				<p class="wrapper-title"><i class="fa fa-file-text-o"></i> 感谢名单</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="box">
+					<div class="box-header">
+					</div>
+					<div class="box-body">
+						<div class="table" >
+							<div class="table-responsive">
+
+								<div >
+									<table class="table table-bordered table-hover" style="float:left" >						
+										<tr>
+											<th style="width:40px">头像</th>
+											<th>姓名</th>
+											<th>职位</th>
+										</tr>
+										<tr>
+											<td><img class="user_img" src="__STATIC__/img/yang.jpg"></td>
+											<td>杨文袆 </td>
+											<td>执行总监</td>
+										</tr>
+										<tr>
+											<td><img class="user_img" src="__STATIC__/img/hao.jpg"></td>
+											<td>李昊</td>
+											<td>名誉主席</td>
+										</tr>
+										<tr>
+											<td><img class="user_img" src="__STATIC__/img/ma.jpg"></td>
+											<td>马腾飞 </td>
+											<td>技术支持</td>
+										</tr>
+
+
+
+
+									</table>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<!-- /.box-body -->
+				</div>
+				<!-- /.box -->
+			</div>
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
+	</section>
+	<!-- /.content -->
+</div>
+{include file="./static/public_template/footer.html"/}
+<!-- /.content-wrapper -->
+<!-- 制作图表js -->
+<script src="__PUBLIC__/js/Chart.js"></script>
+
+	<script src="/public/static/Template/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script type="text/javascript">
+	function read(id){
+		$.ajax({
+			url:"/index/Common/auditing",
+			data:{'id':id},
+			dataType:'json',
+			type:'POST',
+			success:function(rs){
+				$("#comment_"+id).html("已读");
+
+			}
+		})
+	}
+
+	//Date picker
+
+
+$('.submit').click(function(){
+	$(this).parents('form').attr('action', $(this).attr('action'));
+	$(this).parents('form').submit();
+})
+
+$('#start_time').datepicker({
+	autoclose: true,
+	format: "yyyy-mm-dd",
+});
+
+$('#end_time').datepicker({
+	autoclose: true,
+	format: "yyyy-mm-dd",
+});
+
+</script>

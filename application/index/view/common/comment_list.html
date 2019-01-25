@@ -1,0 +1,157 @@
+{include file="./static/public_template/dxheader.html"/}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+
+	<!-- Main content -->
+	<section class="content">
+
+		<div class="row">
+			<div class="col-lg-10">
+				<p class="wrapper-title"><i class="fa fa-file-text-o"></i> 职位列表</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="box">
+					<div class="box-header">
+					</div>
+					<div class="box-body">
+						<div class="table" >
+							<div class="table-responsive">
+								<form method="POST" class="form-horizontal" name="form1" action="/index/ftzj/exportComment">
+									<div class="form-group" > 
+										<div class="col-sm-4 tr_department">
+											<label class="col-sm-3 control-label">开始时间</label>
+											<div class="col-sm-6"><input type="text" id="start_time" class="form-control" required="" name="start_time" value=""></div>
+											<input type="hidden" name="id" value=""/>
+										</div>
+										<div class="col-sm-4 tr_service">
+											<label class="col-sm-3 control-label">结束时间</label>
+											<div class="col-sm-6"><input type="text" id="end_time" class="form-control" required="" name="end_time" value=""></div>
+										</div>
+										<div class="form-group col-sm-3">
+
+											<div class=" col-sm-offset-3  recharge-btn">
+												<button class="btn btn-primary " type="submit" name="sub" value="1">导出</button>
+											</div>
+										</div>
+									</div>
+
+
+									<div class="hr-line-dashed"></div>
+								</form>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<!-- /.box-body -->
+			</div>
+			<!-- /.box -->
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="box">
+					<div class="box-header">
+					</div>
+					<div class="box-body">
+						<div class="table" >
+							<div class="table-responsive">
+
+								<div >
+									<table class="table table-bordered table-hover" style="float:left" >						
+										<tr>
+											<th>编号</th>
+											<th>科室</th>
+											<th>联系人</th>
+											<th>联系电话</th>
+											<th>创建时间</th>
+											<th>状态</th>
+											<th>操作</th>
+										</tr>
+										{if condition="!empty($list)" }
+										{foreach name="list" item="k"}
+										<tr>
+											<td>{$k.comment_id}</td>
+											<td>{$k.department}</td>
+											<td>{$k.user_name}</td>
+											<td>{$k.user_tel}</td>
+											<td>{$k.create_time}</td>
+
+											<td id="comment_{$k.comment_id}">
+												{if condition="$k.status == 1"}
+												已读
+												{else/}
+												未读
+												{/if}
+											
+											</td>
+
+											<td><a href="/index/Common/details/id/{$k.comment_id}" target="_blank">详情</a> | <a href="javascript:read({$k.comment_id})" >已读</a> 
+										</tr>
+										{/foreach}
+
+
+										{/if}
+
+									</table>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<!-- /.box-body -->
+				</div>
+				<!-- /.box -->
+			</div>
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
+		<div class="box-footer">
+			<ul class="pagination pagination-sm no-margin pull-right">
+				{$page}
+			</ul>
+		</div> 
+	</section>
+	<!-- /.content -->
+</div>
+{include file="./static/public_template/footer.html"/}
+<!-- /.content-wrapper -->
+<!-- 制作图表js -->
+<script src="__PUBLIC__/js/Chart.js"></script>
+
+	<script src="/public/static/Template/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script type="text/javascript">
+	function read(id){
+		$.ajax({
+			url:"/index/Common/auditing",
+			data:{'id':id},
+			dataType:'json',
+			type:'POST',
+			success:function(rs){
+				$("#comment_"+id).html("已读");
+
+			}
+		})
+	}
+
+	//Date picker
+
+
+$('.submit').click(function(){
+	$(this).parents('form').attr('action', $(this).attr('action'));
+	$(this).parents('form').submit();
+})
+
+$('#start_time').datepicker({
+	autoclose: true,
+	format: "yyyy-mm-dd",
+});
+
+$('#end_time').datepicker({
+	autoclose: true,
+	format: "yyyy-mm-dd",
+});
+
+</script>

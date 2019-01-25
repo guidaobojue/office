@@ -1,0 +1,116 @@
+
+{include file="./static/public_template/dxheader.html"/}
+				<!-- Content Wrapper. Contains page content -->
+				<div class="content-wrapper">
+					<!-- Content Header (Page header) -->
+
+					<!-- Main content -->
+					<section class="content">
+
+						<div class="row">
+							<div class="col-lg-10">
+								<p class="wrapper-title"><i class="fa fa-file-text-o"></i> 评论</p>
+							</div>
+						</div>
+						<div class="ibox-content">
+							<form method="POST" class="form-horizontal" >
+								<div class="form-group" > 
+									<div class="col-sm-6 tr_old_passwd">
+										<label class="col-sm-3 control-label">原密码</label>
+										<label class="col-sm-1 control-label">
+											<input type="password" name="old_passwd"/>
+										</label>
+									</div>
+								</div>
+								<div class="hr-line-dashed"></div>
+								<div class="form-group" > 
+									<div class="col-sm-6 tr_new_passwd">
+										<label class="col-sm-3 control-label">新密码</label>
+										<label class="col-sm-1 control-label">
+											<input type="password" name="new_passwd"/>
+										</label>
+									</div>
+									<div class="col-sm-6 tr_repeat">
+										<label class="col-sm-3 control-label">再次输入</label>
+										<label class="col-sm-1 control-label">
+											<input type="password" name="repeat_passwd"/>
+										</label>
+									</div>
+								</div>
+								<div class="hr-line-dashed"></div>
+								<div class="form-group col-sm-7">
+
+									<div class=" col-sm-offset-3  recharge-btn">
+										<button class="btn btn-primary " type="submit" name="sub" value="1">确定</button>
+									</div>
+								</div>
+								<div class="form-group" > </div>
+							</form>
+						</div>
+				</div>
+				<!-- /.row -->
+					</section>
+					<!-- /.content -->
+			</div>
+
+			{include file="./static/public_template/footer.html"/}
+
+
+
+
+
+
+
+
+
+			<script src="/public/static/vip/js/jquery-2.1.1.js"></script>
+			<script src="/public/static/vip/js/bootstrap.min.js"></script>
+			<script src="/public/static/vip/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+
+			<script src="/public/static/vip/js/plugins/pace/pace.min.js"></script>
+			<script src="/public/static/vip/js/cropbox.js"></script>
+			<script src="/public/static/vip/js/plugins/sweetalert/sweetalert.min.js"></script>
+
+
+
+			{if condition="!empty($error)"}
+	<script>
+		{foreach name="error" key="k" item="item"}
+			$(".tr_{$k}").css("color","red");
+		{/foreach}
+	</script>
+	{/if}
+			{if condition="isset($ok)"}
+	<script>
+		alert("修改成功");
+	</script>
+	{/if}
+
+
+			<!-- Custom and plugin javascript -->
+
+			<!-- iCheck -->
+
+			<!-- Mainly scripts -->
+
+
+			<script src="/public/static/vip/js/jasny-bootstrap.min.js"></script>
+			<script src="/public/static/vip/js/full_height.js"></script>
+
+
+
+			<!-- Peity -->
+
+
+			<!-- Custom and plugin javascript -->
+			<script src="/public/static/vip/js/plugins/slimscroll/jquery.slimscroll.js"></script>
+			<script src="/public/static/vip/js/inspinia.js"></script>
+			<script src="/public/static/vip/js/echarts.min.js"></script>
+			<script src="/public/static/vip/js/plugins/pace/pace.min.js"></script>
+
+
+
+			<!-- /.content-wrapper -->
+			<!-- 制作图表js -->
+
+			<script src="/public/static/Template/plugins/datepicker/bootstrap-datepicker.js"></script>

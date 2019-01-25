@@ -1,0 +1,96 @@
+{include file="./static/public_template/dxheader.html"/}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+
+	<!-- Main content -->
+	<section class="content">
+
+		<div class="row">
+			<div class="col-lg-10">
+				<p class="wrapper-title"><i class="fa fa-file-text-o"></i> 职位列表</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="box">
+					<div class="box-header">
+					</div>
+					<div class="box-body">
+						<div class="table" >
+							<div class="table-responsive">
+
+								<div >
+									<table class="table table-bordered table-hover" style="float:left" >						
+										<tr>
+											<th>编号</th>
+											<th>职位</th>
+											<th>年龄</th>
+											<th>学历</th>
+											<th>地址</th>
+										</tr>
+										{if condition="!empty($list)" }
+										{foreach name="list" item="job"}
+										<tr>
+											<td>{$job.zj_job_id}</td>
+											<td>{$job.job_name}</td>
+											<td>{$job.age}</td>
+											<td>{$job.education}</td>
+											<td><a href="/index/ftzj/editJob/id/{$job.zj_job_id}/comId/{$comId}" >修改</a> | 
+												<a href="javascript:delJob({$job.zj_job_id})" >删除</a></td>
+										</tr>
+										{/foreach}
+
+
+										{/if}
+
+									</table>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<!-- /.box-body -->
+				</div>
+				<!-- /.box -->
+			</div>
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
+		<div class="box-footer">
+			<a type="button" class="btn btn-primary" href="/index/ftzj/addJob/id/{$zj_company_id}" >增加职位</a>
+			<ul class="pagination pagination-sm no-margin pull-right">
+				{$page}
+			</ul>
+		</div> 
+	</section>
+	<!-- /.content -->
+</div>
+{include file="./static/public_template/footer.html"/}
+<!-- /.content-wrapper -->
+<!-- 制作图表js -->
+<script src="__PUBLIC__/js/Chart.js"></script>
+
+<script type="text/javascript">
+	function delCom(company_id){
+		alert(company_id);
+		}
+
+	//Date picker
+	$('#start_time').datepicker({
+		autoclose: true,
+		format: "yyyy-mm-dd",
+	});
+$('#end_time').datepicker({
+	autoclose: true,
+	format: "yyyy-mm-dd",
+});
+
+
+$('.submit').click(function(){
+	$(this).parents('form').attr('action', $(this).attr('action'));
+	$(this).parents('form').submit();
+})
+
+
+</script>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <title>marquee</title>
+        <style>
+            body {
+                background: black;
+			margin:10px;
+
+            }
+
+            marquee {
+                font-weight: bolder;
+                font-size: 20px;
+                color: white;
+			height:800px;
+            }
+	    span{
+		    margin:30px;
+	    }
+        </style>
+    </head>
+
+    <body>
+        <marquee direction="up">
+	<table>
+		<tr>
+		<td>职位</td>
+		<td>学历</td>
+		<td>年龄</td>
+		<td>地址</td>
+		</tr>
+	{foreach name="list" item="v"}
+	<tr>
+		<td>
+		{$v.job_name}
+		</td>
+		<td>
+		{$v.education}
+		</td>
+		<td>
+		{$v.age} 
+		</td>
+		<td>
+		{$v.address}
+		</td>
+	</tr>
+	{/foreach}
+	</table>
+	</marquee>
+    </body>
+
+</html>

@@ -1,0 +1,152 @@
+﻿{include file="./static/public_template/dxheader.html"/}
+<div class="row wrapper white-bg">
+	<div class="col-lg-10">
+		<p class="wrapper-title"><i class="fa"></i> 编缉公司 </p>
+	</div>
+
+	<div class="col-lg-2">
+
+	</div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="ibox float-e-margins">
+				<div class="ibox-title">
+					<h5>信息录入</h5>
+				</div>
+				<div class="ibox-content">
+					<form method="POST" class="form-horizontal" name="form1" action="/index/ftzj/editCom">
+						<div class="form-group" > 
+							<div class="col-sm-6 tr_department">
+								<label class="col-sm-3 control-label">企业法人码</label>
+								<input type="hidden" name="id" value="{$com.zj_company_id}"/>
+								<div class="col-sm-6"><input type="text" class="form-control" required="" name="company_id" value="{$com.company_id}"></div>
+							</div>
+							<div class="col-sm-6 tr_service">
+								<label class="col-sm-3 control-label">企业名称</label>
+								<div class="col-sm-6"><input type="text" class="form-control" required="" name="company_name" value="{$com.company_name}"></div>
+							</div>
+						</div>
+						<div class="hr-line-dashed"></div>
+						<div class="form-group" > 
+							<div class="col-sm-6 tr_area">
+								<label class="col-sm-3 control-label">企业地址</label>
+								<div class="col-sm-6"><input type="text" class="form-control" required="" name="address" value="{$com.address}"></div>
+							</div>
+						</div>
+						<div class="hr-line-dashed"></div>
+						<div class="form-group" > 
+							<div class="col-sm-6 tr_location">
+								<label class="col-sm-3 control-label">联系人</label>
+								<div class="col-sm-6"><input type="text" class="form-control" required="" name="user_name" value="{$com.user_name}"></div>
+							</div>
+							<div class="col-sm-6 tr_money">
+								<label class="col-sm-3 control-label">联系电话</label>
+								<div class="col-sm-6"><input type="text" class="form-control" required="" name="user_tel" value="{$com.user_tel}"></div>
+							</div>
+						</div>
+						<div class="hr-line-dashed"></div>
+						<div class="form-group col-sm-7">
+
+							<div class=" col-sm-offset-3  recharge-btn">
+								<button class="btn btn-primary " type="submit" name="sub" value="1">确定</button>
+							</div>
+						</div>
+						<div class="form-group" > </div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{include file="./static/public_template/footer.html"/}
+</div>
+</div>
+
+<!-- Mainly scripts -->
+<script src="<?=VIP_JS;?>jquery-2.1.1.js"></script>
+<script src="<?=VIP_JS;?>bootstrap.min.js"></script>
+<script src="<?=VIP_JS;?>plugins/metisMenu/jquery.metisMenu.js"></script>
+
+
+
+<!-- Peity -->
+
+
+<!-- Custom and plugin javascript -->
+<script src="<?=VIP_JS;?>plugins/pace/pace.min.js"></script>
+<script src="<?=VIP_JS;?>inspinia.js"></script>
+<script src="<?=VIP_JS;?>echarts.min.js"></script>
+
+</body>
+</html>
+
+
+<script type="text/javascript">
+var arr_province = ["请选择园区", '大兴东酒店', '大兴东游乐场', '大兴东电玩城', '大兴东演艺中心', '大兴东会议中心', '大兴东会展中心', '大兴东生产中心'];
+var arr_city = [
+	["请选择营业点"],
+	['盛世中华酒店'],
+	['餐饮', '商超', '门票'],
+	['游戏币消费', '其他产品消费'],
+	['门票', '餐饮', '商超'],
+	['会议场馆', '餐饮',],
+	['一层消费', '二层消费', '三层消费', '四层消费'],
+	['酒', '水', '饮料', '土特产', '综合'],
+];
+
+
+//网页加载完成，初始化菜单
+window.onload = init;//传入函数地址
+function init(){
+	//首先获取对象
+	var province = document.form1.area;
+	var city = document.form1.location;
+
+	//指定省份中<option>标记的个数
+	province.length = arr_province.length;
+
+	//循环将数组中的数据写入<option>标记中
+	for(var i=0;i<arr_province.length;i++){
+		province.options[i].text = arr_province[i];
+		province.options[i].value = arr_province[i];
+	}
+
+	//修改省份列表的默认选择项
+	var index = 0;
+	province.selectedIndex = index;
+
+	//指定城市中<option>标记的个数
+	city.length = arr_city[index].length;
+
+	//循环将数组中的数据写入<option>标记中
+	for (var j = 0; j<arr_city[index].length;j++) {
+		city.options[j].text = arr_city[index][j];
+		city.options[j].value = arr_city[index][j];
+	}
+
+}
+
+function  changeSelect(index){
+	//选择对象
+	var city = document.form1.location;
+	//修改省份列表的选择项
+	form1.area.selectedIndex = index;
+
+	//指定城市中<option>标记的个数
+	city.length = arr_city[index].length;
+
+	//循环将数组中的数据写入<option>标记中
+	for (var j = 0; j<arr_city[index].length;j++) {
+	city.options[j].text = arr_city[index][j];
+	city.options[j].value = arr_city[index][j];
+	}
+	}
+
+</script>
+
+<script> $(".nav_list_3").addClass("active"); </script>
+<script> $(".nav_list:eq(2)").addClass("active"); </script>
+
