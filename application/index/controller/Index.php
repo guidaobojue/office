@@ -10,6 +10,7 @@ class Index extends \think\Controller
 
 	public function __construct(){
 		parent::__construct();
+
 	}
 
 	public function index()
@@ -18,13 +19,6 @@ class Index extends \think\Controller
 			$this->redirect("/index/index/login");
 			return true;
 		}
-		$this->card_number = 10;
-		$this->assign("card_key",'123');
-		$this->assign("card_values",'123');
-		$this->assign("card_freeze_values",'123');
-		$this->assign("card_total",'123');
-		$this->assign("card_normal",'123');
-		$this->assign("card_freeze",'123');
 		return $this->fetch("index");
 	}
 
@@ -78,6 +72,12 @@ class Index extends \think\Controller
 			M("user")->add($data);
 			$this->display("register");
 		}
+	}
+
+
+	public function logout(){
+		unset($_SESSION['user']);
+			$this->redirect("/");
 	}
 
 

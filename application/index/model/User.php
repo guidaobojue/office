@@ -30,7 +30,9 @@ class user extends Model
 	    if($rs){
 		    $rsPwd = $rs['pwd'];
 		    if(md5($pwd) == $rsPwd){
-			    $_SESSION['user'] = $rs->data;
+			    $data = $rs->data;
+			    unset($data->pwd);
+			    $_SESSION['user'] = $data;
 			    return true;
 		    }
 		    else{
@@ -43,5 +45,12 @@ class user extends Model
 	    }
     }
 
+    public function editInfo($uid,$data){
+	    $rs = $this->save($data,['user_id'=>$uid]);
+	    return $rs;
+    }
+    public function getOne($uid){
+	    return $this->find(['user_id'=>$uid]);
+    }
 
 }
