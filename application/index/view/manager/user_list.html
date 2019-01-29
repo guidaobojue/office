@@ -1,0 +1,130 @@
+{include file="./static/public_template/dxheader.html"/}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+
+	<!-- Main content -->
+	<section class="content">
+
+		<div class="row">
+			<div class="col-lg-9">
+				<p class="wrapper-title"><i class="fa fa-file-text-o"></i> 用户列表</p>
+			</div>
+			<div class="col-lg-2">
+				<p class="wrapper-title" style="float:right">
+				<a class="btn btn-primary " href="/index/manager/register" target="_blank">新增用户</a>
+				</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="box">
+					<div class="box-header">
+					</div>
+					<div class="box-body">
+						<div class="table" >
+							<div class="table-responsive">
+
+								<div >
+									<table class="table table-bordered table-hover" style="float:left" >						
+										<tr>
+											<th>编号</th>
+											<th>登录名</th>
+											<th>职位</th>
+											<th>群组</th>
+											<th>创建时间</th>
+											<th>操作</th>
+										</tr>
+										{if condition="!empty($list)" }
+										{foreach name="list" item="k"}
+										<tr id="tr_{$k.user_id}">
+											<td>{$k.user_id}</td>
+											<td>{$k.uname}</td>
+											<td>{$k.levelName}</td>
+											<td>
+												{if condition="count($k.groups) == 1"}
+												{$k.groups[0]['group_name']}
+												{else}
+												{foreach name="k.groups" item="ik"}
+												{$ik['group_name']} |
+												{/foreach}
+												{/if}
+											</td>
+											<td>{$k.last_time|date="Y-m-d",###}
+											<td>
+												<a href="/index/manager/editUser/user_id/{$k.user_id}" target="_blank">编缉</a> |
+												<a href="javascript:delUser({$k.user_id})" >删除</a>
+												
+											</td>
+
+
+
+										</tr>
+										{/foreach}
+
+
+										{/if}
+
+									</table>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<!-- /.box-body -->
+				</div>
+				<!-- /.box -->
+			</div>
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
+		<div class="box-footer">
+			<ul class="pagination pagination-sm no-margin pull-right">
+				{$page}
+			</ul>
+		</div> 
+	</section>
+	<!-- /.content -->
+</div>
+{include file="./static/public_template/footer.html"/}
+<!-- /.content-wrapper -->
+<!-- 制作图表js -->
+<script src="__PUBLIC__/js/Chart.js"></script>
+
+	<script src="/public/static/Template/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script type="text/javascript">
+	function delUser(id){
+		var fs = confirm("确认删除吗?");
+		$.ajax({
+			url:"/index/manager/delUser}",
+			data:{'user_id':id},
+			dataType:'json',
+			type:'POST',
+			success:function(rs){
+
+				$("#tr_"+id).hide();
+				alert("删除成功");
+
+			}
+		})
+	}
+
+	//Date picker
+
+
+$('.submit').click(function(){
+	$(this).parents('form').attr('action', $(this).attr('action'));
+	$(this).parents('form').submit();
+})
+
+$('#start_time').datepicker({
+	autoclose: true,
+	format: "yyyy-mm-dd",
+});
+
+$('#end_time').datepicker({
+	autoclose: true,
+	format: "yyyy-mm-dd",
+});
+
+</script>

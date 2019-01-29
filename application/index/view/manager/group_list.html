@@ -1,0 +1,116 @@
+{include file="./static/public_template/dxheader.html"/}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+
+	<!-- Main content -->
+	<section class="content">
+
+		<div class="row">
+			<div class="col-lg-9">
+				<p class="wrapper-title"><i class="fa fa-file-text-o"></i> 群组列表</p>
+			</div>
+			<div class="col-lg-2">
+				<p class="wrapper-title" style="float:right">
+				<a class="btn btn-primary " href="/index/manager/register" target="_blank">新增群组</a>
+				</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="box">
+					<div class="box-header">
+					</div>
+					<div class="box-body">
+						<div class="table" >
+							<div class="table-responsive">
+
+								<div >
+									<table class="table table-bordered table-hover" style="float:left" >						
+										<tr>
+											<th>编号</th>
+											<th>名称</th>
+											<th>操作</th>
+										</tr>
+										{if condition="!empty($list)" }
+										{foreach name="list" item="k"}
+										<tr id="tr_{$k.group_id}">
+											<td>{$k.group_id}</td>
+											<td>{$k.group_name}</td>
+											<td>
+												<a href="/index/manager/editGroup/group_id/{$k.group_id}" target="_blank">编缉</a> |
+												<a href="javascript:delGroup({$k.group_id})" >删除</a>
+												
+											</td>
+
+
+
+										</tr>
+										{/foreach}
+
+
+										{/if}
+
+									</table>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<!-- /.box-body -->
+				</div>
+				<!-- /.box -->
+			</div>
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
+		<div class="box-footer">
+			<ul class="pagination pagination-sm no-margin pull-right">
+				{$page}
+			</ul>
+		</div> 
+	</section>
+	<!-- /.content -->
+</div>
+{include file="./static/public_template/footer.html"/}
+<!-- /.content-wrapper -->
+<!-- 制作图表js -->
+<script src="__PUBLIC__/js/Chart.js"></script>
+
+	<script src="/public/static/Template/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script type="text/javascript">
+	function delGroup(id){
+		var fs = confirm("确认删除吗?");
+		$.ajax({
+			url:"/index/manager/delUser}",
+			data:{'group_id':id},
+			dataType:'json',
+			type:'POST',
+			success:function(rs){
+
+				$("#tr_"+id).hide();
+				alert("删除成功");
+
+			}
+		})
+	}
+
+	//Date picker
+
+
+$('.submit').click(function(){
+	$(this).parents('form').attr('action', $(this).attr('action'));
+	$(this).parents('form').submit();
+})
+
+$('#start_time').datepicker({
+	autoclose: true,
+	format: "yyyy-mm-dd",
+});
+
+$('#end_time').datepicker({
+	autoclose: true,
+	format: "yyyy-mm-dd",
+});
+
+</script>
