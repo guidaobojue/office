@@ -1,5 +1,6 @@
 .idea
 *.swp
+*.swn
 *.swo
 composer.lock
 *.log
