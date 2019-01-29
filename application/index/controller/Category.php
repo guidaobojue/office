@@ -23,5 +23,18 @@ class Category extends \think\Controller
 		return $this->fetch("index");
 	}
 
+
+	public function addCategory(){
+		return $this->fetch("addCategory");
+	}
+
+	public function editCategory(){
+	}
+
+	public function delCategory(){
+	}
+
+
+
 }
 

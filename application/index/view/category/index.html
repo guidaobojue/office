@@ -27,43 +27,6 @@
 
 								<div >
 									<table class="table table-bordered table-hover" style="float:left" >						
-										<tr>
-											<th>编号</th>
-											<th>登录名</th>
-											<th>职位</th>
-											<th>群组</th>
-											<th>创建时间</th>
-											<th>操作</th>
-										</tr>
-										{if condition="!empty($list)" }
-										{foreach name="list" item="k"}
-										<tr id="tr_{$k.user_id}">
-											<td>{$k.user_id}</td>
-											<td>{$k.uname}</td>
-											<td>{$k.levelName}</td>
-											<td>
-												{if condition="count($k.groups) == 1"}
-												{$k.groups[0]['group_name']}
-												{else}
-												{foreach name="k.groups" item="ik"}
-												{$ik['group_name']} |
-												{/foreach}
-												{/if}
-											</td>
-											<td>{$k.last_time|date="Y-m-d",###}
-											<td>
-												<a href="/index/manager/editUser/user_id/{$k.user_id}" target="_blank">编缉</a> |
-												<a href="javascript:delUser({$k.user_id})" >删除</a>
-												
-											</td>
-
-
-
-										</tr>
-										{/foreach}
-
-
-										{/if}
 
 									</table>
 								</div>
@@ -78,11 +41,6 @@
 			<!-- /.col -->
 		</div>
 		<!-- /.row -->
-		<div class="box-footer">
-			<ul class="pagination pagination-sm no-margin pull-right">
-				{$page}
-			</ul>
-		</div> 
 	</section>
 	<!-- /.content -->
 </div>
