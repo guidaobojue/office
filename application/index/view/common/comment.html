@@ -163,16 +163,9 @@ label {
 	<script>
 		{if condition="isset($errors)"}
 		{foreach name="errors" key="k" item="error"}
-$(".tr_{$k} label").css({"color":"red"});
-{/foreach}
-
-
-
-
-{/if}
-
-
-
+			$(".tr_{$k} label").css({"color":"red"});
+		{/foreach}
+		{/if}
 	</script>
 
 {if condition="isset($ok)"}

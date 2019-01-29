@@ -23,8 +23,6 @@ class Common extends \think\Controller
 
 
 	public function comment(){
-
-
 		$obj = model("comment");
 		if(isset($_POST['sub'])){
 			$post = $_POST;
@@ -46,10 +44,9 @@ class Common extends \think\Controller
 					$data['thumb'] = $info->getSaveName();
 				}
 			}
+			$obj->add($data);
+			$this->assign("ok",1);
 		}
-		$obj->add($data);
-		$this->assign("ok",1);
-
 
 		$data = [];
 		$list= $obj->list();
@@ -71,14 +68,12 @@ class Common extends \think\Controller
 
 
 	public function commentList(){
-
 		$obj = model("comment");
 		$data = [];
 		$list= $obj->list();
 		$page = $list->render();
 		$this->assign("list",$list);
 		$this->assign("page",$page);
-
 		return $this->fetch("comment_list");
 	}
 

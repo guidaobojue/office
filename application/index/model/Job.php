@@ -66,4 +66,37 @@ class job extends Model
 	}
 
 
+
+	/*
+	public function init_job(){
+		$data = [
+			[
+				'job_name' => '科员',
+				'level' => 1,
+			],
+			[
+				'job_name' => '副科长',
+				'level' => 2,
+			],
+
+			[
+				'job_name' => '科长',
+				'level' => 3,
+			],
+			[
+				'job_name' => '副主任',
+				'level' => 4,
+			],
+			[
+				'job_name' => '主任',
+				'level' => 5,
+			],
+		];
+		$this->saveAll($data);
+	}
+	 */
+
+
+
+
 }
