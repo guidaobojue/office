@@ -209,4 +209,11 @@ function upload($name){
 	return $suf;
 }
 
+function sc($cid){
+	if(!isset($_SESSION['user']))
+		return false;
+
+	return true;
+
+}
 

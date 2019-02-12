@@ -46,7 +46,12 @@ class company extends Model
 	}
 
 	public function getAll(){
-		return $this->select();
+		$rs = $this->select();
+		$data = [];
+		foreach($rs as $k => $v){
+			$data[] = $v->data;
+		}
+		return $data;
 	}
 
 

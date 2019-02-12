@@ -3,6 +3,7 @@ namespace app\index\controller;
 use \think\view;
 use \think\Request;
 use \think\Model;
+use app\extra\pri;
 
 class Index extends \think\Controller
 {
@@ -10,6 +11,9 @@ class Index extends \think\Controller
 
 	public function __construct(){
 		parent::__construct();
+
+
+
 
 	}
 
@@ -23,19 +27,26 @@ class Index extends \think\Controller
 	}
 
 	public function login(){
-		if(!empty($_SESSION)){
-			$this->redirect("/index/index/index");
-			return ;
-		}
-
 		if(input("?post.uname")){
 			$uname = input("post.uname");
 			$pwd = input("post.pwd");
 
 			$userModel = model("User");
 			$rs = $userModel->login($uname,$pwd);
-
 			if($rs){
+				$groupModel = model("group");
+				$groupRs = $groupModel->getOneByUserId($rs['user_id']);
+
+				$temp = [];
+				if(!empty($groupRs)){
+					foreach($groupRs as $k => $v){
+						$temp[] = $v['group_id'];
+					}
+				}
+
+				$rs['group'] = $temp;
+				$_SESSION['user'] = $rs;
+
 				$this->redirect("/index/index/index");
 			}
 			else{
@@ -46,9 +57,9 @@ class Index extends \think\Controller
 
 		}
 		else{
-				return $this->fetch("login");
+			return $this->fetch("login");
 		}
-				return $this->fetch("login");
+		return $this->fetch("login");
 	}
 
 	public function register(){
@@ -77,7 +88,7 @@ class Index extends \think\Controller
 
 	public function logout(){
 		unset($_SESSION['user']);
-			$this->redirect("/");
+		$this->redirect("/");
 	}
 
 

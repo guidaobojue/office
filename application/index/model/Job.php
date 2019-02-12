@@ -18,6 +18,15 @@ class job extends Model
 		return $this->find(['zj_job_id'=>$id]);
 	}
 
+	public function getCAll(){
+		$time = time() + 24 * 3600;
+		$rs = $this->where("due_time >= $time")->select();
+		$data = [];
+		foreach($rs as $k => $v){
+			$data[] = $v->data;
+		}
+		return $data;
+	}
 
 	public function list($pageSize = 10){
 		$list = $this->paginate($pageSize);

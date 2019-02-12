@@ -17,9 +17,26 @@ class Ftzj extends \think\Controller
 	 */
 	public function barrage()
 	{
-		$model = model("job");
-		$rs = $model->list();
-		$this->assign("list",$rs);
+		$jobModel = model("job");
+		$companyModel = model("company");
+
+		$jobs = $jobModel->getCAll();
+		$coms = $companyModel->getAll();
+
+		$temp = [];
+		foreach($coms as $k => $v){
+			$temp[$v['zj_company_id']] = $v;
+		}
+		$coms = $temp;
+
+		foreach($jobs as $k => $v){
+			if(isset($coms[$v['zj_company_id']]))
+				$coms[$v['zj_company_id']]['jobs'][] = $v;
+		}
+
+
+
+		$this->assign("list",$coms);
 		return $this->fetch("index");
 	}
 

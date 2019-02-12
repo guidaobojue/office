@@ -13,6 +13,7 @@ namespace think;
 
 use think\exception\ValidateException;
 use traits\controller\Jump;
+use app\extra\pri;
 
 Loader::import('controller/Jump', TRAIT_PATH, EXT);
 
@@ -52,20 +53,31 @@ class Controller
      */
     public function __construct(Request $request = null)
     {
-        $this->view    = View::instance(Config::get('template'), Config::get('view_replace_str'));
-        $this->request = is_null($request) ? Request::instance() : $request;
 
-        // 控制器初始化
-        $this->_initialize();
+	    $this->view    = View::instance(Config::get('template'), Config::get('view_replace_str'));
+	    $this->request = is_null($request) ? Request::instance() : $request;
 
-        // 前置操作方法
-        if ($this->beforeActionList) {
-            foreach ($this->beforeActionList as $method => $options) {
-                is_numeric($method) ?
-                $this->beforeAction($options) :
-                $this->beforeAction($method, $options);
-            }
-        }
+	    $request = Request::instance();
+	    $action = $request->action();
+	    $pri = new pri();
+	    if(!in_array($action,['login'])){
+		    if(!$pri->checkSession()){
+			    $this->redirect("/index/index/login");
+		    }
+		    $this->view->assign('categorys',$pri->category());
+	    }
+
+	    // 控制器初始化
+	    $this->_initialize();
+
+	    // 前置操作方法
+	    if ($this->beforeActionList) {
+		    foreach ($this->beforeActionList as $method => $options) {
+			    is_numeric($method) ?
+				    $this->beforeAction($options) :
+				    $this->beforeAction($method, $options);
+		    }
+	    }
     }
 
     /**
@@ -85,25 +97,25 @@ class Controller
      */
     protected function beforeAction($method, $options = [])
     {
-        if (isset($options['only'])) {
-            if (is_string($options['only'])) {
-                $options['only'] = explode(',', $options['only']);
-            }
+	    if (isset($options['only'])) {
+		    if (is_string($options['only'])) {
+			    $options['only'] = explode(',', $options['only']);
+		    }
 
-            if (!in_array($this->request->action(), $options['only'])) {
-                return;
-            }
-        } elseif (isset($options['except'])) {
-            if (is_string($options['except'])) {
-                $options['except'] = explode(',', $options['except']);
-            }
+		    if (!in_array($this->request->action(), $options['only'])) {
+			    return;
+		    }
+	    } elseif (isset($options['except'])) {
+		    if (is_string($options['except'])) {
+			    $options['except'] = explode(',', $options['except']);
+		    }
 
-            if (in_array($this->request->action(), $options['except'])) {
-                return;
-            }
-        }
+		    if (in_array($this->request->action(), $options['except'])) {
+			    return;
+		    }
+	    }
 
-        call_user_func([$this, $method]);
+	    call_user_func([$this, $method]);
     }
 
     /**
@@ -117,7 +129,7 @@ class Controller
      */
     protected function fetch($template = '', $vars = [], $replace = [], $config = [])
     {
-        return $this->view->fetch($template, $vars, $replace, $config);
+	    return $this->view->fetch($template, $vars, $replace, $config);
     }
 
     /**
@@ -131,7 +143,7 @@ class Controller
      */
     protected function display($content = '', $vars = [], $replace = [], $config = [])
     {
-        return $this->view->display($content, $vars, $replace, $config);
+	    return $this->view->display($content, $vars, $replace, $config);
     }
 
     /**
@@ -143,9 +155,9 @@ class Controller
      */
     protected function assign($name, $value = '')
     {
-        $this->view->assign($name, $value);
+	    $this->view->assign($name, $value);
 
-        return $this;
+	    return $this;
     }
 
     /**
@@ -156,9 +168,9 @@ class Controller
      */
     protected function engine($engine)
     {
-        $this->view->engine($engine);
+	    $this->view->engine($engine);
 
-        return $this;
+	    return $this;
     }
 
     /**
@@ -169,9 +181,9 @@ class Controller
      */
     protected function validateFailException($fail = true)
     {
-        $this->failException = $fail;
+	    $this->failException = $fail;
 
-        return $this;
+	    return $this;
     }
 
     /**
@@ -187,43 +199,43 @@ class Controller
      */
     protected function validate($data, $validate, $message = [], $batch = false, $callback = null)
     {
-        if (is_array($validate)) {
-            $v = Loader::validate();
-            $v->rule($validate);
-        } else {
-            // 支持场景
-            if (strpos($validate, '.')) {
-                list($validate, $scene) = explode('.', $validate);
-            }
+	    if (is_array($validate)) {
+		    $v = Loader::validate();
+		    $v->rule($validate);
+	    } else {
+		    // 支持场景
+		    if (strpos($validate, '.')) {
+			    list($validate, $scene) = explode('.', $validate);
+		    }
 
-            $v = Loader::validate($validate);
+		    $v = Loader::validate($validate);
 
-            !empty($scene) && $v->scene($scene);
-        }
+		    !empty($scene) && $v->scene($scene);
+	    }
 
-        // 批量验证
-        if ($batch || $this->batchValidate) {
-            $v->batch(true);
-        }
+	    // 批量验证
+	    if ($batch || $this->batchValidate) {
+		    $v->batch(true);
+	    }
 
-        // 设置错误信息
-        if (is_array($message)) {
-            $v->message($message);
-        }
+	    // 设置错误信息
+	    if (is_array($message)) {
+		    $v->message($message);
+	    }
 
-        // 使用回调验证
-        if ($callback && is_callable($callback)) {
-            call_user_func_array($callback, [$v, &$data]);
-        }
+	    // 使用回调验证
+	    if ($callback && is_callable($callback)) {
+		    call_user_func_array($callback, [$v, &$data]);
+	    }
 
-        if (!$v->check($data)) {
-            if ($this->failException) {
-                throw new ValidateException($v->getError());
-            }
+	    if (!$v->check($data)) {
+		    if ($this->failException) {
+			    throw new ValidateException($v->getError());
+		    }
 
-            return $v->getError();
-        }
+		    return $v->getError();
+	    }
 
-        return true;
+	    return true;
     }
 }

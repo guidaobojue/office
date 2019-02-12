@@ -32,13 +32,12 @@ class user extends Model
 			$rsPwd = $rs['pwd'];
 			if(md5($pwd) == $rsPwd){
 				$data = $rs->data;
-				unset($data->pwd);
 
 				if(empty($data['nickname']))
 					$data['nickname'] = $data['uname'];
+				unset($data['pwd']);
 
-				$_SESSION['user'] = $data;
-				return true;
+				return $data;
 			}
 			else{
 				return false;
