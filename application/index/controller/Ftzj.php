@@ -3,6 +3,7 @@ namespace app\index\controller;
 use \think\view;
 use \think\Request;
 use \think\Model;
+use \think\config;
 
 class Ftzj extends \think\Controller
 {
@@ -30,6 +31,8 @@ class Ftzj extends \think\Controller
 		$coms = $temp;
 
 		foreach($jobs as $k => $v){
+			if(empty($v['money']))
+				$v['money'] = '面议';
 			if(isset($coms[$v['zj_company_id']]))
 				$coms[$v['zj_company_id']]['jobs'][] = $v;
 		}
@@ -45,6 +48,111 @@ class Ftzj extends \think\Controller
 	 * @desc 定时抓取数据
 	 */
 	public function timing(){
+		$time = time() - 3600 * 24;
+		$data = file_get_contents("https://api.ftrbj.com/api/Rec/?ts=$time");
+		#$data = Config::get('data');
+		$data = json_decode($data,true);
+
+
+
+		$temp = [];
+		$categorys = [];
+		foreach($data as $k => $v){
+			if(!in_array($v['Category'],$categorys) && !empty($v['Category'])){
+				$categorys[] = $v['Category'];
+			}
+		}
+
+		$jobCtModel = model("jobcategory");
+		$jobCts = $jobCtModel->getAll();
+
+		$jobCtNames = [];
+		foreach($jobCts as $k => $v){
+			$jobCtNames[] = $v;
+		}
+		
+
+		$insertData = [];
+		foreach($categorys as $k => $v){
+			if(!in_array($v,$jobCtNames)){
+				$insertData[] = $v;
+			}
+		}
+
+		if(!empty($insertData)){
+			$jobCtModel->adds($insertData);
+		}
+
+
+		$jobCts = $jobCtModel->getAll();
+
+		$jobCtsFlip= array_flip($jobCts);
+
+		foreach($data as $k => $v){
+			if(!in_array($v['Category'],$categorys) && !empty($v['Category'])){
+				$categorys[] = $v['Category'];
+			}
+			if(!isset($temp[$v['EPName']])){
+				$temp[$v['EPName']]= [
+					'company_id' => isset($v['USCCode']) ? $v['USCCode'] : "",
+					"company_name"=>$v['EPName'],
+					"release_date"=> time(),
+					"due_date"=> time() + 3600 * 24 * 365,
+					"address"=>$v["WDName"],
+					"user_name"=> $v['Contact'],
+					"user_tel"=> $v['ContactTel'],
+					"status"=> 1,
+					"comments"=>"",
+					"is_show"=>1,
+					"origin"=> 0,
+				];
+			}
+		}
+
+
+
+
+		$comModel = model("company");
+		$comNames = $comModel->getAllVK();
+
+
+
+
+		$insertData = [];
+		foreach($temp as $k =>$v){
+			if(!isset($comNames[$k])){
+				$insertData[] = $v;
+			}
+
+		}
+		$comModel->saveAll($insertData);
+		$comNames = $comModel->getAllVK();
+		
+		$jobs = [];
+		foreach($data as $k => $v){
+				$jobs[] = [
+					"job_name"=>$v['RecName'],
+					"age"=> isset($v['Age']) ? $v['Age'] : "",
+					"education"=>$v['EduName'],
+					"address"=>$v['WDName'],
+					"comments"=> $v['RecDesc'],
+					"is_show"=> 1,
+					"create_time"=> strtotime($v['PublishTime']),
+					"due_time"=> strtotime($v['ExpTime']),
+					"origin"=> 0,
+					"zj_company_id"=> isset($comNames[$v['EPName']]) ? $comNames[$v['EPName']] : "",
+					"working_life"=>$v['WorkYears'],
+					"money"=>$v['RecMoney'],
+					'nature' => $v['Nature'],
+					'category_id'=> isset($jobCtsFlip[$v['Category']]) ? $jobCtsFlip[$v['Category']] : "",
+				];
+		}
+
+
+
+
+		$jobModel = model("job");
+		$jobModel->saveAll($jobs);
 
 	}
 

@@ -59,4 +59,13 @@ class company extends Model
 		$this->destroy($id);
 		return true;
 	}
+
+	public function getAllVK(){
+		$rs = $this->select();
+		$data = [];
+		foreach($rs as $k => $v){
+			$data[$v->data['company_name']] = $v->data['zj_company_id'];
+		}
+		return $data;
+	}
 }

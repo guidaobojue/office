@@ -20,36 +20,62 @@
 	    span{
 		    margin:30px;
 	    }
+	    .t1{
+		    padding-top:20px;
+	    }
+	    td{padding : 0px 20px}
         </style>
     </head>
 
     <body>
-        <marquee direction="up">
-	<table>
-		<tr>
-		<td>职位</td>
-		<td>学历</td>
-		<td>年龄</td>
-		<td>地址</td>
-		</tr>
-	{foreach name="list" item="v"}
-	<tr>
-		<td>
-		{$v.job_name}
-		</td>
-		<td>
-		{$v.education}
-		</td>
-		<td>
-		{$v.age} 
-		</td>
-		<td>
-		{$v.address}
-		</td>
-	</tr>
-	{/foreach}
-	</table>
-	</marquee>
+	    <marquee direction="up">
+	    {foreach name="list" item="v"}
+	    <table class="t1">
+		    <tr>
+			    <td> 法人码</td>
+			    <td> {$v['company_id']}</td>
+			    <td></td>
+			    <td></td>
+		    </tr>
+		    <tr>
+			    <td> 单位名称</td>
+			    <td> {$v['company_name']}</td>
+		    </tr>
+	    </table>
+	    <table>
+		    <tr>
+			    <td>职位</td>
+			    <td>年龄</td>
+			    <td>薪水</td>
+			    <td>工作地址</td>
+		    </tr>
+		    {foreach name="$v['jobs']" item="iv"}
+		    <tr>
+			    <td>
+				    {$iv.job_name}
+			    </td>
+			    <td>
+				    {$iv.age} 
+			    </td>
+			    <td>
+				    {$iv.money}
+			    </td>
+			    <td>
+				    {$iv.address}
+			    </td>
+		    </tr>
+		    {/foreach}
+	    </table>
+	    {/foreach}
+	    </marquee>
+	<script>
+		var time = 1000 * 3600 * 2;
+		setTimeout(function(){
+			window.location.href = window.location.href;
+		},time)
+	</script>
+
     </body>
+
 
 </html>
