@@ -22,6 +22,7 @@ class Common extends \think\Controller
 
 
 
+
 	public function comment(){
 		$obj = model("comment");
 		if(isset($_POST['sub'])){

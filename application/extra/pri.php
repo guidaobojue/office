@@ -139,13 +139,13 @@ class pri{
 					'url' => '',
 					'icon' => 'fa fa-user',
 					'parent' => 0,
-					'childs' => [8,9],
+					'childs' => [9],
 				],
 
 				[
 					'id' => 8,
 					'name' => '评论',
-					'url' => '/index/common/comment',
+					'url' => '/index/comment/comment',
 					'icon' => 'fa fa-th-large',
 					'parent' => 7,
 					'childs' => [],
@@ -153,7 +153,7 @@ class pri{
 				[
 					'id' => 9,
 					'name' => '后台',
-					'url' => '/index/common/commentList',
+					'url' => '/index/comment/commentList',
 					'icon' => 'fa fa-th-large',
 					'parent' => 7,
 					'childs' => [],
@@ -313,13 +313,13 @@ class pri{
 					'url' => '',
 					'icon' => 'fa fa-user',
 					'parent' => 0,
-					'childs' => [8,9],
+					'childs' => [9],
 				],
 
 				[
 					'id' => 8,
 					'name' => '评论',
-					'url' => '/index/common/comment',
+					'url' => '/index/comment/comment',
 					'icon' => 'fa fa-th-large',
 					'parent' => 7,
 					'childs' => [],
@@ -327,7 +327,7 @@ class pri{
 				[
 					'id' => 9,
 					'name' => '后台',
-					'url' => '/index/common/commentList',
+					'url' => '/index/comment/commentList',
 					'icon' => 'fa fa-th-large',
 					'parent' => 7,
 					'childs' => [],
