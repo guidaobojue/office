@@ -60,7 +60,7 @@ class Controller
 	    $request = Request::instance();
 	    $action = $request->action();
 	    $pri = new pri();
-	    if(!in_array($action,['login','timing','comment','details'])){
+	    if(!in_array($action,['login','timing','comment','details','question'])){
 		    if(!$pri->checkSession()){
 			    $this->redirect("/index/index/login");
 		    }

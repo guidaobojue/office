@@ -55,7 +55,7 @@ class Common extends \think\Controller
 		$this->assign("list",$list);
 		$this->assign("page",$page);
 
-		return $this->fetch("front_comment");
+		return $this->fetch("comment_list");
 	}
 
 
@@ -68,28 +68,12 @@ class Common extends \think\Controller
 	}
 
 
-	public function commentList(){
-		$obj = model("comment");
-		$data = [];
-		$list= $obj->list();
-		$page = $list->render();
-		$this->assign("list",$list);
-		$this->assign("page",$page);
-		return $this->fetch("comment_list");
-	}
 
 
 	public function question(){
-		return $this->fetch("comment");
+		return $this->fetch("question");
 	}
 
-	public function auditing(){
-		$id = input("id");
-		$model = model("Comment");
-		$model->read($id);
-		echo json_encode(1);
-
-	}
 
 }
 
