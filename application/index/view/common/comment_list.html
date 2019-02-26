@@ -47,6 +47,9 @@ label {
 	</head>
 
 	<body>
+		<div id="wrapper">
+			<div style="text-align:center"><p class="wrapper-title"><span style="color:white">南院科技</span></p></div>
+		</div>
 		<div id="wrapper" class="index">
 
 			<div id="page-wrapper" style="margin:0px" class="gray-bg dashbard-1">
@@ -60,7 +63,7 @@ label {
 
 						<div class="row">
 							<div class="col-lg-10">
-								<p class="wrapper-title"><i class="fa fa-file-text-o"></i> 问题反馈</p>
+								<p class="wrapper-title"><i class="fa fa-file-text-o"></i>网络故障问题反馈</p>
 							</div>
 						</div>
 
@@ -77,17 +80,18 @@ label {
 									<table class="table table-bordered table-hover" style="float:left" >						
 										<tr>
 											<th>编号</th>
-											<th>科室</th>
-											<th>联系人</th>
+											<th width="40%">问题描述</th>
+											<th>填报科室</th>
+											<th>填报联系人</th>
 											<th>联系电话</th>
-											<th>创建时间</th>
+											<th>上报时间</th>
 											<th>状态</th>
-											<th>操作</th>
 										</tr>
 										{if condition="!empty($list)" }
 										{foreach name="list" item="k"}
 										<tr>
 											<td>{$k.comment_id}</td>
+											<td><div style="max-width:500px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">{$k.content}       <a target="_blank" href="/index/Common/details/id/{$k.comment_id}">[详情]</a></div></td>
 											<td>{$k.department}</td>
 											<td>{$k.user_name}</td>
 											<td>{$k.user_tel}</td>
@@ -102,12 +106,10 @@ label {
 											
 											</td>
 
-											<td>
-												<a href="/index/Common/details/id/{$k.comment_id}" target="_blank">详情</a>  
-											</td>
-										</tr>
-										{/foreach}
+											<td></td>
 
+										</tr>
+										{/foreach} 
 
 										{/if}
 
@@ -134,11 +136,35 @@ label {
 			<div class="form-group col-sm-7">
 
 				<div class=" col-sm-offset-9  recharge-btn">
-					<button class="btn btn-primary " type="button" onclick="javascript:jump()" name="sub" value="1">问题反馈</button>
+					<button class="btn btn-primary " type="button" onclick="javascript:jump()" name="sub" value="1">填报问题</button>
 				</div>
 			</div>
 			<div class="form-group" > </div>
 		</div>
+
+
+		<div>
+			<div class="form-group col-sm-7">
+
+				<div class=" col-sm-9  recharge-btn">
+					<span>*请按照实际故障情况，进行填写，如：电话故障，计算机故障，网络故障，大厅设备故障等</span>
+				</div>
+				<div class=" col-sm-9  recharge-btn">
+					<span>*如有问题请联系：马腾飞、杨文袆&nbsp&nbsp&nbsp&nbsp电话：83326618</span>
+				</div>
+			</div>
+			<div class="form-group" > </div>
+		</div>
+
+
+
+
+
+
+
+
+
+
 				</div>
 				<!-- /.row -->
 					</section>

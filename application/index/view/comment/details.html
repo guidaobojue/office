@@ -130,21 +130,14 @@ label {
 					</section>
 					<!-- /.content -->
 			</div>
-
-
 {include file="./static/public_template/footer.html"/}
-
 			<script>
 				function openImg(){
-					window.open("/public/uploads/{$info.thumb}"); 
+					<?php $thumb = str_replace("\\","/",$info['thumb']);?>
+					window.open("/public/uploads/{$thumb}"); 
 
 				}
 			</script>
-
-
-
-
-
 
 
 			<script src="/public/static/vip/js/jquery-2.1.1.js"></script>
@@ -155,30 +148,14 @@ label {
 			<script src="/public/static/vip/js/cropbox.js"></script>
 			<script src="/public/static/vip/js/plugins/sweetalert/sweetalert.min.js"></script>
 
-			<!-- Custom and plugin javascript -->
-
-			<!-- iCheck -->
-
-			<!-- Mainly scripts -->
-
-
 			<script src="/public/static/vip/js/jasny-bootstrap.min.js"></script>
 			<script src="/public/static/vip/js/full_height.js"></script>
-
-
-
-			<!-- Peity -->
-
 
 			<!-- Custom and plugin javascript -->
 			<script src="/public/static/vip/js/plugins/slimscroll/jquery.slimscroll.js"></script>
 			<script src="/public/static/vip/js/inspinia.js"></script>
 			<script src="/public/static/vip/js/echarts.min.js"></script>
 			<script src="/public/static/vip/js/plugins/pace/pace.min.js"></script>
-
-
-
-			<!-- /.content-wrapper -->
 			<!-- 制作图表js -->
 
 			<script src="/public/static/Template/plugins/datepicker/bootstrap-datepicker.js"></script>

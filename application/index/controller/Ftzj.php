@@ -48,9 +48,9 @@ class Ftzj extends \think\Controller
 	 * @desc 定时抓取数据
 	 */
 	public function timing(){
-		$time = time() - 3600 * 24;
+		$time = time() - 3600 * 24 * 1000;
 		$data = file_get_contents("https://api.ftrbj.com/api/Rec/?ts=$time");
-		#$data = Config::get('data');
+	#	$data = Config::get('data');
 		$data = json_decode($data,true);
 
 

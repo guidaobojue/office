@@ -136,7 +136,8 @@ label {
 
 			<script>
 				function openImg(){
-					window.open("/public/uploads/{$info.thumb}"); 
+					<?php $thumb = str_replace("\\","/",$info['thumb']);?>
+					window.open("/public/uploads/{$thumb}"); 
 
 				}
 			</script>
