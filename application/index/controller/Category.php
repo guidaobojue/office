@@ -20,11 +20,16 @@ class Category extends \think\Controller
 			$this->redirect("/index/index/login");
 			return true;
 		}
+
+
+		$model = model("category");
+		$list = $model->getAll();
 		return $this->fetch("index");
 	}
 
 
 	public function addCategory(){
+
 		return $this->fetch("addCategory");
 	}
 

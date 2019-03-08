@@ -19,10 +19,26 @@ class Index extends \think\Controller
 
 	public function index()
 	{
+
+		 include('../extend/phpqrcode/qrlib.php');
+		 // outputs image directly into browser, as PNG stream
+		 QRcode::png('PHP QR Code :)');
+
+
+
+
 		if(!isset($_SESSION['user'])){
 			$this->redirect("/index/index/login");
 			return true;
 		}
+
+
+
+
+
+
+
+
 		return $this->fetch("index");
 	}
 

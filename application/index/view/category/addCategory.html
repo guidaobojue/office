@@ -37,9 +37,6 @@
 								<label class="col-sm-3 control-label">群组:</label>
 								<div class="col-sm-6">
 									<select name="group_id">
-										{foreach name="groups" item="k"}
-										<option {if condition="isset($group_id) and $group_id == $k.group_id"} selected="selected"{/if} value="{$k.group_id}">{$k.group_name}</option>
-										{/foreach}
 									</select>
 
 								</div>
@@ -49,9 +46,6 @@
 								<div class="col-sm-6">
 
 									<select name="level_id">
-										{foreach name="levels" item="k"}
-										<option {if condition="isset($level_id) and $level_id == $k.level_id"} selected="selected"{/if} value="{$k.level_id}">{$k.level_name}</option>
-										{/foreach}
 									</select>
 								
 								</div>

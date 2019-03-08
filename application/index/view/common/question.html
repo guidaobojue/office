@@ -112,10 +112,9 @@ label {
 				<!-- /.row -->
 					</section>
 					<!-- /.content -->
+					{include file="./static/public_template/footer.html"/}
 			</div>
-
-{include file="./static/public_template/footer.html"/}
-
+		</div>
 
 
 
@@ -123,72 +122,4 @@ label {
 
 
 
-			<script src="/public/static/vip/js/jquery-2.1.1.js"></script>
-			<script src="/public/static/vip/js/bootstrap.min.js"></script>
-			<script src="/public/static/vip/js/plugins/metisMenu/jquery.metisMenu.js"></script>
 
-			<script src="/public/static/vip/js/plugins/pace/pace.min.js"></script>
-			<script src="/public/static/vip/js/cropbox.js"></script>
-			<script src="/public/static/vip/js/plugins/sweetalert/sweetalert.min.js"></script>
-
-			<!-- Custom and plugin javascript -->
-
-			<!-- iCheck -->
-
-			<!-- Mainly scripts -->
-
-
-			<script src="/public/static/vip/js/jasny-bootstrap.min.js"></script>
-			<script src="/public/static/vip/js/full_height.js"></script>
-
-
-
-			<!-- Peity -->
-
-
-			<!-- Custom and plugin javascript -->
-			<script src="/public/static/vip/js/plugins/slimscroll/jquery.slimscroll.js"></script>
-			<script src="/public/static/vip/js/inspinia.js"></script>
-			<script src="/public/static/vip/js/echarts.min.js"></script>
-			<script src="/public/static/vip/js/plugins/pace/pace.min.js"></script>
-
-
-
-			<!-- /.content-wrapper -->
-			<!-- 制作图表js -->
-			<script src="/public//js/Chart.js"></script>
-
-			<script src="/public/static/Template/plugins/datepicker/bootstrap-datepicker.js"></script>
-
-	<script>
-		{if condition="isset($errors)"}
-		{foreach name="errors" key="k" item="error"}
-			$(".tr_{$k} label").css({"color":"red"});
-		{/foreach}
-		{/if}
-	</script>
-
-{if condition="isset($ok)"}
-	<script>
-		alert("成功");
-	</script>
-{/if}
-			<script type="text/javascript">
-
-				function delCom(company_id){
-					alert(company_id);
-				}
-
-
-
-$('#start_time').datepicker({
-	autoclose: true,
-	format: "yyyy-mm-dd",
-});
-
-$('#end_time').datepicker({
-	autoclose: true,
-	format: "yyyy-mm-dd",
-});
-
-			</script>
