@@ -5,6 +5,7 @@ use \think\Request;
 use \think\Model;
 use \app\index\model\company;
 use \app\index\model\job;
+use app\extend\qrcode\QRcode;
 
 class Common extends \think\Controller
 {
@@ -21,6 +22,27 @@ class Common extends \think\Controller
 	}
 
 
+
+	public function qrcode(){
+		include('../extend/phpqrcode/qrlib.php');
+		QRcode::png('http://www.baidu.com/)');
+	}
+
+	public function qrupload(){
+		if(isset($_POST['sub'])){
+			$file = request()->file('image');
+			$data = [];
+			$data['id'] = $_POST['id'];
+			if($file){
+				$info = $file->move(ROOT_PATH . 'public' . DS . 'uploads');
+				if($info){
+					$data['thumb'] = $info->getSaveName();
+					$this->assign("status",'1');
+				}
+			}
+		}
+		return $this->fetch("qrupload");
+	}
 
 
 	public function comment(){

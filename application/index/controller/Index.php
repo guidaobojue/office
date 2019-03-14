@@ -20,9 +20,7 @@ class Index extends \think\Controller
 	public function index()
 	{
 
-		 include('../extend/phpqrcode/qrlib.php');
 		 // outputs image directly into browser, as PNG stream
-		 QRcode::png('PHP QR Code :)');
 
 
 
@@ -41,6 +39,9 @@ class Index extends \think\Controller
 
 		return $this->fetch("index");
 	}
+
+
+
 
 	public function login(){
 		if(input("?post.uname")){
