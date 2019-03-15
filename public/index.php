@@ -24,6 +24,9 @@ define('VIP_AWE',"/public/static/vip/font-awesome/css/");
 define('DP_CSS',"/public/static/Template/");
 define("DL","/");
 define("PO",".");
+
+define("WEB_URL","10.166.146.6:8080");
+
 define("WEB_DIR",dirname(__DIR__));
 session_start();
 require __DIR__ . '/../thinkphp/start.php';

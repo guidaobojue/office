@@ -223,7 +223,7 @@ class pri{
 				[
 					'id' => 17,
 					'name' => '权限设置',
-					'url' => '/index/pri/index',
+					'url' => '/index/pr/index',
 					'icon' => 'fa fa-th-large',
 					'parent' => 13,
 					'childs' => [],

@@ -75,7 +75,8 @@ label {
 									<div class="col-sm-6 tr_user_img">
 										<label class="col-sm-3 control-label">手机上传图片</label>
 										<div class="col-sm-6">
-											<img src="/index/common/qrcode"/>
+											<img src="/index/common/qrcode?qrcode=<?=$qrcode;?>"/>
+											<input type="hidden" name="qrcode" value="<?=$qrcode;?>"/>
 										</div>
 									</div>
 								</div>

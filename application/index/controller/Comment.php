@@ -27,6 +27,9 @@ class Comment extends \think\Controller
 		$id = input("id");
 		$model = model("Comment");
 		$rs = $model->getOne($id);
+		if(empty($rs['thumb'])){
+			$rs['thumb'] = $rs['qr_thumb'];
+		}
 		$this->assign("info",$rs);
 		return $this->fetch("details");
 	}

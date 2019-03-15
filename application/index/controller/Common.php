@@ -24,23 +24,35 @@ class Common extends \think\Controller
 
 
 	public function qrcode(){
+		$qrcode = $_GET['qrcode'];
 		include('../extend/phpqrcode/qrlib.php');
-		QRcode::png('http://www.baidu.com/)');
+		QRcode::png("http://".WEB_URL.DL."index/common/qrupload?qrcode=".$qrcode);
 	}
 
 	public function qrupload(){
+		return $this->fetch("success");
 		if(isset($_POST['sub'])){
 			$file = request()->file('image');
 			$data = [];
-			$data['id'] = $_POST['id'];
+			$data['qrcode'] = $_POST['qrcode'];
 			if($file){
 				$info = $file->move(ROOT_PATH . 'public' . DS . 'uploads');
 				if($info){
 					$data['thumb'] = $info->getSaveName();
 					$this->assign("status",'1');
 				}
+				$data['time'] = time();
+				$model = model("upload");
+				$model->save($data);
+
 			}
+			return $this->fetch("success");
 		}
+		if(empty($_GET['qrcode'])){
+			$this->redirect("/index/common/question");
+		}
+		$qrcode = addslashes($_GET['qrcode']);
+		$this->assign("qrcode",$qrcode);
 		return $this->fetch("qrupload");
 	}
 
@@ -56,6 +68,7 @@ class Common extends \think\Controller
 			$data['department'] = $post['department'];
 			$data['status'] = 0;
 			$data['create_time'] = time();
+			$data['qrcode'] = $post['qrcode'];
 			$data['thumb'] ="" ;
 
 
@@ -85,6 +98,9 @@ class Common extends \think\Controller
 		$id = input("id");
 		$model = model("Comment");
 		$rs = $model->getOne($id);
+		if(empty($rs['thumb'])){
+			$rs['thumb'] = $rs['qr_thumb'];
+		}
 		$this->assign("info",$rs);
 		return $this->fetch("details");
 	}
@@ -93,6 +109,9 @@ class Common extends \think\Controller
 
 
 	public function question(){
+		$qrcode = time() . rand(1,1000).rand(1,1000);
+		$this->assign("qrcode",$qrcode);
+		
 		return $this->fetch("question");
 	}
 
