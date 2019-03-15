@@ -135,7 +135,7 @@ class pri{
 				],
 				[
 					'id' => 7,
-					'name' => '评论',
+					'name' => '维护',
 					'url' => '',
 					'icon' => 'fa fa-user',
 					'parent' => 0,
@@ -144,7 +144,7 @@ class pri{
 
 				[
 					'id' => 8,
-					'name' => '评论',
+					'name' => '维护',
 					'url' => '/index/comment/comment',
 					'icon' => 'fa fa-th-large',
 					'parent' => 7,
@@ -309,7 +309,7 @@ class pri{
 				],
 				[
 					'id' => 7,
-					'name' => '评论',
+					'name' => '维护',
 					'url' => '',
 					'icon' => 'fa fa-user',
 					'parent' => 0,
@@ -318,7 +318,7 @@ class pri{
 
 				[
 					'id' => 8,
-					'name' => '评论',
+					'name' => '维护',
 					'url' => '/index/comment/comment',
 					'icon' => 'fa fa-th-large',
 					'parent' => 7,
