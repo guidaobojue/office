@@ -1,0 +1,62 @@
+<include file="Public/public_template/dxheader.html"/>
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+
+    <!-- Main content -->
+    <section class="content">
+		<div >
+				<form method="post" action="">
+					<h4>修改调休</h4>
+					<div class="col-sm-2">
+					<input type="hidden" name="id" value="{$id}" />
+					姓名：<select name="username" class="form-control" id="">
+								<foreach name="users" item="user">
+
+								<if condition=" $user.u_name eq  $name">
+								<option value="{$user.u_name}" selected>{$user.u_name}
+								<else /> 
+								<option value="{$user.u_name}">{$user.u_name}
+								</if>
+								</foreach>
+						  </select>
+					</div>
+					<div class="col-sm-2">
+					时间：<input type="text" class="form-control" id="start_time" name="time" value="{$times}" placeholder="时间" ><br>
+					</div>
+					
+					<div class="col-sm-1">
+							<button class="submit btn btn-info pull-right" type="button" action="{:U('Index/doUpdate')}" style="margin-top:20px">修改</button>
+					</div>
+				</form>
+			</div>
+			<div class="box-footer" style="margin-top:100px";>
+				<a href="javascript:" onclick="window.history.go(-1)" class="btn btn-default">返回</a>
+			</div>
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+<include file="Public/public_template/footer.html"/>
+<!-- 制作图表js -->
+<script src="__PUBLIC__/js/Chart.js"></script>
+
+<script type="text/javascript">
+			
+	//Date picker
+	$('#start_time').datepicker({
+	  autoclose: true,
+	  format: "yyyy-mm-dd",
+	});
+	$('#end_time').datepicker({
+	  autoclose: true,
+	  format: "yyyy-mm-dd",
+	});
+</script>
+<script type="text/javascript">
+
+	$('.submit').click(function(){
+		$(this).parents('form').attr('action', $(this).attr('action'));
+		$(this).parents('form').submit();
+	})
+</script>

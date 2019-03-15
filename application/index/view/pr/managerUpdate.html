@@ -1,0 +1,42 @@
+<include file="Public/public_template/dxheader.html"/>
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+
+    <!-- Main content -->
+    <section class="content">
+		<div class="xl-add">
+				<form method="post" action="">
+					<h3><b>修改</b></h3>
+
+					<input type="hidden" name="id" value="{$id}" />
+					<div class="xl-addContent">
+					<div class="xl-addName">
+					<span>密码：</span><input type="password" class="form-control" id="" name="pwd"  placeholder="密码" ><br>
+					</div>
+					<div class="xl-addName" style="border: none">
+					<span>确认密码：</span><input type="password" class="form-control" id="" name="qpwd"  placeholder="确认密码" ><br>
+					</div>
+					<div class="xl-change">
+						<button class="submit btn btn-warning pull-right btn-normal" type="button" action="{:U('Index/doManagerUpdate')}">修改</button>
+						<!--<div class="box-footer">-->
+							<a href="javascript:" onclick="window.history.go(-1)" class="btn btn-default btn-normal">返回</a>
+						<!--</div>-->
+					</div>
+					</div>
+				</form>
+			</div>
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+<include file="Public/public_template/footer.html"/>
+<!-- 制作图表js -->
+<script src="__PUBLIC__/js/Chart.js"></script>
+<script type="text/javascript">
+	$('.submit').click(function(){
+		$(this).parents('form').attr('action', $(this).attr('action'));
+		$(this).parents('form').submit();
+	})
+</script>

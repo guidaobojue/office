@@ -1,0 +1,48 @@
+﻿{include file="./static/public_template/dxheader.html"/}
+<div class="row wrapper white-bg">
+	<div class="col-lg-10">
+		<p class="wrapper-title"><i class="fa fa-th-large"></i> 欢迎进入__TITLE__</p>
+	</div>
+	<div class="col-lg-2">
+
+	</div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+	<div class="row">
+	</div>
+	<div class="row">
+	</div> 
+</div>
+
+{include file="./static/public_template/footer.html"/}
+</div>
+
+<script>
+$(function(){
+	// nestable-button
+	$("#nestable>.dd-list li").click(function(){
+		if($(this).hasClass("active")){
+			$(this).removeClass("active");
+		}else{
+			$(this).addClass("active");
+			$(this).siblings("li").removeClass("active");
+			var button = $(this).find(".nestable-button");
+
+		};
+		$(".nestable-button").attr('data-action',"expand");
+		if(button.attr('data-action')=="expand"){
+			button.attr('data-action',"collapse");
+		}else{
+			button.attr('data-action',"expand");
+		};
+
+	});
+});
+</script>
+
+
+
+<script src="<?=VIP_JS;?>echarts.min.js"></script>
+<script> $(".nav_list_1").addClass("active"); </script>
+</body>
+</html>
