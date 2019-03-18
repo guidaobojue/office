@@ -49,6 +49,7 @@
 			    <td>薪水</td>
 			    <td>工作地址</td>
 		    </tr>
+		    {if condition="isset($v['jobs'])"}
 		    {foreach name="$v['jobs']" item="iv"}
 		    <tr>
 			    <td>
@@ -65,6 +66,7 @@
 			    </td>
 		    </tr>
 		    {/foreach}
+		    {/if}
 	    </table>
 	    {/foreach}
 	    </marquee>

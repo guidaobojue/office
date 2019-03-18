@@ -19,23 +19,11 @@ class Index extends \think\Controller
 
 	public function index()
 	{
-
-		 // outputs image directly into browser, as PNG stream
-
-
-
-
+		// outputs image directly into browser, as PNG stream
 		if(!isset($_SESSION['user'])){
 			$this->redirect("/index/index/login");
 			return true;
 		}
-
-
-
-
-
-
-
 
 		return $this->fetch("index");
 	}

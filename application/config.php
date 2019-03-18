@@ -242,7 +242,7 @@ return [
     'view_replace_str'  =>  [
 	    '__PUBLIC__'=>'/public/',
 	    '__ROOT__' => '/',
-	    '__TITLE__' => '南院科技',
+	    '__TITLE__' => '南院科技-公服中心工具平台',
     ],
 
     //root组

@@ -37,8 +37,6 @@ class Ftzj extends \think\Controller
 				$coms[$v['zj_company_id']]['jobs'][] = $v;
 		}
 
-
-
 		$this->assign("list",$coms);
 		return $this->fetch("index");
 	}
