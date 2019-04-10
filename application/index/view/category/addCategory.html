@@ -16,38 +16,54 @@
 					<h5>增加用户</h5>
 				</div>
 				<div class="ibox-content">
-					<form method="POST" class="form-horizontal" name="form1" action="/index/manager/register">
+					<form method="POST" class="form-horizontal" name="form1" action="/index/category/addCategory">
 						<div class="form-group" > 
 							<div class="col-sm-6 tr_department">
-								<label class="col-sm-3 control-label">登录名:</label>
+								<label class="col-sm-3 control-label">菜单名:</label>
 								<div class="col-sm-6">
-									<input type="text" class="form-control"  name="username" value="">
+									<input type="text" class="form-control"  name="category_name" value="">
+									<input type="hidden" class="form-control"  name="pid" value="<?=$pid;?>">
 								</div>
 							</div>
+							<!--
 							<div class="col-sm-6 tr_area">
-								<label class="col-sm-3 control-label">密码:</label>
+								<label class="col-sm-3 control-label">父级:</label>
 								<div class="col-sm-6">
-									<input class="form-control"  name="passwd" type="password" value="123456">
+									<select name="parent_id">
+										<?php if(isset($list)):?>
+										<?php foreach($list as $k => $v):?>
+										<option value="<?=$v['category_id'];?>">
+										<?=$v['category_name'];?>
+										</option>
+										<?php endforeach;?>
+										<?php endif;?>
+										
+									</select>
 								</div>
 							</div>
+							-->
 						</div>
 						<div class="hr-line-dashed"></div>
 						<div class="form-group" > 
 							<div class="col-sm-6 tr_area">
-								<label class="col-sm-3 control-label">群组:</label>
+								<label class="col-sm-3 control-label">路径:</label>
 								<div class="col-sm-6">
-									<select name="group_id">
-									</select>
-
+									<input type="text" class="form-control"  name="url" value="">
 								</div>
 							</div>
 							<div class="col-sm-6 tr_service">
-								<label class="col-sm-3 control-label">级别</label>
+								<label class="col-sm-3 control-label">图标:(暂不开通)</label>
 								<div class="col-sm-6">
+									<ul>
+										<li>
+										<?php if(isset($icons)):?>
+										<?php foreach($icons as $k => $v):?>
+										<i class="fa {$v}"></i>
 
-									<select name="level_id">
-									</select>
-								
+										<?php endforeach;?>
+										<?php endif;?>
+										</li>
+									</ul>
 								</div>
 							</div>
 						</div>
@@ -93,8 +109,8 @@
 	{if condition="isset($error)"}
 	<script>
 		alert("{$error}");
-	<script>
-{/if}
+<script>
+	{/if}
 
 function  changeSelect(index){
 	//选择对象
@@ -107,10 +123,10 @@ function  changeSelect(index){
 
 	//循环将数组中的数据写入<option>标记中
 	for (var j = 0; j<arr_city[index].length;j++) {
-	city.options[j].text = arr_city[index][j];
-	city.options[j].value = arr_city[index][j];
+		city.options[j].text = arr_city[index][j];
+		city.options[j].value = arr_city[index][j];
 	}
-	}
+}
 
 </script>
 

@@ -25,6 +25,9 @@ define('DP_CSS',"/public/static/Template/");
 define("DL","/");
 define("PO",".");
 
+define('CACHE_FILE',__DIR__."/../extend/caches/cache.php");
+
+
 define("WEB_URL","10.166.146.6:8080");
 
 define("WEB_DIR",dirname(__DIR__));

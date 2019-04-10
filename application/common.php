@@ -217,3 +217,23 @@ function sc($cid){
 
 }
 
+function cache_set($name,$data){
+	$rs = file_get_contents(CACHE_FILE);
+	$rs = json_decode($rs,true);
+	if(empty($rs))
+		$rs = [];
+	$rs[$name] = $data;
+	return file_put_contents(CACHE_FILE,json_encode($rs));
+
+
+
+}
+function cache_get($name){
+	$rs = file_get_contents(CACHE_FILE);
+	$rs = json_decode($rs,true);
+	if(isset($rs[$name]))
+		return $rs[$name];
+	else
+		false;
+}
+

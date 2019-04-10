@@ -60,12 +60,15 @@ class Controller
 	    $request = Request::instance();
 	    $action = $request->action();
 	    $pri = new pri();
-	    if(!in_array($action,['login','timing','comment','details','question','qrcode','qrupload','barrage'])){
-		    if(!$pri->checkSession()){
-			    $this->redirect("/index/index/login");
-		    }
-		    $this->view->assign('categorys',$pri->category());
+	    if(!$pri->checkSession()){
+	#	    $this->redirect("/index/index/login");
 	    }
+
+	    if(!$pri->checkPri()){
+		    $this->redirect("/index/index/noPri");
+	    }
+
+	    $this->view->assign('categorys',$pri->category());
 
 	    // 控制器初始化
 	    $this->_initialize();

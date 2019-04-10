@@ -23,6 +23,14 @@ class pri{
 			return true;
 	}
 
+
+	public function checkPri(){
+		return true;
+		if(!in_array($action,['login','timing','comment','details','question','qrcode','qrupload','barrage'])){
+		}
+	}
+
+
 	public function category(){
 		if(!isset($_SESSION['user']))
 			return [];

@@ -116,5 +116,7 @@ class Common extends \think\Controller
 	}
 
 
+
+
 }
 

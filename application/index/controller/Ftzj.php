@@ -16,27 +16,8 @@ class Ftzj extends \think\Controller
 	/*
 	 * 大屏显示数据
 	 */
-	public function barrage()
-	{
-		$jobModel = model("job");
-		$companyModel = model("company");
-
-		$jobs = $jobModel->getCAll();
-		$coms = $companyModel->getAll();
-
-		$temp = [];
-		foreach($coms as $k => $v){
-			$temp[$v['zj_company_id']] = $v;
-		}
-		$coms = $temp;
-
-		foreach($jobs as $k => $v){
-			if(empty($v['money']))
-				$v['money'] = '面议';
-			if(isset($coms[$v['zj_company_id']]))
-				$coms[$v['zj_company_id']]['jobs'][] = $v;
-		}
-
+	public function barrage() {
+		$coms = $this->getData();
 		$this->assign("list",$coms);
 		return $this->fetch("index");
 	}
@@ -46,50 +27,43 @@ class Ftzj extends \think\Controller
 	 * @desc 定时抓取数据
 	 */
 	public function timing(){
-		$time = time() - 3600 * 24 * 1000;
-		$data = file_get_contents("https://api.ftrbj.com/api/Rec/?ts=$time");
-	#	$data = Config::get('data');
-		$data = json_decode($data,true);
-
-
-
+		$time = strtotime(date("Y-m-d",time()));
+		$cache_data = cache_get('timing');
 		$temp = [];
-		$categorys = [];
+		if(!$cache_data){
+			//不存在
+			$json = file_get_contents("https://api.ftrbj.com/api/Rec/?ts=$time");
+			$data = json_decode($json,true);
+			$data = $this->filter($data);
+			#$data = $data['data'];
+		}
+		else{
+			$conTime = $cache_data['time'];
+			if($time > $conTime){
+				//不存在
+				$json= file_get_contents("https://api.ftrbj.com/api/Rec/?ts=$time");
+				#$json = Config::get("data");
+				$data = json_decode($json,true);
+				$data = $this->filter($data);
+			}
+			else{
+				$data = $cache_data['data'];
+			}
+		}
+
+
+		$rs = [
+			'time' => $time,
+			'data' => $data,
+		];
+		cache_set('timing',$rs);
+		return $data;
+	}
+
+
+	private function filter($data){
+		$temp = [];
 		foreach($data as $k => $v){
-			if(!in_array($v['Category'],$categorys) && !empty($v['Category'])){
-				$categorys[] = $v['Category'];
-			}
-		}
-
-		$jobCtModel = model("jobcategory");
-		$jobCts = $jobCtModel->getAll();
-
-		$jobCtNames = [];
-		foreach($jobCts as $k => $v){
-			$jobCtNames[] = $v;
-		}
-		
-
-		$insertData = [];
-		foreach($categorys as $k => $v){
-			if(!in_array($v,$jobCtNames)){
-				$insertData[] = $v;
-			}
-		}
-
-		if(!empty($insertData)){
-			$jobCtModel->adds($insertData);
-		}
-
-
-		$jobCts = $jobCtModel->getAll();
-
-		$jobCtsFlip= array_flip($jobCts);
-
-		foreach($data as $k => $v){
-			if(!in_array($v['Category'],$categorys) && !empty($v['Category'])){
-				$categorys[] = $v['Category'];
-			}
 			if(!isset($temp[$v['EPName']])){
 				$temp[$v['EPName']]= [
 					'company_id' => isset($v['USCCode']) ? $v['USCCode'] : "",
@@ -103,55 +77,46 @@ class Ftzj extends \think\Controller
 					"comments"=>"",
 					"is_show"=>1,
 					"origin"=> 0,
+					'jobs' => [
+						["job_name"=>$v['RecName'],
+						"age"=> isset($v['Age']) ? $v['Age'] : "",
+						"education"=>$v['EduName'],
+						"address"=>$v['WDName'],
+						"comments"=> $v['RecDesc'],
+						"is_show"=> 1,
+						"create_time"=> strtotime($v['PublishTime']),
+						"due_time"=> strtotime($v['ExpTime']),
+						"origin"=> 0,
+						"zj_company_id"=> isset($comNames[$v['EPName']]) ? $comNames[$v['EPName']] : "",
+						"working_life"=>$v['WorkYears'],
+						"money"=>$v['RecMoney'],
+						'nature' => $v['Nature'],
+					]
+
+				],
+			];
+			}
+			else{
+				$temp[$v['EPName']]['jobs'][] = [
+					[
+						"job_name"=>$v['RecName'],
+						"age"=> isset($v['Age']) ? $v['Age'] : "",
+						"education"=>$v['EduName'],
+						"address"=>$v['WDName'],
+						"comments"=> $v['RecDesc'],
+						"is_show"=> 1,
+						"create_time"=> strtotime($v['PublishTime']),
+						"due_time"=> strtotime($v['ExpTime']),
+						"origin"=> 0,
+						"zj_company_id"=> isset($comNames[$v['EPName']]) ? $comNames[$v['EPName']] : "",
+						"working_life"=>$v['WorkYears'],
+						"money"=>$v['RecMoney'],
+						'nature' => $v['Nature'],
+					]
 				];
 			}
 		}
-
-
-
-
-		$comModel = model("company");
-		$comNames = $comModel->getAllVK();
-
-
-
-
-		$insertData = [];
-		foreach($temp as $k =>$v){
-			if(!isset($comNames[$k])){
-				$insertData[] = $v;
-			}
-
-		}
-		$comModel->saveAll($insertData);
-		$comNames = $comModel->getAllVK();
-		
-		$jobs = [];
-		foreach($data as $k => $v){
-				$jobs[] = [
-					"job_name"=>$v['RecName'],
-					"age"=> isset($v['Age']) ? $v['Age'] : "",
-					"education"=>$v['EduName'],
-					"address"=>$v['WDName'],
-					"comments"=> $v['RecDesc'],
-					"is_show"=> 1,
-					"create_time"=> strtotime($v['PublishTime']),
-					"due_time"=> strtotime($v['ExpTime']),
-					"origin"=> 0,
-					"zj_company_id"=> isset($comNames[$v['EPName']]) ? $comNames[$v['EPName']] : "",
-					"working_life"=>$v['WorkYears'],
-					"money"=>$v['RecMoney'],
-					'nature' => $v['Nature'],
-					'category_id'=> isset($jobCtsFlip[$v['Category']]) ? $jobCtsFlip[$v['Category']] : "",
-				];
-		}
-
-
-
-
-		$jobModel = model("job");
-		$jobModel->saveAll($jobs);
-
+		return $temp;
 	}
 
 	/*
@@ -393,6 +358,74 @@ class Ftzj extends \think\Controller
 		$rs = writeExcel($data,$title);
 		$this->redirect("/xls/".$rs);
 
+	}
+
+	private function getData(){
+		$jobModel = model("job");
+		$companyModel = model("company");
+		$caches = $this->timing();
+
+		$jobs = $jobModel->getCAll();
+		$coms = $companyModel->getAll();
+
+
+
+
+		$temp = [];
+		foreach($coms as $k => $v){
+			$temp[$v['zj_company_id']] = $v;
+		}
+		$coms = $temp;
+
+		foreach($jobs as $k => $v){
+			$v['create_time'] = date("Y-m-d",$v['create_time']);
+			$v['due_time'] = date("Y-m-d",$v['due_time']);
+			if(empty($v['money']))
+				$v['money'] = '面议';
+			if(isset($coms[$v['zj_company_id']]))
+				$coms[$v['zj_company_id']]['jobs'][] = $v;
+		}
+		$temp = [];
+		foreach($coms as $k => $v){
+			$temp[$v['company_id']] = $v;
+		}
+		$coms = $temp;
+
+		$temp = [];
+		foreach($caches as $k => $v){
+			$temp[$v['company_id']] = $v;
+			if(isset($coms[$v['company_id']])){
+				$jobs = array_merge($v['jobs'],$coms[$v['company_id']]['jobs']);
+				$coms[$v['company_id']]['jobs'] = $jobs;
+			}
+			else{
+				if(!isset($v['jobs']))
+					$v['jobs'] = [];
+				$coms[$v['company_id']] = $v;
+			}
+
+		}
+
+		foreach($coms as $k => $v){
+			if(empty($v['jobs']))
+				unset($coms[$k]);
+		}
+
+
+		return $coms;
+	}
+
+
+
+	public function screen(){
+		$coms = $this->getData();
+
+		$pageSize = 10;
+		$this->assign("first",json_encode(array_slice($coms,0,10)));
+		$this->assign("list",json_encode($coms));
+		$this->assign("pageSize",$pageSize);
+		$this->assign("total",ceil(count($coms) / $pageSize));
+		return $this->fetch("screen");
 	}
 
 
