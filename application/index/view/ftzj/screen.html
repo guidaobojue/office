@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+		<title>企业岗位信息</title>
+
+		<link href="/public/static/vip/css/bootstrap.min.css" rel="stylesheet">
+		<link href="/public/static/vip/font-awesome/css/font-awesome.css" rel="stylesheet">
+		<link href="/public/static/vip/css/animate.css" rel="stylesheet">
+		<link href="/public/static/vip/css/style.css" rel="stylesheet">
+		<!-- Daterange picker -->
+		<link rel="stylesheet" href="/public/static/Template//plugins/datepicker/datepicker3.css"> 
+		<link rel="stylesheet" href="/public/static/Template/plugins/daterangepicker/daterangepicker.css">
+		<!-- Daterange picker -->
+		<link rel="stylesheet" href="/public/static/vip/css/content.css">
+		<link href="/public/static/vip/css/sweetalert/sweetalert.css" rel="stylesheet">
+		<link rel="stylesheet" href="/public/static/vip/css/content.css">
+		<link rel="stylesheet" type="text/css" href="/public/static/layui/css/layui.css"/>
+
+
+
+		<link rel="stylesheet" href="/public/static/vip/css/jasny-bootstrap.min.css">
+		<link rel="stylesheet" href="/public/static/vip/css/bootstrap-social.css">
+
+		<script src="/public/static/js/vue.js"></script>
+		<script src="/public/static/js/jquery.js"></script>
+		<style>
+
+
+
+li{
+	list-style: none
+}
+.page-bar li:first-child>a {
+}
+.page-bar a{
+	border: 1px solid #ddd;
+	text-decoration: none;
+	position: relative;
+	float: left;
+	padding: 6px 12px;
+	margin-left: -1px;
+	line-height: 1.42857143;
+	color: #337ab7;
+	cursor: pointer
+}
+.page-bar a:hover{
+	background-color: #eee;
+}
+.page-bar a.banclick{
+	cursor:not-allowed;
+}
+.page-bar .active a{
+	color: #fff;
+	cursor: default;
+	background-color: #337ab7;
+	border-color: #337ab7;
+}
+.page-bar i{
+	font-style:normal;
+	color: #d44950;
+	margin: 0px 4px;
+	font-size: 12px;
+}
+.scroll{
+	position:fixed;
+	top:50px;
+	right:0px;
+	width:10%;
+}
+.scroll_up{
+	height:200px;
+	cursor:pointer;
+}
+
+.scroll_down{
+	height:200px;
+	cursor:pointer;
+	margin-top:400px;
+}
+.widget h2{
+	font-size: 24px;
+}
+label {
+	margin-left: 5px;
+	font-weight: 300;
+}
+    em{
+	    margin-left: 5px;
+    }
+    .widget ul{
+	    font-size: 18px;
+    }
+    table{
+	    width:100%;
+    }
+    .row{
+	    margin:20px 0px;
+    }
+    table, th, td
+    {
+	    border: 3px solid #5ca2f0;
+	    font-size:1.1em;
+	    text-align:center;
+
+    }
+    tr{
+	    height:50px;
+    }
+    li{
+	    font-size:1.2em;
+	    color:#1c4268;
+	    font-weight:bold;
+	    margin:10px 0;
+    }
+    .job_name {
+	    color:#1c4268;
+	    font-weight:bold;
+	    height:1em;
+    }
+    .job_second_row{
+	    font-family:Simsun;
+	    color:black;
+    }
+    .job_first_name {
+	    color:black;;
+	    font-weight:bold;
+		    font-family
+    }
+    #page-wrapper{
+	    min-height:700px;
+    }
+
+    .fifth{
+	    width:30%;
+    }
+    .once {
+	    width:20%;
+    }
+    .second,.third,.forth,.sixth{
+	    width:13%;
+    }
+    .content2 td,.content2 table{
+	    border:1px solid #032142;
+	    font-size:1.1em;
+	    text-align:center;
+    }
+    .content2 .job_name{
+	    width:30%;
+    }
+
+		</style>
+
+	</head>
+
+	<body>
+		<div id="wrapper">
+			<div style="text-align:center;">
+				<div>
+					<div>
+					<img src="/public/static/img/logo.png"/ style="height:100%;width:100px;float:left">
+					</div>
+					<p class="wrapper-title">
+					<span style="color:white;font-size:1.2em">企业岗位信息</span>
+					</p>
+				</div>
+			</div>
+		</div>
+		<div id="example-1"  class="index">
+
+			<div style="margin:0px;float:left;width:100%;" class="gray-bg dashbard-1">
+
+				<!-- Content Wrapper. Contains page content -->
+				<div class="content-wrapper">
+					<!-- Content Header (Page header) -->
+
+					<!-- Main content -->
+					<section class="content" v-show="!seen">
+
+
+						<div class="row page" v-for="item in items" :key="item.company_id">
+							<div class="col-xs-12">
+								<div>
+									<ul>
+										<li> <span>{{item.company_id}}</span><span style="margin:0 0 0 1em"> {{item.company_name}} </span></li>
+									</ul>
+								</div>
+								<div>
+									<table class="com_table">
+										<tr class="job_name">
+											<td class="once">岗位名称</td>
+											<td class="second">年龄</td>
+											<td class="third">学历</td>
+											<td class="forth">月薪(元)</td>
+											<td class="fifth">工作地点</td>
+											<td class="sixth">操作</td>
+										</tr>
+										<tr v-for="job in item['jobs']" class="job_second_row">
+											<td class="once job_first_name">{{job.job_name}}</td>
+											<td class="second">{{job.age}} 岁</td>
+											<td class="third">{{job.education}}</td>
+											<td class="forth">{{job.money}}</td>
+											<td class="fifth">{{job.address}}</td>
+											<td class="sixth">
+												<button v-on:click="show_div(item.company_id,job.zj_job_id)" type="button" class="btn btn-block btn-primary" style="width: 50%; margin: auto; font-weight: bold;">详情</button>
+											</td>
+										</tr>
+									</table>
+								</div>
+								<!-- /.box -->
+							</div>
+							<!-- /.col -->
+							<div class="col-xs-12">
+								<hr style=" margin:30px 0 0 0  ;border-size:1px;border-top:1px solid #aaa9a9 dashed" />
+							</div>
+						</div>
+						<!-- /.row -->
+						<div class="row page">
+								<div class="page-bar" style="margin-left:38%">
+									<ul style="padding-bottom:80px">
+										<li v-if="page>1"><a v-on:click="pageClick(-1)">上一页</a></li>
+										<li v-if="page==1"><a class="banclick">上一页</a></li>
+
+										<li v-if="page - 1 > 2">
+											<a href="javascript:void();">...  </a>
+										</li>
+										<li v-for="index in total"  
+	      v-if="index >= page -2 &&  page+2 >=index"
+       v-bind:class="{ 'active': page == index}">
+											<a v-on:click="btnClick(index)">{{ index }}</a>
+										</li>
+										<li v-if="total-page > 2">
+											<a href="javascript:void();">...  </a>
+										</li>
+
+
+
+
+
+
+
+										<li v-if="page!=total"><a v-on:click="pageClick(1)">下一页</a></li>
+										<li v-if="page == total"><a class="banclick">下一页</a></li>
+										<li><a>共<i>{{total}}</i>页</a></li>
+									</ul>
+
+								</div>
+						</div> 
+
+					</section>
+					<section class="content2" v-show="seen">
+
+						<div class="row page">
+							<div class="col-lg-10">
+								<div style="float:right;cursor:pointer" v-on:click="returnto()" >
+									<button type="button" class="btn btn-block btn-primary" style="width:200%;margin: auto; font-weight: bold;">返回</button>
+								</div>
+							</div>
+						</div>
+
+						<div class="row page">
+							<div class="col-xs-12" style="align-text:center">
+								<div>
+									<ul>
+										<li style="text-align:center"> {{company.company_id}}</li><li style="text-align:center"> {{company.company_name}} </li>
+									</ul>
+								</div>
+								<div>
+									<table style="width: 50%; margin: 0 auto;">
+										<tr>
+											<td class="job_name">岗位名称</td>
+											<td class="job_second_row">{{job.job_name}}</td>
+										</tr>
+										<tr>
+											<td class="job_name">年龄</td>
+											<td class="job_second_row">{{job.age}}</td>
+										</tr>
+										<tr>
+											<td class="job_name">学历</td>
+											<td class="job_second_row">{{job.education}}</td>
+										</tr>
+										<tr>
+											<td class="job_name">月薪(元)</td>
+											<td class="job_second_row">{{job.money}}</td>
+										</tr>
+										<tr>
+											<td class="job_name">工作地点</td>
+											<td class="job_second_row">{{job.address}}</td>
+										</tr>
+										<tr>
+											<td class="job_name">描述</td>
+											<td class="job_second_row">{{job.comments}}</td>
+										</tr>
+										<tr>
+											<td class="job_name">发布日期</td>
+											<td class="job_second_row">{{job.create_time}}</td>
+										</tr>
+										<tr>
+											<td class="job_name">截止日期</td>
+											<td class="job_second_row">{{job.due_time}}</td>
+										</tr>
+
+									</table>
+								</div>
+							</div>
+						</div>
+					</section>
+
+
+				</div>
+			</div>
+
+		</div>
+
+		<script>
+var example1 = new Vue({
+	el: '#example-1',
+	data: {
+		items: <?=$first;?>,
+		datas: <?=$list;?>,
+		job : [],
+		company : [],
+		seen : false,
+		page : 1,
+		pageSize : <?=$pageSize;?>,
+		total : <?=$total;?>,
+	},
+	methods:{
+		show_div:function(company_id,job_id){
+			var jobs = this.datas[company_id].jobs;
+			this.company = this.datas[company_id];
+			for(var i in jobs){
+				if(jobs[i].zj_job_id == job_id){
+					this.job = jobs[i];
+					this.seen = true;
+				}
+			}
+		},
+		returnto:function(){
+			this.seen = false;
+		},
+		slice:function(data,start,length){
+			var temp = [];
+			var num = 0;
+			for(var i in this.datas){
+				if((start+length) > num && num >=start)
+					temp.push(this.datas[i])
+				num++;
+			}
+			return temp;
+		},
+		btnClick:function(index){
+			this.page = index;
+			this.items = this.slice(this.datas,(this.page-1) * this.pageSize,this.pageSize);
+		},
+		pageClick:function(num){
+			this.page+=num;
+			this.items = this.slice(this.datas,(this.page-1) * this.pageSize,this.pageSize);
+		}
+
+
+	},
+	computed:{
+	}
+
+});
+		</script>
+
+
+	</body>
+</html>
