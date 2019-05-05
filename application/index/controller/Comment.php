@@ -12,7 +12,6 @@ class Comment extends \think\Controller
 
 	public function __construct(){
 		parent::__construct();
-
 	}
 
 

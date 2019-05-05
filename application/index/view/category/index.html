@@ -50,6 +50,14 @@
 	<!-- /.content -->
 </div>
 {include file="./static/public_template/footer.html"/}
+
+
+<?php if(isset($tip)):?>
+	<script>
+		alert("更新成功");
+	</script>
+<?php endif;?>
+
 <!-- /.content-wrapper -->
 <!-- 制作图表js -->
 <script src="__PUBLIC__/js/Chart.js"></script>

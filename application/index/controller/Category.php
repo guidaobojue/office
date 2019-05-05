@@ -16,8 +16,7 @@ class Category extends \think\Controller
 
 	}
 
-	public function index()
-	{
+	public function index() {
 
 		if(!isset($_SESSION['user'])){
 			$this->redirect("/index/index/login");
@@ -73,7 +72,6 @@ class Category extends \think\Controller
 	}
 
 	private function build_node($id){
-		var_dump($id);
 		$obj = $this->nodes[$id];
 		if(!empty($obj['childs'])){
 			$childs = json_decode($obj['childs'],true);
@@ -100,6 +98,7 @@ class Category extends \think\Controller
 				'url' => $url,
 			]);
 			
+			$this->redirect("/index/category");
 
 
 		}
@@ -109,6 +108,7 @@ class Category extends \think\Controller
 			$this->assign("icons",Config::get("icons"));
 			$model = model("category");
 			$list = $model->getAll();
+			$this->assign("category_name",$list[$pid]['category_name']);
 			$this->assign("list",$list);
 			return $this->fetch("addCategory");
 		}
@@ -156,6 +156,25 @@ class Category extends \think\Controller
 
 
 	public function editCategory(){
+		if(isset($_POST['sub'])){
+			$cid = input("post.cid");
+			$category_name = input("post.category_name");
+			$url = input("post.url");
+			$data = [
+				'url' => $url,
+				'category_name' => $category_name,
+			];
+			model("category")->update($data,['category_id'=>$cid]);
+			$this->redirect("/index/category/index");
+
+		}
+		else{
+			$cid = input("get.cid");
+			$model = model("category");
+			$node = $model->getOneByCid($cid);
+			$this->assign("cat",$node);
+			return $this->fetch("editCategory");
+		}
 	}
 
 	public function delCategory(){
@@ -165,6 +184,12 @@ class Category extends \think\Controller
 	}
 
 
+	public function update(){
+		$model = model("category");
+		$rs = $model->getAll();
+		cache_set('list',$rs);
+		return $this->redirect("/index/category/index");
+	}
 
 
 	public function con(){

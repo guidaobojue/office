@@ -31,6 +31,10 @@ class category extends Model
 		return $this->find(['group_id'=>$id]);
 	}
 
+	public function getOneByCid($cid){
+		return $this->find(['category_id'=>$cid])->data;
+	}
+
 
 	public function addCategory($data){
 		$node = [
