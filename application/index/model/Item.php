@@ -12,5 +12,11 @@ class Item extends Model
 	}
 
 
+	public function addItem($data){
+		$this->save($data);
+		return $this->item_id;
+
+	}
+
 
 }

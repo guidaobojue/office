@@ -1,9 +1,11 @@
 <?php
 namespace app\index\controller;
+use app\index\model\ItemModel;
 use \think\view;
 use \think\Request;
 use \think\Model;
 use \think\Config;
+use app\index\model\User;
 
 class Assets extends \think\Controller
 {
@@ -11,20 +13,16 @@ class Assets extends \think\Controller
 		parent::__construct();
 	}
 
+
 	public function addItem(){
 
-		$a = [
-			'id' => 3,
-			'ids' => 4,
-		];
-		$b = [
-			'ids' => 4,
-			'id' => 4,
-		];
 
-		var_dump($a == $b);
 
-		exit;
+
+
+
+
+		$userModel = new user();
 		$uploads_dir = "../upload/";
 		if(isset($_FILES['file'])){
 			if(!empty($_FILES['file']['name'])){
@@ -45,43 +43,68 @@ class Assets extends \think\Controller
 				$time = time();
 				$batch_no = time() .rand(10000,20000);
 
-				$models = [];
+
+
+
 				foreach($data as $k => $v){
-					$temp = [];
-					$temp['name'] = $v[3];
-					$temp['value'] = $v[4];
-					$temp['category'] = $v[5];
-					$temp['model'] = $v[6];
-					$temp['account_id'] = $v[7];
-					$temp['num'] = 0;
-					$temp['methods'] = $v[11];
-					$temp['get_time'] = $v[2];
-					$temp['comments'] = $v[15];
-					$temp['create_time'] = $time;
-					$temp['batch_no'] = $batch_no;
-
-					$models[] = $temp;
-					$temp = [];
-
-					$temp['user'] = $v[13];
-					$temp['department'] = "部门";
-					$temp['status'] = $v[12];
-					$temp['assets_id'] = $v[1];
-					$temp['model'] = $v[6];
-
-					$items[] = $temp;
+					$userModel = new user();
+					$userModel->addUser($v[1],$v[0],$v[2]);
 				}
-
-				$model = model("itemmodel");
-				$model->saveAll($models);
 				exit;
 
 
 
+				$models = [];
+				$modelIds = [];
+				$modelNum = [];
+				$modelModel = [];
+				foreach($data as $k => $v){
+					$modelModel = new ItemModel();
+					$model = [];
+					$model['model_name'] = $v[3];
+					$model['price'] = $v[4];
+					$model['category'] = $v[5];
+					$model['model_no'] = $v[6];
+					$model['account_id'] = $v[7];
+					$model['num'] = 1;
+
+					if(!in_array($model,$models)){
+						$models[] = $model;
+						$model_id = $modelModel->addModel($model);
+						$modelIds[$model_id] = $model;
+						$modelNum[$model_id] = 1;
+					}
+					else{
+						foreach($modelIds as $ik => $iv){
+							if($model == $iv){
+								$Model_id = $ik;
+							}
+						}
+						$modelNum[$model_id] += 1;
+					}
 
 
+					$temp = [];
+					$temp['item_no'] = $v[1];
+					$temp['account_time'] = $v[2];
+					$temp['account_no'] = $v[7];
+					$temp['method'] = $v[8];
+					$temp['get_time'] = $v[9];
+					$temp['mark_time'] = $v[9];
+					$temp['forward'] = $v[11];
+					$temp['purpose'] = $v[14];
+					$temp['status'] = $v[12];
+					$temp['get_time'] = $v[2];
+					$temp['comments'] = $v[15];
+					$temp['create_time'] = $time;
+					$temp['model_id'] = $model_id;
+					$items[] = $temp;
+				}
 
 
+				$model = model("item");
+				$model->saveAll($items);
+				exit;
 
 
 
