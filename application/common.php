@@ -237,3 +237,124 @@ function cache_get($name){
 		false;
 }
 
+
+function record($title,$data){
+	$rs = ['a'=>123];
+	$rs = var_export($rs,true);
+
+	$date = date("Y-m-d H:i:s",time());
+	$content = "=========" . $title . "=====".$date."=====\n";
+	$content .= $rs ."\n";
+	$content .= "============================================\n\n\n";
+	file_put_contents("../record.log",$content,FILE_APPEND);
+}
+
+function span($stand,$val){
+	$str = "";
+	if($val == 4){
+		$str = span_html(0);
+	}
+	else if($val > 4){
+		if($stand > $val -3){
+			$str = span_html(1);
+		}
+		else if($stand == $val -3){
+			$str = span_html(2);
+		}
+		else{
+			$str = span_html(0);
+		}
+	}
+	else{
+		if($stand <= $val){
+			$str = span_html(0);
+
+		}
+		else{
+			$str = span_html(3);
+		}
+
+	}
+
+	return $str;
+
+}
+
+function span_html($num){
+	$datas = ["<span style='color:green'>同意</span>","<span style='color:blue'>未审核</span>","<span style='color:red'>不同意</span>","<span style='color:blue'>审核中</span>"];
+	return $datas[$num];
+}
+
+function operation($users,$user,$status){
+	$str = "";
+	$user_id = $user['user_id'];
+	$user_id = 68;
+	$users_id = [
+		1 => $users['apply_user']['user_id'],
+		2 => $users['apply_approval_user']['user_id'],
+		3 => $users['use_approval_user']['user_id'],
+		4 => $users['office_approval_user']['user_id'],
+	];
+
+	$score = 1;
+	foreach($users_id as $k => $v){
+		if($user_id == $v){
+			$score = $k;
+			if($k > $status){
+				break;
+			}
+		}
+	}
+
+
+	if($status > 4){
+		if($status -3 > $score){
+			$str = operation_html(0);
+		}
+		else if($status -3 == $score)
+			$str = operation_html(1);
+		else{
+			$str = operation_html(2);
+		}
+
+	}
+	else if($status == 4){
+		$str = operation_html(3);
+	}
+	else{
+		if($status == $score-1){
+			$str = operation_html(4);
+		}
+		else if($status > $score -1){
+			$str = operation_html(5);
+		}
+		else{
+		$str = operation_html(6);
+		}
+	}
+	return $str;
+}
+function operation_html($num){
+	$datas=[ 
+		"<span style='color:green'>已同意</span>",
+		"<span style='color:red'>未通过</span>", 
+		"<span style='color:red'>中止</span>",
+	       	"<span style='color:green'>完结</span>",
+		'<span style="color:green;cursor:pointer" onclick="allow()">同意</span>  | <span style="color:red;cursor:pointer" onclick="deny()">驳回</span>',
+		"<span style='color:green'>已同意</span>",
+		"<span style='color:blue'>未到达</span>",
+	];
+	return $datas[$num];
+}
+
+function back_color($num){
+	if($num >= 5){
+		return "background:#f58080";
+	}
+	else if($num == 4){
+		return "background:#80e480";
+	}
+	else{
+		return "";
+	}
+}

@@ -1,0 +1,118 @@
+{include file="./static/public_template/dxheader.html"/}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+
+	<!-- Main content -->
+	<section class="content">
+
+		<div class="row">
+			<div class="col-lg-9">
+				<p class="wrapper-title">『{$user['uname']}』资产</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="box">
+					<div class="box-header">
+					</div>
+					<div class="box-body">
+						<div class="table" >
+							<div class="table-responsive">
+
+								<div >
+									<table class="table table-bordered table-hover" style="float:left" >						
+										<tr>
+											<th>编号</th>
+											<th>物品名称</th>
+											<th>会计号</th>
+											<th>导入时间</th>
+											<th>操作</th>
+										</tr>
+										{if condition="!empty($list)" }
+										{foreach name="list" item="k"}
+										<tr id="tr_{$k.item_id}">
+											<td>{$k.item_no}</td>
+											<td>{$k.model_name}</td>
+											<td>{$k.account_no}</td>
+											<td>{$k.create_time|date="Y-m-d H:i:s",###}</td>
+											<td>
+												<a href="/index/assets/detail?item_id={$k.item_id}" target="_blank">查看</a> |
+												{if condition="$k.isRoam eq 1"}
+												<a class="href"  style="color:red" href="javascript:void(0);" >申请中</a>
+												{else}
+												<a class="href"  href="javascript:apply({$k.item_id})" >申请</a>
+												{/if}
+												
+											</td>
+
+
+
+										</tr>
+										{/foreach}
+
+
+										{/if}
+
+									</table>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<!-- /.box-body -->
+				</div>
+				<!-- /.box -->
+			</div>
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
+		<div class="box-footer">
+			<ul class="pagination pagination-sm no-margin pull-right">
+				{$page}
+			</ul>
+		</div> 
+	</section>
+	<!-- /.content -->
+</div>
+{include file="./static/public_template/footer.html"/}
+<!-- /.content-wrapper -->
+<!-- 制作图表js -->
+<script src="__PUBLIC__/js/Chart.js"></script>
+
+	<script src="/public/static/Template/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script type="text/javascript">
+
+	//Date picker
+
+
+$('.submit').click(function(){
+	$(this).parents('form').attr('action', $(this).attr('action'));
+	$(this).parents('form').submit();
+})
+
+
+
+function apply(item_id){
+	var rs = confirm("确定申请吗");
+	if(rs){
+
+		$.ajax({
+			url:"/index/assets/apply",
+			data:{'item_id':item_id},
+			type:"get",
+			dataType:"json",
+			success:function(data){
+				$("#tr_"+item_id + " .href").attr({"href":"javascript:;"});
+				$("#tr_"+item_id + " .href").css("color","red");
+				$("#tr_"+item_id + " .href").html("申请中");
+			}
+		});
+
+	}
+
+}
+
+
+
+</script>

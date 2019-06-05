@@ -1,0 +1,240 @@
+{include file="./static/public_template/dxheader.html"/}
+<style>
+.col-sm-6{
+	height:40px;
+}
+</style>
+				<!-- Content Wrapper. Contains page content -->
+				<div class="content-wrapper">
+					<!-- Content Header (Page header) -->
+
+					<!-- Main content -->
+					<section class="content">
+
+						<div class="row">
+							<div class="col-lg-10">
+								<p class="wrapper-title"><i class="fa fa-file-text-o"></i>固定资产资料</p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="ibox-content" style="height:600px">
+								<div class="form-group" > 
+									<div class="col-sm-6 ">
+										<label class="col-sm-3 control-label">
+											使用人	
+										</label>
+									<label class="col-sm-3 control-label">
+										<?=$user['uname'];?>
+									</label>
+									</div>
+									<div class="col-sm-6 ">
+										<label class="col-sm-3 control-label">
+											部门
+										</label>
+										<label class="col-sm-3 control-label">
+											<?=$user['dep_name'];?>
+										</label>
+									</div>
+								</div>
+								<div class="hr-line-dashed"></div>
+
+								<div class="form-group" > 
+									<div class="col-sm-6 ">
+										<label class="col-sm-3 control-label">
+											编号
+										</label>
+									<label class="col-sm-3 control-label">
+										<?=$item['item_no'];?>
+									</label>
+									</div>
+									<div class="col-sm-6 ">
+										<label class="col-sm-3 control-label">
+											记账日期
+										</label>
+										<label class="col-sm-3 control-label">
+											<?=$item['account_time'];?>
+										</label>
+									</div>
+								</div>
+								<div class="hr-line-dashed"></div>
+								<div class="form-group" > 
+									<div class="col-sm-6 ">
+										<label class="col-sm-3 control-label">
+											资产名称
+										</label>
+									<label class="col-sm-3 control-label">
+										<?=$item['model_name'];?>
+									</label>
+									</div>
+									<div class="col-sm-6 ">
+										<label class="col-sm-3 control-label">
+											价值	
+										</label>
+										<label class="col-sm-3 control-label">
+											<?=$item['price'];?>
+										</label>
+									</div>
+								</div>
+								<div class="hr-line-dashed"></div>
+								<div class="form-group" > 
+									<div class="col-sm-6 ">
+										<label class="col-sm-3 control-label">
+											资产大类	
+										</label>
+									<label class="col-sm-3 control-label">
+										<?=$item['category'];?>
+									</label>
+									</div>
+									<div class="col-sm-6 ">
+										<label class="col-sm-3 control-label">
+											规格型号	
+										</label>
+										<label class="col-sm-3 control-label">
+											<?=$item['model_no'];?>
+										</label>
+									</div>
+								</div>
+								<div class="hr-line-dashed"></div>
+								<div class="form-group" > 
+									<div class="col-sm-6 ">
+										<label class="col-sm-3 control-label">
+											会计凭证号	
+										</label>
+									<label class="col-sm-3 control-label">
+										<?=$item['account_no'];?>
+									</label>
+									</div>
+									<div class="col-sm-6 ">
+										<label class="col-sm-3 control-label">
+											取得方式	
+										</label>
+										<label class="col-sm-3 control-label">
+											<?=$item['method'];?>
+										</label>
+									</div>
+								</div>
+								<div class="hr-line-dashed"></div>
+								<div class="form-group" > 
+									<div class="col-sm-6 ">
+										<label class="col-sm-3 control-label">
+											取得日期	
+										</label>
+									<label class="col-sm-3 control-label">
+										<?=$item['get_time'];?>
+									</label>
+									</div>
+									<div class="col-sm-6 ">
+										<label class="col-sm-3 control-label">
+											制单日期	
+										</label>
+										<label class="col-sm-3 control-label">
+											<?=$item['mark_time'];?>
+										</label>
+									</div>
+								</div>
+								<div class="hr-line-dashed"></div>
+								<div class="form-group" > 
+									<div class="col-sm-6 ">
+										<label class="col-sm-3 control-label">
+											使用方向	
+										</label>
+									<label class="col-sm-3 control-label">
+										<?=$item['forward'];?>
+									</label>
+									</div>
+									<div class="col-sm-6 ">
+										<label class="col-sm-3 control-label">
+											使用状况	
+										</label>
+										<label class="col-sm-3 control-label">
+											<?=$item['status'];?>
+										</label>
+									</div>
+								</div>
+								<div class="hr-line-dashed"></div>
+								<div class="form-group" > 
+									<div class="col-sm-6 ">
+										<label class="col-sm-3 control-label">
+											设备用途
+										</label>
+									<label class="col-sm-3 control-label">
+										<?=$item['purpose'];?>
+									</label>
+									</div>
+									<div class="col-sm-6 ">
+										<label class="col-sm-3 control-label">
+											备注
+										</label>
+										<label class="col-sm-3 control-label">
+											<?=$item['comments'];?>
+										</label>
+									</div>
+								</div>
+								<div class="hr-line-dashed"></div>
+								<div class="form-group" > 
+									<div class="col-sm-6 ">
+										<label class="col-sm-3 control-label">
+										</label>
+									<label class="col-sm-3 control-label">
+									</label>
+									</div>
+									<div class="col-sm-6 ">
+										<label class="col-sm-3 control-label">
+										</label>
+										<label class="col-sm-3 control-label">
+										</label>
+									</div>
+								</div>
+								<div class="hr-line-dashed"></div>
+							</div>
+						</div>
+				</div>
+				<!-- /.row -->
+					</section>
+					<!-- /.content -->
+					</div>
+
+					{include file="./static/public_template/footer.html"/}
+
+
+
+
+
+
+
+
+					<script src="/public/static/vip/js/jquery-2.1.1.js"></script>
+					<script src="/public/static/vip/js/bootstrap.min.js"></script>
+					<script src="/public/static/vip/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+
+					<script src="/public/static/vip/js/plugins/pace/pace.min.js"></script>
+					<script src="/public/static/vip/js/cropbox.js"></script>
+					<script src="/public/static/vip/js/plugins/sweetalert/sweetalert.min.js"></script>
+
+					<!-- Custom and plugin javascript -->
+
+					<!-- iCheck -->
+
+					<!-- Mainly scripts -->
+
+
+					<script src="/public/static/vip/js/jasny-bootstrap.min.js"></script>
+					<script src="/public/static/vip/js/full_height.js"></script>
+
+
+
+					<!-- Peity -->
+
+
+					<!-- Custom and plugin javascript -->
+					<script src="/public/static/vip/js/plugins/slimscroll/jquery.slimscroll.js"></script>
+					<script src="/public/static/vip/js/inspinia.js"></script>
+					<script src="/public/static/vip/js/echarts.min.js"></script>
+					<script src="/public/static/vip/js/plugins/pace/pace.min.js"></script>
+
+
+
+					<!-- /.content-wrapper -->
+					<!-- 制作图表js -->
+
+					<script src="/public/static/Template/plugins/datepicker/bootstrap-datepicker.js"></script>
