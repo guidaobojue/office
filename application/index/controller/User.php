@@ -83,5 +83,27 @@ class User extends \think\Controller
 	}
 
 
+	public function getUserByDep(){
+		$dep_id = Request::instance()->get("dep_id");
+		$userModel = model("user");
+		$depModel = model("department");
+		$deps = $depModel->getAll();
+		$users = $userModel->getListByDep($dep_id);
+
+		echo json_encode($users);
+		/*
+		foreach($users as $k => $v){
+			if(!isset($data[$v['department_id']])){
+				$data[$v['department_id']]['users'][] =$v;
+				$data[$v['department_id']]['name'] =$deps[$v['department_id']];
+			}
+			else{
+				$data[$v['department_id']]['users'][] =$v;
+			}
+
+		}
+		 */
+	}
+
 }
 

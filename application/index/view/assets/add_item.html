@@ -98,10 +98,14 @@ function know(document_id){
 
 }
 </script>
-
 -->
 
+
 	<script>
+	<?php if(isset($status)):?>
+	alert("导入成功");
+	<?php endif;?>
+
 $(".selectBox th").click(function(){
 	$(".selectBox th").css("background-color","rgb(221, 221, 221");
 	$(this).css("background-color","red");

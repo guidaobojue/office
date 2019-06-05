@@ -43,5 +43,15 @@ class department extends Model
 		return $rs;
 	}
 
+	public function getAll(){
+		$rs = $this->select();
+		$data = [];
+		foreach($rs as $k => $v){
+			$data[$v->data['department_id']] = $v->data;
+		}
+		return $data;
+
+	}
+
 }
 

@@ -31,4 +31,12 @@ class UserDepartment extends Model
 		return $this->user_department_id;
 	}
 
+	public function isExist($user_id,$department_id){
+		$rs = $this->where(['user_id'=>$user_id,'department_id'=>$department_id])->find();
+		if(is_null($rs))
+			return false;
+		else 
+			return $rs->data;
+	}
+
 }

@@ -15,9 +15,25 @@ class ItemModel extends Model
 
 
 	public function addModel($data){
-		$this->save($data);
-		return $this->model_id;
+		$temp = $data;
+		unset($temp['num']);
+		$rs = $this->where($temp)->find();
+		if(is_null($rs)){
+			$this->save($data);
+			return $this->model_id;
+		}
+		else
+			return $rs->data['model_id'];
 
+	}
+
+	public function getAll(){
+		$rs =  $this->select();
+		$data = [];
+		foreach($rs as $k => $v){
+			$data[$v->data['model_id']] = $v->data;
+		}
+		return $data;
 	}
 
 
