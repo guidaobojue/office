@@ -1,0 +1,164 @@
+{include file="./static/public_template/dxheader.html"/}
+<style>
+.two_row{
+	margin-bottom:10px;
+}
+</style>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+
+	<!-- Main content -->
+	<section class="content">
+
+		<div class="row">
+			<div class="col-lg-9">
+				<p class="wrapper-title">我的消息</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="box">
+					<div class="box-header">
+					</div>
+					<div class="box-body">
+						<div class="table" >
+							<div class="table-responsive">
+
+								<div >
+										<table class="table table-bordered table-hover ">
+										<tr>
+											<th class="asset_a" style="width:15%">标题</th>
+											<th class="asset_b" style="width:15%">内容</th>
+											<th class="asset_c" style="width:15%">路径</th>
+											<th class="asset_e" style="width:15%">状态</th>
+										</tr>
+										{if condition="!empty($list)" }
+										{foreach name="list" item="k"}
+										<tr message_id= "{$k.message_id}"class="message_{$k.message_id} table_ul" {if condition="$k.status eq 0"} style="background:#99de99" {/if}
+											
+											>
+											<td>{$k.title}</td>
+											<td>{$k.content}</td>
+											<td><a href="{$k.url}" target="_blank">{$k.url}</a></td>
+											<td class="status">
+												{if condition="$k.status eq 0"}
+												<span>
+												未读
+												</span>
+												{else}
+												<span>
+												己读
+												</span>
+												{/if}
+											</td>
+
+
+
+										</tr>
+										{/foreach}
+									</table>
+
+
+										{/if}
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<!-- /.box-body -->
+				</div>
+				<!-- /.box -->
+			</div>
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
+		<div class="box-footer">
+			<ul class="pagination pagination-sm no-margin pull-right">
+				{$page}
+			</ul>
+		</div> 
+	</section>
+	<!-- /.content -->
+</div>
+{include file="./static/public_template/footer.html"/}
+<!-- /.content-wrapper -->
+<!-- 制作图表js -->
+<script src="__PUBLIC__/js/Chart.js"></script>
+
+	<script src="/public/static/Template/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script type="text/javascript">
+
+	//Date picker
+
+	var n = 1;
+	$(".table_ul").hover(function(){
+		var message_id  = $(this).attr("message_id");
+		if(message_id != undefined){
+			$(this).removeAttr("message_id");
+			$(this).css("background","");
+			$(this).children(".status").html("<span>己读</span>");
+			$.ajax({
+				url:"/index/message/read",
+				data:{'message_id':message_id},
+				type:"post",
+				dataType:"json",
+				success:function(data){
+					$("#tr_"+item_id + " .href").attr({"href":"javascript:;"});
+				}
+			});
+		}
+	}) 
+
+$('.submit').click(function(){
+	$(this).parents('form').attr('action', $(this).attr('action'));
+	$(this).parents('form').submit();
+})
+
+
+
+function apply(item_id){
+	var rs = confirm("确定申请吗");
+	if(rs){
+
+		$.ajax({
+			url:"/index/assets/apply",
+			data:{'item_id':item_id},
+			type:"get",
+			dataType:"json",
+			success:function(data){
+				$("#tr_"+item_id + " .href").attr({"href":"javascript:;"});
+				$("#tr_"+item_id + " .href").css("color","red");
+				$("#tr_"+item_id + " .href").html("申请中");
+			}
+		});
+
+	}
+
+}
+
+function allow(roam_id){
+	$.ajax({
+		url:"/index/assets/allow",
+		data:{'roam_id':roam_id},
+		type:"get",
+		dataType:"json",
+		success:function(data){
+			$("#roam_"+roam_id).html("<span style='color:green'>已同意</span>");
+		}
+	});
+}
+function deny(){
+	$.ajax({
+		url:"/index/assets/deny",
+		data:{'roam_id':roam_id},
+		type:"get",
+		dataType:"json",
+		success:function(data){
+			$("#roam_"+roam_id).html("<span style='color:red'>已回</span>");
+		}
+	});
+}
+
+
+</script>
