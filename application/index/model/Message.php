@@ -13,8 +13,10 @@ class Message extends Model
 
 
 
-	public function my(){
+	public function getOne($message_id){
+		return $this->find(['message_id'=>$message_id])->data;
 	}
+
 
 	/*
 	 * type 1,固定资产

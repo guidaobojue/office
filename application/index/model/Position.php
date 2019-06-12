@@ -36,6 +36,12 @@ class Position extends Model
 			return false;
 	}
 
+	public function getOneByUserId($user_id){
+		$rs = $this->query("select a.*,b.* from vp_user_department a left join vp_position b on a.position_id =b.position_id where a.user_id = $user_id");
+		if(!empty($rs))
+			return current($rs);
+	}
+
 
 }
 

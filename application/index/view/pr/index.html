@@ -1,48 +1,67 @@
-﻿{include file="./static/public_template/dxheader.html"/}
-<div class="row wrapper white-bg">
-	<div class="col-lg-10">
-		<p class="wrapper-title"><i class="fa fa-th-large"></i> 欢迎进入__TITLE__</p>
-	</div>
-	<div class="col-lg-2">
+{include file="./static/public_template/dxheader.html"/}
+<style>
+.af{
+	font-size:0.8em;
+}
+</style>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
 
-	</div>
-</div>
-<div class="wrapper wrapper-content animated fadeInRight">
-	<div class="row">
-	</div>
-	<div class="row">
-	</div> 
-</div>
+	<!-- Main content -->
+	<section class="content">
 
+		<div class="row">
+			<div class="col-lg-9">
+				<p class="wrapper-title"><i class="fa fa-file-text-o"></i> 菜单列表</p>
+			</div>
+			<div class="col-lg-2">
+				<p class="wrapper-title" style="float:right">
+				<a class="btn btn-primary " href="/index/category/update" target="_blank">更新缓存</a>
+				</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="box">
+					<div class="box-header">
+					</div>
+					<div class="box-body">
+						<div class="table" >
+							<div class="table-responsive">
+
+								<div >
+									<table class="table table-bordered table-hover" style="float:left width:10%" >
+									</table>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<!-- /.box-body -->
+				</div>
+				<!-- /.box -->
+			</div>
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
+	</section>
+	<!-- /.content -->
+</div>
 {include file="./static/public_template/footer.html"/}
-</div>
 
-<script>
-$(function(){
-	// nestable-button
-	$("#nestable>.dd-list li").click(function(){
-		if($(this).hasClass("active")){
-			$(this).removeClass("active");
-		}else{
-			$(this).addClass("active");
-			$(this).siblings("li").removeClass("active");
-			var button = $(this).find(".nestable-button");
 
-		};
-		$(".nestable-button").attr('data-action',"expand");
-		if(button.attr('data-action')=="expand"){
-			button.attr('data-action',"collapse");
-		}else{
-			button.attr('data-action',"expand");
-		};
+<?php if(isset($tip)):?>
+	<script>
+		alert("更新成功");
+	</script>
+<?php endif;?>
 
-	});
-});
+<!-- /.content-wrapper -->
+<!-- 制作图表js -->
+<script src="__PUBLIC__/js/Chart.js"></script>
+
+	<script src="/public/static/Template/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script type="text/javascript">
+
 </script>
-
-
-
-<script src="<?=VIP_JS;?>echarts.min.js"></script>
-<script> $(".nav_list_1").addClass("active"); </script>
-</body>
-</html>

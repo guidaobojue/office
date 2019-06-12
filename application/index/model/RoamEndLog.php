@@ -22,4 +22,16 @@ class RoamEndLog extends Model
 		$this->save(['user_id'=>$user_id,'to_user_id'=>$to_user_id,'create_time'=>$time,'item_id'=>$item_id]);
 		return $this->roam_end_log_id;
 	}
+
+
+	public function getByItemId($item_id){
+		$rs = $this->where(['item_id'=>$item_id])->order("create_time desc")->select();
+		$data = [];
+		foreach($rs as $k => $v){
+			$data[] = $v->data;
+		}
+		return $data;
+
+	}
+
 }

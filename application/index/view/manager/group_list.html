@@ -11,7 +11,7 @@
 				<p class="wrapper-title"><i class="fa fa-file-text-o"></i> 群组列表</p>
 			</div>
 			<div class="col-lg-2">
-				<p class="wrapper-title" style="float:right">
+				<a class="btn btn-primary " href="/index/manager/register" target="_blank">更新权限存缓</a>
 				<a class="btn btn-primary " href="/index/manager/register" target="_blank">新增群组</a>
 				</p>
 			</div>
@@ -31,6 +31,7 @@
 											<th>编号</th>
 											<th>名称</th>
 											<th>操作</th>
+											<th>权限</th>
 										</tr>
 										{if condition="!empty($list)" }
 										{foreach name="list" item="k"}
@@ -38,9 +39,10 @@
 											<td>{$k.group_id}</td>
 											<td>{$k.group_name}</td>
 											<td>
-												<a href="/index/manager/editGroup/group_id/{$k.group_id}" target="_blank">编缉</a> |
-												<a href="javascript:delGroup({$k.group_id})" >删除</a>
-												
+												<a href="/index/manager/editGroup/group_id/{$k.group_id}" target="_blank">编缉</a> |  <a href="javascript:delGroup({$k.group_id})" >删除</a>
+											</td>
+											<td>
+												<a href="/index/manager/pri/group_id/{$k.group_id}" target="_blank">菜单权限</a>
 											</td>
 
 

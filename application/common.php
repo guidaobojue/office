@@ -285,7 +285,7 @@ function span_html($num){
 	return $datas[$num];
 }
 
-function operation($users,$user,$status){
+function operation($users,$user,$status,$roam_id){
 	$str = "";
 	$user_id = $user['user_id'];
 	$user_id = 68;
@@ -309,38 +309,38 @@ function operation($users,$user,$status){
 
 	if($status > 4){
 		if($status -3 > $score){
-			$str = operation_html(0);
+			$str = operation_html(0,$roam_id);
 		}
 		else if($status -3 == $score)
-			$str = operation_html(1);
+			$str = operation_html(1,$roam_id);
 		else{
-			$str = operation_html(2);
+			$str = operation_html(2,$roam_id);
 		}
 
 	}
 	else if($status == 4){
-		$str = operation_html(3);
+		$str = operation_html(3,$roam_id);
 	}
 	else{
 		if($status == $score-1){
-			$str = operation_html(4);
+			$str = operation_html(4,$roam_id);
 		}
 		else if($status > $score -1){
-			$str = operation_html(5);
+			$str = operation_html(5,$roam_id);
 		}
 		else{
-		$str = operation_html(6);
+		$str = operation_html(6,$roam_id);
 		}
 	}
 	return $str;
 }
-function operation_html($num){
+function operation_html($num,$roam_id){
 	$datas=[ 
 		"<span style='color:green'>已同意</span>",
 		"<span style='color:red'>未通过</span>", 
 		"<span style='color:red'>中止</span>",
 	       	"<span style='color:green'>完结</span>",
-		'<span style="color:green;cursor:pointer" onclick="allow()">同意</span>  | <span style="color:red;cursor:pointer" onclick="deny()">驳回</span>',
+		'<span style="color:green;cursor:pointer" onclick="allow('.$roam_id.')">同意</span>  | <span style="color:red;cursor:pointer" onclick="deny('.$roam_id.')">驳回</span>',
 		"<span style='color:green'>已同意</span>",
 		"<span style='color:blue'>未到达</span>",
 	];

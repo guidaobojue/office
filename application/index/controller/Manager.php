@@ -25,7 +25,6 @@ class Manager extends \think\Controller
 
 
 	public function user(){
-
 		$userModel = model("user");
 		$list = $userModel->list();
 		$page = $list->render();
@@ -47,10 +46,12 @@ class Manager extends \think\Controller
 			$groupRs[$v->group_id] = $v->group_name;
 		}
 
+		$positionModel = model("position");
 
 		foreach($list as $k => &$v){
-			$v['levelName'] = isset($levelRs[$v->level_id]) ? $levelRs[$v->level_id] : "";
+		#	$v['levelName'] = isset($levelRs[$v->level_id]) ? $levelRs[$v->level_id] : "";
 			$v['groups'] = isset($userGroups[$v->user_id]) ? $userGroups[$v->user_id] :  [];
+			$v['position'] = $positionModel->getOneByUserId($v->user_id);
 		}
 		unset($v);
 
@@ -97,72 +98,30 @@ class Manager extends \think\Controller
 
 
 	public function register(){
-		$user_id = input("user_id");
-		$userModel = model("user");
-		$levelModel = model("level");
-		$groupModel = model("group");
-
-
+		$error = [];
 		if(input("sub")){
+			$group_name = input("group_name");
+			if(empty($group_name))
+				$error['group_name'] = "不可为空";
+			$model = model("group");
+			$rs = $model->isExist($group_name);
 
-			$passwd = input("passwd");
-			$level_id = input("level_id");
-			$group_id = input("group_id");
+			if(!$rs)
+				$error['group_name'] = "已经存在";
 
-			$data['level_id'] = $level_id;
-			if(!empty($passwd))
-				$data['pwd']  = md5($passwd);
-
-			$data['level_id'] = $level_id;
-			$uname = input("username");
-			$data['uname'] = $uname;
-			$user_id = $userModel->register($data);
-
-
-			if(!$user_id){
-				$this->assign("error","用户名已存在");
-				return $this->fetch("addUser");
+			if(empty($error)){
+				$this->assign("status","增加成功");
+				$model->addGroup($group_name);
 			}
 
-			$groupModel->editUserGroup($user_id,$group_id);
-
-
-
-
-
-			$groupInfo = $groupModel->getOneByUserId($user_id);
-			if(!empty($groupInfo)){
-				$groupInfo = $groupModel->getOne($group_id);
-			}
 			else{
-				$groupInfo = [];
+				$this->assign("error",$error);
 			}
-			$this->assign("group_id",$group_id);
-			$this->redirect("/index/manager/user");
+
+
 
 		}
-
-
-		$groups = $groupModel->getAll();
-		$levels = $levelModel->getAll();
-
-
-		$userInfo = $userModel->getOne($user_id);
-		$level_id = $userInfo['level_id'];
-		$levelInfo = $levelModel->getOne($level_id);
-
-
-		$this->assign("user",$userInfo);
-		$this->assign("groups",$groups);
-
-
-		$this->assign("user_id",$user_id);
-		$this->assign("level_id",$level_id);
-		$this->assign("levels",$levels);
-
-
-
-		return $this->fetch("addUser");
+		return $this->fetch("addGroup");
 	}
 
 
@@ -246,6 +205,11 @@ class Manager extends \think\Controller
 	}
 
 
+	public function update(){
+	}
+
+
+
 	public function editGroup(){
 		$group_id = input("group_id");
 		$groupModel = model("group");
@@ -275,10 +239,102 @@ class Manager extends \think\Controller
 
 
 	public function pri(){
+
+		$group_id = input("group_id");
+		if(isset($_POST['cate'])){
+			$cate = input("cate");
+			$model = model("GroupCategory");
+
+			$cates = explode(",",$cate);
+			$temp = [];
+			foreach($cates as $k => $v){
+				if($v > 0)
+					$temp[] = $v;
+			}
+
+
+
+			$model->add($group_id,$temp);
+			$this->assign("status","修改成功");
+
+		}
+		if(empty($group_id) || !is_numeric($group_id)){
+			return false;
+		}
+		$model = model("group");
+		$group = $model->getOne($group_id);
+
+
+		$cateModel = model("category");
+		$cates = $cateModel->getAll();
+
+		$groupCateModel = model("GroupCategory");
+		$selectedCate = $groupCateModel->getAllByGid($group_id);
+
+
+		$selected = [];
+		foreach($selectedCate as $k => $v){
+			$selected[] = $v['category_id'];
+		}
+		$table = $this->build(1,$cates,0,$selected);
+
+
+		$this->assign("group_id",$group_id);
+		$this->assign("table",$table);
+		$this->assign("cates",$cates);
+		$this->assign("cated",json_encode($selected));
+
+		return $this->fetch("category_list");
+
 	}
 
 
+
 	public function category(){
+	}
+
+	public function build($n,$cates,$layer = 0,$selected){
+		$genTd = function($n){
+			$str = "";
+			for($i =2;$i<=$n;$i++){
+				$str .= "<td></td>";
+			}
+			return $str;
+		};
+
+
+		$str = "";
+		$obj = $cates[$n];
+		$childs = json_decode($cates[$n]['childs']);
+		$layer++;
+
+		foreach($childs as $k => $v){
+			$child = $cates[$v];
+			if($child['parent_id'] != 1){
+				if(in_array($child['category_id'],$selected)){
+					$str .="<tr cate_id='".$child['category_id']."' style='background:#19db19' class='select tr_".$child['category_id']."'>";
+				}
+				else{
+					$str .="<tr cate_id='".$child['category_id']."' class='select tr_".$child['category_id']."'>";
+				}
+			}
+			else{
+				$str .="<tr cate_id='".$child['category_id']."' class='tr_".$child['category_id']."'>";
+			}
+			$str .= $genTd($layer)."<td>";
+			$str .= $child['category_name'];
+			$str .= "</td></tr>";
+
+			if(!empty($child['childs'])){
+				$str .= $this->build($v,$cates,$layer,$selected);
+			}
+
+
+		}
+		return $str;
+
+
+
 	}
 
 

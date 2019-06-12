@@ -59,8 +59,8 @@
 											<td>{$k.users['apply_approval_user']['uname']}:{:span(2,$k.roam_status)}</td>
 											<td>{$k.users['use_approval_user']['uname']}:{:span(3,$k.roam_status)}</td>
 											<td>{$k.users['office_approval_user']['uname']}:{:span(4,$k.roam_status)}</td>
-											<td>
-												{:operation($k.users,$_SESSION['user'],$k.roam_status)}
+											<td id="roam_{$k.roam_id}">
+												{:operation($k.users,$_SESSION['user'],$k.roam_status,$k.roam_id)}
 											</td>
 										</tr>
 									</table>
@@ -126,11 +126,27 @@ function apply(item_id){
 
 }
 
-function allow(){
-	alert("allow");
+function allow(roam_id){
+		$.ajax({
+			url:"/index/assets/allow",
+			data:{'roam_id':roam_id},
+			type:"get",
+			dataType:"json",
+			success:function(data){
+				$("#roam_"+roam_id).html("<span style='color:green'>已同意</span>");
+			}
+		});
 }
-function deny(){
-	alert("deny");
+function deny(roam_id){
+		$.ajax({
+			url:"/index/assets/deny",
+			data:{'roam_id':roam_id},
+			type:"get",
+			dataType:"json",
+			success:function(data){
+				$("#roam_"+roam_id).html("<span style='color:red'>已驳回</span>");
+			}
+		});
 }
 
 

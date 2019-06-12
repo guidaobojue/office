@@ -158,6 +158,8 @@ class Assets extends \think\Controller
 		$data = [];
 		$temp = [];
 
+
+
 		$itemModel = model("item");
 		$userModel = model("user");
 		foreach($lists as $k => $v){
@@ -300,7 +302,6 @@ class Assets extends \think\Controller
 			}
 		}
 
-
 		if($roam['status']== $score-1){
 			if($roam['status'] == 3){
 				$itemModel = model("item");
@@ -354,16 +355,8 @@ class Assets extends \think\Controller
 
 
 		if($roam['status']== $score-1){
-			if($roam['status'] == 3){
-				$logModel->record($user_id,1,$roam['item_id']);
-				$endLogModel = model("RoamEndLog");
-				$endLogModel->record($user_id,$roam['apply_user_id'],$roam['item_id']);
-
-			}
-			else{
-				$model->allow($roam_id);
-				$logModel->record($user_id,1,$roam['item_id']);
-			}
+			$model->deny($roam_id);
+			$logModel->record($user_id,0,$roam['item_id']);
 		}
 
 		echo json_encode(true);
@@ -408,15 +401,38 @@ class Assets extends \think\Controller
 			$data[] = $temp;
 
 
+		$endLogModel = model("RoamEndLog");
+		$logs = $endLogModel->getByITemId($item_id);
+
+		$userIds = [];
+		foreach($logs as $k => $v){
+			$userIds[] = $v['user_id'];
+			$userIds[] = $v['to_user_id'];
+		}
+		$userIds = array_unique($userIds);
+		$users = [];
+		$userModel = model("user");
+		foreach($userIds as $k => $v){
+			$users[$v] = $userModel->getOne($v);
+		}
+
+		foreach($logs as $k => $v){
+			if(isset($users[$v['user_id']]))
+				$logs[$k]['user'] = $users[$v['user_id']];
+			if(isset($users[$v['to_user_id']]))
+				$logs[$k]['to_user'] = $users[$v['to_user_id']];
+		}
+
+
+
 		$this->assign("item",$item);
 		$user_id = $item['user_id'];
 		$model = model("user");
 		$user = $model->getDetail($user_id);
 		$this->assign("user",$user);
+		$this->assign("logs",$logs);
 
 		return $this->fetch("item_detail");
-
-
 	}
 
 

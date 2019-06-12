@@ -186,6 +186,24 @@
 									</div>
 								</div>
 								<div class="hr-line-dashed"></div>
+
+								<div class="form-group" > 
+									流转记录
+									<table class="table table-bordered table-hover" style="float:left" >
+										<tr>
+											<td style="width:30%">时间</td>
+											<td style="width:30%">流出方</td>
+											<td style="width:30%">流入方</td>
+										</tr>
+										{foreach name="logs" item="k"}
+										<tr>
+											<td>{$k.create_time|date="Y-m-d H:i:s",###}</td>
+											<td>{$k.user['uname']}</td>
+											<td>{$k.to_user['uname']}</td>
+										</tr>
+										{/foreach}
+									</table>
+								</div>
 							</div>
 						</div>
 				</div>

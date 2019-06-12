@@ -46,7 +46,7 @@ class group extends Model
 
 
 	public function getOne($id){
-		return $this->find(['group_id'=>$id]);
+		return $this->where(['group_id'=>$id])->find();
 	}
 
 
@@ -74,5 +74,18 @@ class group extends Model
 			$rs = $this->table("vp_user_group")->insert(['user_id'=>$user_id,"group_id"=>$group_id]);
 		return $rs;
 	}
+
+	public function isExist($name){
+		$rs = $this->where(['group_name'=>$name])->find();
+		if(empty($rs))
+			return true;
+		else
+			return false;
+	}
+
+	public function addGroup($group_name){
+		$this->save(['group_name'=>$group_name]);
+	}
 }
+
 

@@ -78,7 +78,12 @@ class Roam extends Model
 		$this->where(['roam_id'=>$roam_id])->update(['status'=>$status]);
 	}
 
-	public function deny(){
+	public function deny($roam_id){
+		$rs = $this->find(['roam_id'=>$roam_id]);
+		if(empty($rs))
+			return false;
+		$status= $rs->data['status']+3;
+		$this->where(['roam_id'=>$roam_id])->update(['status'=>$status]);
 	}
 
 

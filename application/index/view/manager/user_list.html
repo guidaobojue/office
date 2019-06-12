@@ -40,7 +40,7 @@
 										<tr id="tr_{$k.user_id}">
 											<td>{$k.user_id}</td>
 											<td>{$k.uname}</td>
-											<td>{$k.levelName}</td>
+											<td>{$k.position['position_name']}</td>
 											<td>
 												{if condition="count($k.groups) == 1"}
 												{$k.groups[0]['group_name']}
