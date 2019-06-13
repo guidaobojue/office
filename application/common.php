@@ -288,7 +288,6 @@ function span_html($num){
 function operation($users,$user,$status,$roam_id){
 	$str = "";
 	$user_id = $user['user_id'];
-	$user_id = 68;
 	$users_id = [
 		1 => $users['apply_user']['user_id'],
 		2 => $users['apply_approval_user']['user_id'],

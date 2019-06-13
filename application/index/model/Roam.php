@@ -50,7 +50,7 @@ class Roam extends Model
 	}
 
 	public function getRoamIng(){
-		$rs = $this->select(['status' <>5]);
+		$rs = $this->where("status <>5 ")->select();
 		$data = [];
 		foreach($rs as $k => $v){
 			$data[$v->data['item_id']] = $v->data;

@@ -15,7 +15,7 @@ class Assets extends \think\Controller
 
 
 	public function addItem(){
-
+		$this->assign("list_num",21);
 		$error = [];
 
 		$userModel = new user();
@@ -126,6 +126,7 @@ class Assets extends \think\Controller
 
 
 	public function myassets(){
+		$this->assign("list_num",21);
 		$page = Request::instance()->get('page',1);
 		$user = $_SESSION['user'];
 		$user_id = $user['user_id'];
@@ -149,6 +150,7 @@ class Assets extends \think\Controller
 
 
 	public function verify(){
+		$this->assign("list_num",21);
 		$user = $_SESSION['user'];
 		$user_id = $user['user_id'];
 
@@ -203,6 +205,7 @@ class Assets extends \think\Controller
 
 		$data = [];
 		$temp = [];
+
 		foreach($list as $k => $v){
 			$temp =  array_merge($v->getData(),$models[$v['model_id']]);
 			if(isset($roams[$temp['item_id']])){
@@ -364,6 +367,7 @@ class Assets extends \think\Controller
 
 
 	public function roam(){
+		$this->assign("list_num",21);
 		$page = Request::instance()->get('page',1);
 		$model = model("user");
 		$depModel = model("department");

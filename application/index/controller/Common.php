@@ -18,6 +18,8 @@ class Common extends \think\Controller
 
 
 	public function thanks(){
+
+		$this->assign("list_num",19);
 		return $this->fetch("thanks");
 	}
 

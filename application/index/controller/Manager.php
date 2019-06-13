@@ -24,7 +24,52 @@ class Manager extends \think\Controller
 	}
 
 
+	public function search(){
+		$search = input("search");
+
+		$userModel = model("user");
+		$list = $userModel->search($search);
+		$page = $list->render();
+
+		$levelModel = model("level");
+		$groupModel = model("group");
+
+		$levels = $levelModel->getAll();
+		$groups = $groupModel->getAll();
+		$userGroups = $groupModel->getAllUserGroups();
+
+		$levelRs = [];
+		$groupRs = [];
+		foreach($levels as $k => $v){
+			$levelRs[$v->level_id] = $v->level_name;
+		}
+
+		foreach($groups as $k => $v){
+			$groupRs[$v->group_id] = $v->group_name;
+		}
+
+		$positionModel = model("position");
+
+		foreach($list as $k => &$v){
+		#	$v['levelName'] = isset($levelRs[$v->level_id]) ? $levelRs[$v->level_id] : "";
+			$v['groups'] = isset($userGroups[$v->user_id]) ? $userGroups[$v->user_id] :  [];
+			$v['position'] = $positionModel->getOneByUserId($v->user_id);
+		}
+		unset($v);
+
+		$this->assign("levels",$levels);
+		$this->assign("groups",$groups);
+
+
+
+		$this->assign("list",$list);
+		$this->assign("page",$page);
+		return $this->fetch("user_list");
+
+	}
+
 	public function user(){
+		$this->assign("list_num",14);
 		$userModel = model("user");
 		$list = $userModel->list();
 		$page = $list->render();
@@ -195,6 +240,8 @@ class Manager extends \think\Controller
 
 
 	public function group(){
+
+		$this->assign("list_num",14);
 		$groupModel = model("group");
 		$list = $groupModel->list();
 		$page = $list->render();

@@ -21,6 +21,8 @@ class Pr extends \think\Controller
 	{
 
 
+		$this->assign("list_num",14);
+
 		return $this->fetch("index");
 	}
 

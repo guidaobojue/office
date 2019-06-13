@@ -17,6 +17,7 @@ class Category extends \think\Controller
 	}
 
 	public function index() {
+		$this->assign("list_num",14);
 
 		if(!isset($_SESSION['user'])){
 			$this->redirect("/index/index/login");

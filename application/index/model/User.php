@@ -90,6 +90,12 @@ class user extends Model
 		return $list;
 	}
 
+	public function search($search,$pageSize = 10){
+		$list = $this->where("uname like '%$search%'")->paginate($pageSize);
+		return $list;
+	}
+
+
 	public function getListByDep($dep_id){
 		$rs = $this->query("select a.*,b.* from vp_user_department a left join vp_user b on a.user_id=b.user_id where a.department_id = '$dep_id'");
 		return $rs;

@@ -16,7 +16,7 @@ class Record extends \think\Controller
 
 	public function supplement(){
 		$uploads_dir = "../upload/";
-
+		$this->assign("list_num",2);
 		if(!empty($_FILES['file']['name'])){
 			$v = $_FILES['file'];
 			$tmp_name =  $v['tmp_name'];
@@ -47,9 +47,8 @@ class Record extends \think\Controller
 
 
 	public function status(){
+		$this->assign("list_num",2);
 		$uploads_dir = "../upload/";
-
-
 
 		$file1 = request()->file('file1');
 		$file2 = request()->file('file2');
@@ -90,7 +89,7 @@ class Record extends \think\Controller
 		$akey = "5.电子版审核通过";
 		$allowCell = 17; //通过状态所在位置
 		$allowKey = '通过';
-		
+
 		$filename1 = input("post.filename1");
 		$filename2 = input("post.filename2");
 
@@ -111,7 +110,7 @@ class Record extends \think\Controller
 				$references[] = $v[0];
 			}
 		}
-		
+
 		$res = [];
 		foreach($data1 as $k => &$v){
 			if(in_array($v[1],$references)){
@@ -187,7 +186,6 @@ class Record extends \think\Controller
 
 
 
-	/*
 	public function export(){
 		$uploads_dir = "../upload/";
 		if(!empty($_FILES['file']['name'])){
@@ -205,9 +203,9 @@ class Record extends \think\Controller
 			$title = $excel['title'];
 			$rs = $recordModel->addCompany($data);
 			$this->ok = 1;
-			if($this->hasCrash !==0){
-				$this->assign("crash",true);
-			}
+			#if($this->hasCrash !==0){
+			#$this->assign("crash",true);
+			#}
 
 
 		}
@@ -216,7 +214,6 @@ class Record extends \think\Controller
 
 	}
 
-	 */
 
 
 }

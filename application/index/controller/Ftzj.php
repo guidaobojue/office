@@ -123,6 +123,7 @@ class Ftzj extends \think\Controller
 	 * 后台操作
 	 */
 	public function admin(){
+		$this->assign("list_num",5);
 		$obj = model("company");
 		$data = [];
 		$list= $obj->list();

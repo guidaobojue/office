@@ -35,6 +35,7 @@ class Comment extends \think\Controller
 
 
 	public function commentList(){
+		$this->assign("list_num",8);
 		$obj = model("comment");
 		$data = [];
 		$list= $obj->list();

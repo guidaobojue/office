@@ -15,6 +15,7 @@ class User extends \think\Controller
 
 
 	public function changePwd(){
+		$this->assign("list_num",11);
 
 		if(isset($_POST['sub'])){
 			$old_passwd = input("old_passwd");
@@ -57,6 +58,8 @@ class User extends \think\Controller
 	}
 
 	public function index(){
+
+		$this->assign("list_num",11);
 
 
 		$userModel = model("user");

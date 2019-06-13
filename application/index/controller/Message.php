@@ -14,6 +14,7 @@ class Message extends \think\Controller
 	}
 
 	public function my(){
+		$this->assign("list_num",26);
 		$user = $_SESSION['user'];
 		$user_id = $user['user_id'];
 		$model = model("UserMessage");
