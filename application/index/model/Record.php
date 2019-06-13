@@ -33,10 +33,9 @@ class Record extends Model
 				unset($data[$k]);
 				continue;
 			}
-
-			$temp['company_name'] = $v[0];
-			$temp['address'] = $v[1];
-			$temp['street'] = $v[2];
+			$temp['company_name'] = $v[1];
+			$temp['address'] = $v[2];
+			$temp['street'] = $v[9];
 			$datas[] = $temp;
 		}
 
