@@ -14,7 +14,7 @@ class Record extends \think\Controller
 	public function search(){
 	}
 
-	public function supplement(){
+	public function street(){
 		$uploads_dir = "../upload/";
 		$this->assign("list_num",2);
 		if(!empty($_FILES['file']['name'])){
@@ -36,6 +36,34 @@ class Record extends \think\Controller
 			$this->assign("filename",$suf);
 			$this->assign("title",$title);
 
+			return $this->fetch("street");
+		}
+		else{
+			return $this->fetch("street");
+		}
+	}
+
+	public function supplement(){
+		$uploads_dir = "../upload/";
+		$this->assign("list_num",2);
+		if(!empty($_FILES['file']['name'])){
+			$v = $_FILES['file'];
+			$tmp_name =  $v['tmp_name'];
+			$names = filename($v['name']);
+			$suf = $names['name'];
+			$ex = $names['exp'];
+			$suf = "up_".md5($suf.time()).".".$ex;
+			$rs=  move_uploaded_file($tmp_name, $uploads_dir."/".$suf);
+
+			$recordModel = model("Record");
+			$excel = readExcel($uploads_dir.$suf);
+
+
+			$data = $excel['data'];
+			$title = $excel['title'];
+
+			$this->assign("filename",$suf);
+			$this->assign("title",$title);
 
 			return $this->fetch("supplement");
 		}
@@ -126,6 +154,42 @@ class Record extends \think\Controller
 
 	}
 
+	public function exportStreet(){
+		$filename = input("post.filename");
+		$columns = input("post.columns");
+		$uploads_dir = "../upload/";
+		$recordModel = model("Record");
+		$path = $uploads_dir . $filename;
+		$excel = readExcel($path);
+
+		$data = $excel['data'];
+		$title = $excel['title'];
+
+		$tmp = [];
+		foreach($data as $k => $v){
+			$tmp[$v[$columns]][] = $v;
+		}
+
+
+
+		$rs = [];
+		$urls = [];
+		foreach($tmp as $k => $v){
+			$url = writeExcel($v,$title,$k."_".date("Y-m-d",time()));
+			$urls[] = WEB_DIR."/xls/".$url;
+			$rs[$k] = $url;
+		}
+
+
+		$zipFile = "街道_".date("Y-m-d"). ".zip ";
+		$zipPath = WEB_DIR."/xls/".$zipFile;
+		@unlink($zipPath);
+		$system = "zip ".$zipPath .implode(" ",$urls);
+		exec($system,$rel);
+		$this->assign("zipFile",$zipFile);
+		$this->assign("filePath",$rs);
+		return $this->fetch("street");
+	}
 
 
 	public function exportExcel(){
@@ -144,7 +208,6 @@ class Record extends \think\Controller
 		$rs = writeExcel($data,$title);
 
 
-
 		$this->assign("filePath",$rs);
 		return $this->fetch("supplement");
 	}
@@ -152,10 +215,6 @@ class Record extends \think\Controller
 
 	public function compare(){
 		if(!empty($_FILES['file']['name'])){
-
-
-
-
 			$v = $_FILES['file'];
 			$tmp_name =  $v['tmp_name'];
 			$names = filename($v['name']);

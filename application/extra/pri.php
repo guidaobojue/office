@@ -77,6 +77,39 @@ class pri{
 
 
 
+	public function update($n){
+		$rs = cache_get('list');
+		$pri = false;
+		if(!$rs){
+			$model = model("category");
+			$rs = $model->getAll();
+			cache_set('list',$rs);
+
+		}
+		if(!$pri){
+			$model = model("GroupCategory");
+			$categoryIdsRs = $model->getAllByGid($n);
+			$categoryIds = [];
+			foreach($categoryIdsRs as $k => $v){
+				$categoryId = $v['category_id'];
+
+				$this->getParents($categoryId,$rs);
+				$this->categorys[] = $categoryId;
+			}
+
+
+			$categorys = array_unique($this->categorys);
+
+			$pri = [];
+			foreach ($categorys as $k => $v){
+				if(isset($rs[$v])){
+					$pri[] = $rs[$v];
+				}
+			}
+			cache_set("pri_$n",$pri);
+		}
+		return true;
+	}
 
 	public function data($n){
 		$rs = cache_get('list');

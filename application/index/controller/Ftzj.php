@@ -98,7 +98,6 @@ class Ftzj extends \think\Controller
 			}
 			else{
 				$temp[$v['EPName']]['jobs'][] = [
-					[
 						"job_name"=>$v['RecName'],
 						"age"=> isset($v['Age']) ? $v['Age'] : "",
 						"education"=>$v['EduName'],
@@ -112,7 +111,6 @@ class Ftzj extends \think\Controller
 						"working_life"=>$v['WorkYears'],
 						"money"=>$v['RecMoney'],
 						'nature' => $v['Nature'],
-					]
 				];
 			}
 		}
@@ -145,10 +143,6 @@ class Ftzj extends \think\Controller
 
 			$model = model("Company");
 			$rs = $model->addCompany($post);
-
-
-
-
 
 			return $this->fetch("add");
 		}
@@ -203,7 +197,6 @@ class Ftzj extends \think\Controller
 	public function addJob(){
 		$id = input("id");
 		$this->assign("zj_company_id",$id);
-
 		if(isset($_POST['sub'])){
 
 			$post = $_POST;
@@ -369,9 +362,6 @@ class Ftzj extends \think\Controller
 		$jobs = $jobModel->getCAll();
 		$coms = $companyModel->getAll();
 
-
-
-
 		$temp = [];
 		foreach($coms as $k => $v){
 			$temp[$v['zj_company_id']] = $v;
@@ -385,10 +375,12 @@ class Ftzj extends \think\Controller
 				$v['money'] = '面议';
 			if(isset($coms[$v['zj_company_id']]))
 				$coms[$v['zj_company_id']]['jobs'][] = $v;
+
 		}
 		$temp = [];
 		foreach($coms as $k => $v){
-			$temp[$v['company_id']] = $v;
+			if(isset($v['jobs']))
+				$temp[$v['company_id']] = $v;
 		}
 		$coms = $temp;
 
@@ -400,8 +392,6 @@ class Ftzj extends \think\Controller
 				$coms[$v['company_id']]['jobs'] = $jobs;
 			}
 			else{
-				if(!isset($v['jobs']))
-					$v['jobs'] = [];
 				$coms[$v['company_id']] = $v;
 			}
 
@@ -411,8 +401,6 @@ class Ftzj extends \think\Controller
 			if(empty($v['jobs']))
 				unset($coms[$k]);
 		}
-
-
 		return $coms;
 	}
 
@@ -420,7 +408,6 @@ class Ftzj extends \think\Controller
 
 	public function screen(){
 		$coms = $this->getData();
-
 		$pageSize = 10;
 		$this->assign("first",json_encode(array_slice($coms,0,10)));
 		$this->assign("list",json_encode($coms));
@@ -429,5 +416,117 @@ class Ftzj extends \think\Controller
 		return $this->fetch("screen");
 	}
 
+
+	/*
+	 * 导入公司
+	 */
+	public function importComs(){
+		$uploads_dir = "../upload/";
+		if(!empty($_FILES['file']['name'])){
+			$v = $_FILES['file'];
+			$tmp_name =  $v['tmp_name'];
+			$names = filename($v['name']);
+			$suf = $names['name'];
+			$ex = $names['exp'];
+			$suf = "up_".md5($suf.time()).".".$ex;
+			$rs=  move_uploaded_file($tmp_name, $uploads_dir."/".$suf);
+
+			$recordModel = model("Record");
+			$excel = readExcel($uploads_dir.$suf);
+
+
+			$data = $excel['data'];
+
+			$coms=[];
+			foreach($data as $k => $v){
+				$temp['company_id'] = $v[2];
+				$temp['company_name'] =$v[1] ;
+				$temp['release_date'] = strtotime($v[5]);
+				$temp['due_date'] = strtotime($v[6]);
+				$temp['address'] = $v[11];
+				$temp['user_name'] = $v[9];
+				$temp['user_tel'] = $v[10];
+				$temp['status'] = 1;
+				$temp['comments'] = '';
+				$temp['is_show'] = 1;
+				$temp['origin'] = '';
+				$temp['qid'] = $v[0];
+				$coms[] = $temp;
+
+			}
+
+			$model = model("Company");
+			$model->saveAll($coms);
+			
+			return $this->fetch("importComs");
+		}
+		else{
+			return $this->fetch("importComs");
+		}
+	}
+
+
+	/*
+	 * 导入职位
+	 */
+	public function importJobs(){
+		$uploads_dir = "../upload/";
+		if(!empty($_FILES['file']['name'])){
+			$v = $_FILES['file'];
+			$tmp_name =  $v['tmp_name'];
+			$names = filename($v['name']);
+			$suf = $names['name'];
+			$ex = $names['exp'];
+			$suf = "up_".md5($suf.time()).".".$ex;
+			$rs=  move_uploaded_file($tmp_name, $uploads_dir."/".$suf);
+
+			$recordModel = model("Record");
+			$excel = readExcel($uploads_dir.$suf);
+
+
+
+
+			$model = model("company");
+			$temp = $model->getAll();
+			$coms = [];
+			foreach($temp as  $k => $v){
+				$coms[$v['qid']] = $v;
+			}
+			$data = $excel['data'];
+
+			$jobs = [];
+			$temp = [];
+			foreach($data as $k => $v){
+				if(!isset($coms[$v[1]])){
+					continue;
+					
+				}
+				$temp['zj_company_id'] =  $coms[$v[1]]['zj_company_id'];
+				$temp['job_name'] = $v[2];
+				$temp['age'] = $v[3];
+				$temp['education'] = $v[4];
+				$temp['address'] = $v[6];
+				$temp['comments'] = $v[7];
+				$temp['is_show'] = 1;
+				$temp['create_time'] = strtotime($v[8]);
+				$temp['due_time'] = strtotime($v[9]);
+				$temp['origin'] = '';
+				$temp['working_life'] = '';
+				$temp['money'] = $v[5];
+				$temp['nature'] = 1;
+				$temp['category_id'] = '';
+
+				$jobs[] = $temp;
+			}
+
+			$model = model("Job");
+			$model->saveAll($jobs);
+			
+			return $this->fetch("importJobs");
+		}
+		else{
+			return $this->fetch("importJobs");
+		}
+	}
 
 }

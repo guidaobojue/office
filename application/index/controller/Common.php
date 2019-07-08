@@ -32,7 +32,6 @@ class Common extends \think\Controller
 	}
 
 	public function qrupload(){
-		return $this->fetch("success");
 		if(isset($_POST['sub'])){
 			$file = request()->file('image');
 			$data = [];

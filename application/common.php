@@ -66,7 +66,7 @@ function readExcel($file){
 
 
 
-function writeExcel($data,$title = null){
+function writeExcel($data,$title = null,$file_name = null){
 	require_once "../extend/PHPExcel/PHPExcel.php";
 	require_once "../extend/PHPExcel/PHPExcel/IOFactory.php";
 	require_once "../extend/PHPExcel/PHPExcel/Settings.php";
@@ -147,7 +147,11 @@ function writeExcel($data,$title = null){
 
 
 
-	$file_name = "compare".time().rand(1,1000) .".xlsx";
+	if(is_null($file_name))
+		$file_name = "compare".time().rand(1,1000) .".xlsx";
+	else{
+		$file_name .=".xlsx";
+	}
 	$file = WEB_DIR."/xls/" .  $file_name;
 	$objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 	$objWriter->save($file);

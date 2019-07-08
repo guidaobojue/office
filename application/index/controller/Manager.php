@@ -3,6 +3,7 @@ namespace app\index\controller;
 use \think\view;
 use \think\Request;
 use \think\Model;
+use app\extra\pri;
 
 class Manager extends \think\Controller
 {
@@ -253,6 +254,14 @@ class Manager extends \think\Controller
 
 
 	public function update(){
+		$priObj = new pri();
+		$model = model("group");
+		$rs = $model->getAll();
+		foreach($rs as $k => $v){
+			$priObj->update($v->group_id);
+		}
+		$this->redirect("/index/manager/group");
+
 	}
 
 
