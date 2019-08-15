@@ -227,12 +227,19 @@ function cache_set($name,$data){
 	if(empty($rs))
 		$rs = [];
 	$rs[$name] = $data;
-	return file_put_contents(CACHE_FILE,json_encode($rs));
+	return  file_put_contents(CACHE_FILE,json_encode($rs));
 
 
 
 }
+
+function gen_cache(){
+	if(!is_file(CACHE_FILE))
+		file_put_contents(CACHE_FILE,'');
+}
+
 function cache_get($name){
+	gen_cache();
 	$rs = file_get_contents(CACHE_FILE);
 	$rs = json_decode($rs,true);
 	if(isset($rs[$name]))

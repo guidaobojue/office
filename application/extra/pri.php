@@ -39,7 +39,6 @@ class pri{
 
 
 		$groupId = array_pop($groupIds);
-
 		$data = $this->data($groupId);
 		foreach($data as $k => $v){
 			$this->data[$v['id']] = $v;
@@ -86,6 +85,7 @@ class pri{
 			cache_set('list',$rs);
 
 		}
+		$this->categorys = [];
 		if(!$pri){
 			$model = model("GroupCategory");
 			$categoryIdsRs = $model->getAllByGid($n);
@@ -99,7 +99,6 @@ class pri{
 
 
 			$categorys = array_unique($this->categorys);
-
 			$pri = [];
 			foreach ($categorys as $k => $v){
 				if(isset($rs[$v])){
