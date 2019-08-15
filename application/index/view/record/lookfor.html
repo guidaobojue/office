@@ -1,0 +1,112 @@
+{include file="./static/public_template/dxheader.html"/}
+<div class="row wrapper white-bg">
+	<div class="col-lg-10">
+		<p class="wrapper-title">街道分配</p>
+	</div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight member_lists  card_lists_table">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="ibox float-e-margins">
+
+				<div class="ibox-content">
+					<div class="form-group" > 
+						<div class="col-sm-6 tr_department">
+							<label class="col-sm-3 control-label">公司名</label>
+							<div class="col-sm-6"><input type="text" class="form-control" id="company_id" required=""  value="">
+								<span id="company_id_text" style="color:red"></span>
+							</div>
+						</div>
+						<div class="col-sm-6 tr_service">
+							<label class="col-sm-3 control-label">街道</label>
+							<div class="col-sm-6"><input type="text" class="form-control" id="street" value=""></div>
+						</div>
+					</div>
+					<!--
+	     <div class="col-lg-4">
+	     <span class="" style="line-height:35px">查看范例： </span>
+	     <span class="text-danger">
+	     <a class="text-danger" href="/example.xlsx">
+	     <i class="fa fa-play text-danger fa-rotate-90"></i> example.xlsx
+	     </a>
+	     </span>
+	     </div>
+					-->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{include file="./static/public_template/footer.html"/}
+<script>
+	$("#company_id").blur(function(){
+		var company_name = $("#company_id").val();
+		$.ajax({
+			url:"/index/record/comstreet",
+			type:"POST",
+			dataType:"json",
+			data:{"company_name":company_name},
+			success:function(data){
+				$("#street").val(data);
+			}
+		});
+		
+	});
+</script>
+
+<!--
+	<script>
+		function know(document_id){
+	swal({
+		title: "确定设为已读吗?",
+		// text: "You will not be able to recover this imaginary file!",
+		type: "warning",
+		showCancelButton: "取消",
+		confirmButtonColor: "#DD6B55",
+		confirmButtonText: "确认",
+		closeOnConfirm:true 
+	},function(rs){
+		$.ajax({
+			"url":"/Record/docKnow",
+			"type":"POST",
+			"dataType":"json",
+			"data":{"document_id":document_id},
+			"success":function(){
+				$("#s_"+document_id).html("已处理");
+
+			}
+		});
+	});
+
+
+
+
+}
+	</script>
+
+	-->
+
+	<script>
+		$(".selectBox th").click(function(){
+			$(".selectBox th").css("background-color","rgb(221, 221, 221");
+			$(this).css("background-color","red");
+			var val = $(this).attr("value");
+			$("#columns").val(val);
+			$("#subBtn").show();
+		});
+	</script>
+
+
+	<?php if(isset($ok)):?>
+	<script>
+		swal({
+			title: "导入成功",
+			text: "",
+			type: "success"
+		});
+	</script>
+	<?php endif;?>
+	<script> $(".nav_list_8").addClass("active"); </script>
+
+	</body>
+	</html>
