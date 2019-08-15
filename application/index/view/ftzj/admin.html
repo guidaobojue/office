@@ -4,7 +4,7 @@
 	<!-- Content Header (Page header) -->
 
 	<!-- Main content -->
-	<section class="content">
+	<section class="content" style="height:1000px">
 
 		<div class="row">
 			<div class="col-lg-10">
@@ -41,6 +41,23 @@
 
 									<div class="hr-line-dashed"></div>
 								</form>
+								<form method="get" class="form-horizontal" name="form1" action="/index/ftzj/admin">
+									<div class="form-group" > 
+										<div class="col-sm-4">
+											<label class="col-sm-3 control-label"></label>
+											<div class="col-sm-6"><input type="text" id="start_time" class="form-control" required="" name="search" <?php if(isset($search)):?>value="<?=$search;?>"<?php else:?> placeholder="统一码或名称"<?php endif;?>"></div>
+										</div>
+										<div class="form-group col-sm-3">
+
+											<div class=" col-sm-offset-3  recharge-btn">
+												<button class="btn btn-primary " type="submit" name="sub" value="1">搜索</button>
+											</div>
+										</div>
+									</div>
+
+
+									<div class="hr-line-dashed"></div>
+								</form>
 							</div>
 
 						</div>
@@ -50,87 +67,85 @@
 			</div>
 			<!-- /.box -->
 		</div>
-</div>
-<div class="row">
-	<div class="col-xs-12">
-		<div class="box">
-			<div class="box-header">
-			</div>
-			<div class="box-body">
-				<div class="table" >
-					<div class="table-responsive">
-
-						<div >
-							<table class="table table-bordered table-hover" style="float:left" >						
-								<tr>
-									<th>编号</th>
-									<th>企业名称</th>
-									<th>创建日期</th>
-									<!--<th>到期日期</th>-->
-									<th>操作</th>
-								</tr>
-								{if condition="!empty($list)" }
-								{foreach name="list" item="com"}
-
-								<tr id="com_{$com.zj_company_id}">
-									<td>{$com.company_id}</td>
-									<td>{$com.company_name}</td>
-									<td>{$com.release_date|date="Y-m-d",###}</td>
-									<!--<td>{$com.due_date}</td>-->
-									<td><a href="/index/ftzj/editCom/id/{$com.zj_company_id}" >修改</a> | 
-										<a href="/index/ftzj/job/id/{$com.zj_company_id}" >职位</a> | 
-										<a href="javascript:delCom({$com.zj_company_id})" >删除</a></td>
-								</tr>
-								{/foreach}
-
-
-								{/if}
-
-							</table>
-						</div>
-
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="box">
+					<div class="box-header">
 					</div>
+					<div class="box-body">
+						<div class="table" >
+							<div class="table-responsive">
+
+								<div >
+									<table class="table table-bordered table-hover" style="float:left" >						
+										<tr>
+											<th>编号</th>
+											<th>企业名称</th>
+											<th>创建日期</th>
+											<!--<th>到期日期</th>-->
+											<th>操作</th>
+										</tr>
+										{if condition="!empty($list)" }
+										{foreach name="list" item="com"}
+
+										<tr id="com_{$com.zj_company_id}">
+											<td>{$com.company_id}</td>
+											<td>{$com.company_name}</td>
+											<td>{$com.release_date|date="Y-m-d",###}</td>
+											<!--<td>{$com.due_date}</td>-->
+											<td><a href="/index/ftzj/editCom/id/{$com.zj_company_id}" >修改</a> | 
+												<a href="/index/ftzj/job/id/{$com.zj_company_id}" >职位</a> | 
+												<a href="javascript:delCom({$com.zj_company_id})" >删除</a></td>
+										</tr>
+										{/foreach}
+
+
+										{/if}
+
+									</table>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<!-- /.box-body -->
 				</div>
+				<!-- /.box -->
 			</div>
-			<!-- /.box-body -->
+			<!-- /.col -->
 		</div>
-		<!-- /.box -->
-	</div>
-	<!-- /.col -->
-</div>
-<!-- /.row -->
-<div class="box-footer">
-	<a type="button" class="btn btn-primary" href="/index/ftzj/addCom" target="blank" >增加公司</a>
-	<ul class="pagination pagination-sm no-margin pull-right">
-		{$page}
-	</ul>
-</div> 
+		<div class="row">
+			<a type="button" class="btn btn-primary" href="/index/ftzj/addCom" target="blank" >增加公司</a>
+			<ul class="pagination pagination-sm no-margin pull-right">
+				{$page}
+			</ul>
+		</div> 
+		<!-- /.row -->
 	</section>
-	<!-- /.content -->
-	</div>
-	{include file="./static/public_template/footer.html"/}
-	<!-- /.content-wrapper -->
-	<!-- 制作图表js -->
-	<script src="__PUBLIC__/js/Chart.js"></script>
+</div>
+{include file="./static/public_template/footer.html"/}
+<!-- /.content-wrapper -->
+<!-- 制作图表js -->
+<script src="__PUBLIC__/js/Chart.js"></script>
 
-	<script src="/public/static/Template/plugins/datepicker/bootstrap-datepicker.js"></script>
-	<script type="text/javascript">
-		function delCom(company_id){
-			var rs = confirm("确定删除吗");
-			var _this = this;
-			if(rs)
-				$.ajax({
-					url:"/index/ftzj/delCompany",
-					data:{"company_id":company_id},
-					dataType:"json",
-					type:"POST",
-					success:function(data){
-						$("#com_"+company_id).hide(200);
-					},
-				})
+<script src="/public/static/Template/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script type="text/javascript">
+	function delCom(company_id){
+		var rs = confirm("确定删除吗");
+		var _this = this;
+		if(rs)
+			$.ajax({
+				url:"/index/ftzj/delCompany",
+				data:{"company_id":company_id},
+				dataType:"json",
+				type:"POST",
+				success:function(data){
+					$("#com_"+company_id).hide(200);
+				},
+			})
 
 
-		}
+	}
 
 
 
@@ -144,4 +159,4 @@ $('#end_time').datepicker({
 	format: "yyyy-mm-dd",
 });
 
-	</script>
+</script>

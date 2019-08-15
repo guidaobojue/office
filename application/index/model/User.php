@@ -28,6 +28,17 @@ class user extends Model
 
 	}
 
+	public function isExist($uname){
+		$rs = $this->where("uname = '$uname'")->find();
+		if(is_null($rs)){
+			return false;
+		}
+		else
+			return true;
+	}
+
+
+
 	public function getRoamUsers($temp){
 		$data = [];
 		$data['apply_user'] = $this->where(['user_id'=>$temp['apply_user_id']])->find()->data;

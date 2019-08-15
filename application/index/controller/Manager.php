@@ -171,6 +171,49 @@ class Manager extends \think\Controller
 	}
 
 
+	public function addUser(){
+		$error = [];
+		$groupModel = model("group");
+		$groups = $groupModel->getAll();
+		$this->assign("groups",$groups);
+
+		$levelModel = model("level");
+		$levels = $levelModel->getAll();
+		$this->assign("levels",$levels);
+
+		if(input("sub")){
+			$uname = input("username");
+			$group_id = input("group_id");
+			$level_id = input("level_id");
+			$passwd = input("passwd");
+			if(empty($uname))
+				$error['user_name'] = "不可为空";
+			$model = model("user");
+			$rs = $model->isExist($uname);
+
+			if($rs)
+				$error['user_name'] = "用户名已经存在";
+
+			if(empty($error)){
+				$this->assign("status","增加成功");
+				$data['uname'] = $uname;
+				$data['pwd']  = md5($passwd);
+				$data['level_id'] = $level_id;
+				$user_id = $model->register($data);
+				$model = model("UserGroup");
+				$model->addUserGroup($user_id,$group_id);
+			}
+
+			else{
+				$this->assign("error",$error);
+			}
+
+
+
+		}
+		return $this->fetch("addUser");
+	}
+
 
 	public function editUser(){
 		$user_id = input("user_id");
@@ -213,6 +256,11 @@ class Manager extends \think\Controller
 		$levels = $levelModel->getAll();
 
 
+		$userGroupModel = model("UserGroup");
+		$userGroup = $userGroupModel->getGroup($user_id);
+		if(!empty($userGroup))
+			$this->assign("group_id",$userGroup->group_id);
+
 		$userInfo = $userModel->getOne($user_id);
 		$level_id = $userInfo['level_id'];
 		$levelInfo = $levelModel->getOne($level_id);
@@ -235,6 +283,14 @@ class Manager extends \think\Controller
 		$user_id = input("user_id");
 		$model = model("user");
 		$model->delUser($user_id);
+		echo json_encode(1);
+
+	}
+
+	public function delGroup(){
+		$group_id = input("group_id");
+		$model = model("group");
+		$model->delGroup($group_id);
 		echo json_encode(1);
 
 	}

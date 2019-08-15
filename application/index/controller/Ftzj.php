@@ -18,7 +18,12 @@ class Ftzj extends \think\Controller
 	 */
 	public function barrage() {
 		$coms = $this->getData();
-		$this->assign("list",$coms);
+		$data = [];
+		foreach($coms as $k => $v){
+			if($v['is_show'] == 1)
+				$data[] = $v;
+		}
+		$this->assign("list",$data);
 		return $this->fetch("index");
 	}
 
@@ -117,18 +122,80 @@ class Ftzj extends \think\Controller
 		return $temp;
 	}
 
+	public function jobs(){
+		$this->assign("list_num",5);
+		$search = input("search");
+		$obj = model("job");
+		$data = [];
+
+		if(!empty($search)){
+			$list= $obj->list(10,$search);
+			$this->assign("search",$search);
+		}
+		else
+			$list= $obj->list(10);
+
+		$comModel = model("company");
+		foreach($list as $k => &$v){
+			$com = $comModel->getOne($v->zj_company_id);
+			$v->company_id = $com['company_id'];
+			$v->company_name = $com['company_name'];
+			$v->user_tel= $com['user_tel'];
+		}
+
+		$page = $list->render();
+		$this->assign("search",$search);
+		$this->assign("list",$list);
+		$this->assign("page",$page);
+		return $this->fetch("jobs");
+	}
+
+
 	/*
 	 * 后台操作
 	 */
 	public function admin(){
 		$this->assign("list_num",5);
+		$search = input("search");
 		$obj = model("company");
 		$data = [];
-		$list= $obj->list();
+
+		if(!empty($search)){
+			$list= $obj->list(10,$search);
+			$this->assign("search",$search);
+		}
+		else{
+			$list= $obj->list(10);
+		}
+
 		$page = $list->render();
+		$this->assign("search",$search);
 		$this->assign("list",$list);
 		$this->assign("page",$page);
 		return $this->fetch("admin");
+	}
+
+	public function checkId(){
+		$model = model("company");
+		$company_id = input("company_id");
+		$rs = $model->hasCompanyId($company_id);
+		if($rs)
+			return json_encode(true);
+		else{
+			return json_encode(false);
+		}
+	}
+
+	public function addTime(){
+		$post = $_POST;
+		$job_ids = $post['job_ids'];
+
+		$model = model("job");
+		foreach($job_ids as $k => $v){
+			$model->addTime($v,3600 * 24 * 182);
+		}
+		echo json_encode(1);
+
 	}
 
 
@@ -138,11 +205,49 @@ class Ftzj extends \think\Controller
 			$post = $_POST;
 			unset($post['id'],$post['sub']);
 
-			$post['origin'] = 1;
-			$post['release_date'] = time(); 
-
+			$data['origin'] = 1;
+			$data['release_date'] = time(); 
+			$data['company_id'] = $post['company_id'];
+			$data['company_name'] = $post['company_name'];
+			$data['address'] = $post['address'];
+			$data['user_name'] = $post['user_name'];
+			$data['user_tel'] = $post['user_tel'];
 			$model = model("Company");
-			$rs = $model->addCompany($post);
+			$zj_company_id = $model->addCompany($data);
+
+			$temp = [];
+			if(isset($post['job_name'])){
+				$job_names = $post['job_name'];
+				$job_addresss = $post['job_address'];
+				$comments= $post['comments'];
+				$create_time = time();
+				$is_show = 1;
+				$due_time = $create_time + 182 * 3600 * 24;
+				$origin = 1;
+				$moneys = $post['money'];
+				$ages = $post['age'];
+				$educations = $post['education'];
+
+				for($i=0;$i<count($post['job_name']);$i++){
+					$temp[] = [
+						'job_name' => $job_names[$i],
+					'age' => $ages[$i],
+					'education' => $educations[$i],
+					'address' => $job_addresss[$i],
+					'comments' => $comments[$i],
+					'is_show' => $is_show,
+					'create_time' => $create_time,
+					'due_time' => $due_time,
+					'origin' => $origin,
+					'money' => $moneys[$i],
+					'zj_company_id' => $zj_company_id,
+				];
+				}
+				$model = model("job");
+				$model->saveAll($temp);
+
+			}
+			
 
 			return $this->fetch("add");
 		}
@@ -184,8 +289,15 @@ class Ftzj extends \think\Controller
 			return false;
 
 		$obj = model("job");
-		$data = [];
 		$list= $obj->companyJobList($id);
+		$comModel = model("company");
+
+		$data = [];
+		foreach($list as $k => &$v){
+			$comRs = $comModel->getOne($v['zj_company_id']);
+			$v['user_tel'] = $comRs['user_tel'];
+		}
+
 		$page = $list->render();
 		$this->assign("list",$list);
 		$this->assign("page",$page);
@@ -193,6 +305,14 @@ class Ftzj extends \think\Controller
 		$this->assign("zj_company_id",$id);
 		return $this->fetch("job");
 	}
+
+	public function changeShow(){
+		$job_id = input("job_id");
+		$model = model("job");
+		$model->changeShow($job_id);
+		die(json_encode(1));
+	}
+
 
 	public function addJob(){
 		$id = input("id");
@@ -203,10 +323,9 @@ class Ftzj extends \think\Controller
 			$post['zj_company_id'] = $id;
 			$post['origin'] =  1;   //本地增加
 			$post['create_time'] = time();
-			$post['due_time'] = strtotime($post['due_time']);
+			$post['due_time'] = $post['create_time'] + 3600 * 24 * 182;//strtotime($post['due_time']);
 			unset($post['sub']);
 			unset($post['id']);
-
 			$model = model("job");
 			$model->addJob($post);
 			$this->redirect("/index/ftzj/job/id/$id");
@@ -251,8 +370,6 @@ class Ftzj extends \think\Controller
 		$end_time = $post['end_time'];
 
 
-
-
 		$start_time = strtotime($start_time);
 		$end_time = strtotime($end_time);
 		if(!$start_time || !$end_time)
@@ -261,9 +378,8 @@ class Ftzj extends \think\Controller
 		$end_time += 24 * 3600 -1;
 
 		$model = model("job");
-		$data = $model->getList($start_time,$end_time);
-		$title ="fuck" ;
 
+		$data = $model->getList($start_time,$end_time);
 		$title = [
 			'序号',
 			'职位名称',
@@ -277,22 +393,42 @@ class Ftzj extends \think\Controller
 
 
 
-		foreach($data as $k => &$v){
-			unset($v['is_show']);
-			unset($v['origin']);
-			unset($v['zj_company_id']);
-			$v['create_time'] = date("Y-m-d",$v['create_time']);
-			$v['due_time'] = date("Y-m-d",$v['due_time']);
+		$temp = [];
+		foreach($data as $k => $v){
+			$temp[] = [
+				$v['zj_job_id'],
+				$v['job_name'],
+				$v['age'],
+				$v['education'],
+				$v['address'],
+				$v['comments'],
+				date("Y-m-d H:i:s",$v['create_time']),
+				date("Y-m-d H:i:s",$v['due_time']),
+			];
 		}
 
-		$rs = writeExcel($data,$title);
-		$this->redirect("/xls/".$rs);
+		$data = $temp;
+		if(!empty($data)){
+			$rs = writeExcel($data,$title);
+			$this->redirect("/xls/".$rs);
+		}
+		else
+			die("数据为空");
 
 
 
 
 	}
 
+	public function delJob(){
+		$job_id= input("job_id");
+
+		$model = model("job");
+		$rs = $model->delJob($job_id);
+
+		die(json_encode(1));
+
+	}
 	public function delCompany(){
 		$company_id = input("company_id");
 

@@ -84,12 +84,11 @@
 	function delGroup(id){
 		var fs = confirm("确认删除吗?");
 		$.ajax({
-			url:"/index/manager/delUser}",
+			url:"/index/manager/delGroup",
 			data:{'group_id':id},
 			dataType:'json',
 			type:'POST',
 			success:function(rs){
-
 				$("#tr_"+id).hide();
 				alert("删除成功");
 

@@ -8,7 +8,9 @@
 
 		<div class="row">
 			<div class="col-lg-10">
-				<p class="wrapper-title"><i class="fa fa-file-text-o"></i> 职位列表</p>
+				<p class="wrapper-title"><i class="fa fa-file-text-o"></i> 职位列表
+				<a style="float:right" type="button" class="btn btn-primary" href="/index/ftzj/admin/" >返回</a>
+				</p>
 			</div>
 		</div>
 		<div class="row">
@@ -23,22 +25,46 @@
 								<div >
 									<table class="table table-bordered table-hover" style="float:left" >						
 										<tr>
+											<th>多选</th>
 											<th>编号</th>
 											<th>职位</th>
 											<th>年龄</th>
 											<th>学历</th>
-											<th>地址</th>
+											<th>薪资</th>
+											<th>电话</th>
+											<th>操作</th>
 										</tr>
 										{if condition="!empty($list)" }
 										{foreach name="list" item="job"}
-										<tr>
-											<td>{$job.zj_job_id}</td>
-											<td>{$job.job_name}</td>
-											<td>{$job.age}</td>
-											<td>{$job.education}</td>
-											<td><a href="/index/ftzj/editJob/id/{$job.zj_job_id}/comId/{$comId}" >修改</a> | 
+										<tr id="job_{$job.zj_job_id}" class="first_tr" style="background:#ccebff">
+											<td><input class="checks" type="checkbox" name="checks[]"value="{$job.zj_job_id}"/></td>
+											<td class="onc">{$job.zj_job_id}</td>
+											<td class="onc">{$job.job_name}</td>
+											<td class="onc">{$job.age}</td>
+											<td class="onc">{$job.education}</td>
+											<td class="onc">{$job.money}</td>
+											<td class="onc">{$job.user_tel}</td>
+											<td>
+
+												<?php if($job['is_show'] == 1):?>
+												<a id="st_{$job.zj_job_id}" st="<?=$job['is_show'];?>" href="javascript:change({$job.zj_job_id})" >显示中</a> |
+												<?php else:?>
+												<a id="st_{$job.zj_job_id}" st="<?=$job['is_show'];?>" href="javascript:change({$job.zj_job_id})" >已关闭</a> |
+												<?php endif;?>
+												<a href="/index/ftzj/editJob/id/{$job.zj_job_id}/comId/{$comId}" >修改</a> | 
 												<a href="javascript:delJob({$job.zj_job_id})" >删除</a></td>
 										</tr>
+										<tr class="job_{$job.zj_job_id} second_tr" style="display:none;">
+											<td colspan="7">
+												<div>地址:{$job.address}</div>
+											</td>
+										</tr>
+										<tr class="job_{$job.zj_job_id} second_tr" style="display:none;">
+											<td colspan="7">
+												<div>简介:{$job.comments}</div>
+											</td>
+										</tr>
+
 										{/foreach}
 
 
@@ -59,6 +85,7 @@
 		<!-- /.row -->
 		<div class="box-footer">
 			<a type="button" class="btn btn-primary" href="/index/ftzj/addJob/id/{$zj_company_id}" >增加职位</a>
+			<a type="button" class="btn btn-primary" href="javascript:addTime()" >延长半年</a>
 			<ul class="pagination pagination-sm no-margin pull-right">
 				{$page}
 			</ul>
@@ -72,19 +99,54 @@
 <script src="__PUBLIC__/js/Chart.js"></script>
 
 <script type="text/javascript">
-	function delCom(company_id){
-		alert(company_id);
-		}
+	var checks = [];
+var zj_job_id = '';
+$(".checks").click(function(){
+	zj_job_id = $(this).val();
 
-	//Date picker
-	$('#start_time').datepicker({
-		autoclose: true,
-		format: "yyyy-mm-dd",
-	});
-$('#end_time').datepicker({
-	autoclose: true,
-	format: "yyyy-mm-dd",
+	var rs = false;
+	for(var i in checks){
+		if(checks[i] == zj_job_id){
+			rs = true;
+		}
+	}
+	if(rs){
+		delete checks[i];
+	}
+	else
+		checks.push(zj_job_id);
 });
+	function addTime(){
+					
+		$.ajax({
+			url:"/index/ftzj/addTime",
+			data:{"job_ids":checks},
+			dataType:"json",
+			type:"POST",
+			success:function(data){
+				if(data){
+					window.location.href = window.location.href;
+				}
+			}
+
+	})
+	}
+	function delJob(job_id){
+		var rs = confirm("确定删除吗");
+		var _this = this;
+		if(rs)
+			$.ajax({
+				url:"/index/ftzj/delJob",
+				data:{"job_id":job_id},
+				dataType:"json",
+				type:"POST",
+				success:function(data){
+					$("#job_"+job_id).hide(200);
+					$("#job_"+job_id).next().hide(1);
+				},
+			})
+	}
+
 
 
 $('.submit').click(function(){
@@ -92,5 +154,26 @@ $('.submit').click(function(){
 	$(this).parents('form').submit();
 })
 
+$(".first_tr .onc").click(function(){
+	$(this).parent().next().show(1000);
+	$(this).parent().next().next().show(1000);
+})
+
+function change(job_id){
+	$.ajax({
+		url:"/index/ftzj/changeShow",
+		data:{"job_id":job_id},
+		dataType:"json",
+		type:"POST",
+		success:function(data){
+			var rs = $("#st_"+job_id).attr("st");
+			if(rs == 1){
+				$("#st_"+job_id).html("已关闭");
+			}
+			else
+				$("#st_"+job_id).html("显示中");
+		},
+	})
+}
 
 </script>

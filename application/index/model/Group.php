@@ -19,6 +19,10 @@ class group extends Model
 
 	}
 
+	public function delGroup($group_id){
+		$this->where(['group_id'=>$group_id])->delete();
+	}
+
 
 	public function getAll(){
 		return $this->select();

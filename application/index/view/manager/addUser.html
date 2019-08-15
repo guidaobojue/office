@@ -16,7 +16,7 @@
 					<h5>增加用户</h5>
 				</div>
 				<div class="ibox-content">
-					<form method="POST" class="form-horizontal" name="form1" action="/index/manager/register">
+					<form method="POST" class="form-horizontal" name="form1" action="/index/manager/addUser">
 						<div class="form-group" > 
 							<div class="col-sm-6 tr_department">
 								<label class="col-sm-3 control-label">登录名:</label>
@@ -28,6 +28,7 @@
 								<label class="col-sm-3 control-label">密码:</label>
 								<div class="col-sm-6">
 									<input class="form-control"  name="passwd" type="password" value="123456">
+								默认：	123456
 								</div>
 							</div>
 						</div>
@@ -77,47 +78,15 @@
 </div>
 
 <!-- Mainly scripts -->
-<script src="<?=VIP_JS;?>jquery-2.1.1.js"></script>
-<script src="<?=VIP_JS;?>bootstrap.min.js"></script>
-<script src="<?=VIP_JS;?>plugins/metisMenu/jquery.metisMenu.js"></script>
-
-
-
-<!-- Peity -->
-
-
-<!-- Custom and plugin javascript -->
-<script src="<?=VIP_JS;?>plugins/pace/pace.min.js"></script>
-<script src="<?=VIP_JS;?>inspinia.js"></script>
-<script src="<?=VIP_JS;?>echarts.min.js"></script>
-
 </body>
 </html>
 
 
-<script type="text/javascript">
-	{if condition="isset($error)"}
+{if condition="isset($error)"}
 	<script>
-		alert("{$error}");
-	<script>
+		{foreach name="error" item="k"}
+		alert("{$k}");
+		{/foreach}
+	</script>
 {/if}
-
-function  changeSelect(index){
-	//选择对象
-	var city = document.form1.location;
-	//修改省份列表的选择项
-	form1.area.selectedIndex = index;
-
-	//指定城市中<option>标记的个数
-	city.length = arr_city[index].length;
-
-	//循环将数组中的数据写入<option>标记中
-	for (var j = 0; j<arr_city[index].length;j++) {
-	city.options[j].text = arr_city[index][j];
-	city.options[j].value = arr_city[index][j];
-	}
-	}
-
-</script>
-
 

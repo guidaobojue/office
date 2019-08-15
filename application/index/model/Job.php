@@ -28,8 +28,14 @@ class job extends Model
 		return $data;
 	}
 
-	public function list($pageSize = 10){
-		$list = $this->paginate($pageSize);
+	public function list($pageSize = 10,$where = null){
+		if(!is_null($where) && !empty($where)){
+			$sql = "job_name like '%$where%'";
+			$list = $this->where($sql)->paginate($pageSize,false,['query'=>['search'=>$where]]);
+		}
+		else{
+			$list = $this->paginate($pageSize);
+		}
 		return $list;
 	}
 
@@ -48,6 +54,8 @@ class job extends Model
 
 
 	public function delJob($job_id){
+		$data['zj_job_id']=$job_id;
+		return  $this->destroy($data);
 	}
 
 
@@ -105,7 +113,26 @@ class job extends Model
 	}
 	 */
 
+	public function changeShow($job_id){
+		$rs = $this->where(['zj_job_id'=>$job_id])->find();
+		if(!empty($rs)){
+			$isShow = $rs->data['is_show'];
+			$isShow = !$isShow;
+			return $this->where(['zj_job_id'=>$job_id])->update(['is_show'=>$isShow]);
+		}
+		else
+			return false;
 
+	}
+
+	public function addTime($zj_job_id,$time){
+		$rs = $this->where(['zj_job_id'=>$zj_job_id])->find();
+		if(!empty($rs)){
+			$due_time = $rs['due_time'];
+			$due_time += $time;
+			$rs = $this->where(['zj_job_id'=>$zj_job_id])->update(['due_time'=>$due_time]);
+		}
+	}
 
 
 }

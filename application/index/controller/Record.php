@@ -107,6 +107,53 @@ class Record extends \think\Controller
 				}
 			}
 
+			/* 临时用 */
+			/*
+			$tmp = [];
+			$error = [];
+			foreach($data1 as $k => $v){
+				if(in_array(trim($v[21]),["审核通过","审核中"])){
+					if(isset($tmp[$v[0]])){
+						$error[] = $v;
+					}
+					$tmp[$v[0]] = $v;
+				}
+				else{
+				}
+			}
+			$data1 = $tmp;
+
+
+			$tmp = [];
+			foreach($data2 as $k => $v){
+				if(in_array(trim($v[21]),["5.电子版审核通过","3.电子版报市局"]))
+					$tmp[$v[1]] = $v;
+			}
+
+
+			$data2 = $tmp;
+
+			$tmp = [];
+			$i = 0;
+			foreach($data1 as $k => $v){
+				if(!isset($data2[$k])){
+					$tmp[] = $v;
+				}
+				else{
+					$i++;
+
+				}
+			}
+
+
+			$url= writeExcel($tmp,$title2);
+			echo  WEB_DIR."/xls/".$url;
+			exit;
+			 */
+			/* 临时用 */
+
+
+
 			$this->assign('title1',$title1);
 			$this->assign('title2',$title2);
 			return $this->fetch("statusSub");
@@ -183,7 +230,7 @@ class Record extends \think\Controller
 
 		$zipFile = "街道_".date("Y-m-d"). ".zip ";
 		$zipPath = WEB_DIR."/xls/".$zipFile;
-		@unlink($zipPath);
+		@unlink(trim($zipPath));
 		$system = "zip ".$zipPath .implode(" ",$urls);
 		exec($system,$rel);
 		$this->assign("zipFile",$zipFile);
@@ -277,6 +324,16 @@ class Record extends \think\Controller
 
 	}
 
+	public function comstreet(){
+		$company_name = input("company_name");
+		$model = model("vpcompany");
+		$rs = $model->getStreet($company_name);
+		echo json_encode($rs);
+
+	}
+	public function lookfor(){
+		return $this->fetch("lookfor");
+	}
 
 
 }

@@ -17,7 +17,7 @@
 			</div>
 			<div class="col-lg-2">
 				<p class="wrapper-title" style="float:right">
-				<a class="btn btn-primary " href="/index/manager/register" target="_blank">新增用户</a>
+				<a class="btn btn-primary " href="/index/manager/addUser" target="_blank">新增用户</a>
 				</p>
 			</div>
 		</div>
@@ -100,21 +100,21 @@
 <script type="text/javascript">
 	function delUser(id){
 		var fs = confirm("确认删除吗?");
-		$.ajax({
-			url:"/index/manager/delUser",
-			data:{'user_id':id},
-			dataType:'json',
-			type:'POST',
-			success:function(rs){
+		if(fs){
+			$.ajax({
+				url:"/index/manager/delUser",
+				data:{'user_id':id},
+				dataType:'json',
+				type:'POST',
+				success:function(rs){
+					$("#tr_"+id).hide();
 
-				$("#tr_"+id).hide();
-				alert("删除成功");
-
-			}
-		})
+				}
+			})
+		}
 	}
 
-	//Date picker
+//Date picker
 
 
 $('.submit').click(function(){

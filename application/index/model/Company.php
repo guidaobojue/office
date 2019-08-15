@@ -21,8 +21,14 @@ class company extends Model
 	}
 
 
-	public function list($pageSize = 10){
-		$list = $this->paginate($pageSize);
+	public function list($pageSize = 10,$where = null){
+		if(is_null($where) && empty($where)){
+			$list = $this->order("release_date desc")->paginate($pageSize);
+		}
+		else{
+			$sql =  "company_id like '%$where%' or company_name like '%$where%'";
+			$list = $this->where($sql)->order("release_date desc")->paginate($pageSize,false,['query'=>['search'=>$where]]);
+		}
 		return $list;
 	}
 
@@ -36,8 +42,14 @@ class company extends Model
 	public function addCompany($data){
 		$rs = $this->save($data);
 		return $this->zj_company_id;
+	}
 
-
+	public function hasCompanyId($company_id){
+		$rs = $this->where(['company_id'=>$company_id])->find();
+		if(empty($rs))
+			return false;
+		else 
+			return true;
 	}
 
 	public function editCompany($id,$data){
