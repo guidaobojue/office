@@ -343,7 +343,6 @@ class Ftzj extends \think\Controller
 		$comId = input("comId");
 		$this->assign("zj_job_id",$id);
 		$this->assign("comId",$comId);
-
 		$model = model("job");
 
 		if(isset($_POST['sub'])){
@@ -352,7 +351,10 @@ class Ftzj extends \think\Controller
 			unset($post['sub'],$post['id'],$post['comId']);
 
 			$model->editJob($id,$post);
-			$this->redirect("/index/ftzj/job/id/$comId");
+			if(!empty($comId))
+				$this->redirect("/index/ftzj/job/id/$comId");
+			else
+				$this->redirect("/index/ftzj/jobs");
 		}
 		else{
 			$rs = $model->getOne($id);

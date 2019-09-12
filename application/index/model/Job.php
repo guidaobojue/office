@@ -34,7 +34,7 @@ class job extends Model
 			$list = $this->where($sql)->paginate($pageSize,false,['query'=>['search'=>$where]]);
 		}
 		else{
-			$list = $this->paginate($pageSize);
+			$list = $this->order("zj_job_id desc")->paginate($pageSize);
 		}
 		return $list;
 	}

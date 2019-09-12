@@ -37,7 +37,6 @@ class pri{
 			return [];
 		$groupIds = $_SESSION['user']['group'];
 
-
 		$groupId = array_pop($groupIds);
 		$data = $this->data($groupId);
 		foreach($data as $k => $v){
