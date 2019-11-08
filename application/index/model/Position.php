@@ -42,6 +42,29 @@ class Position extends Model
 			return current($rs);
 	}
 
+	public function getAll(){
+		$rs = $this->order("level asc")->select();
+		return $rs;
+	}
+
+	public function updateUser($user_id,$position_id){
+		$rs = $this->table("vp_user_department")->where(['user_id'=>$user_id])->find();
+		if($rs){
+			$this->table("vp_user_department")->where(['user_id'=>$user_id])->update(['position_id'=>$position_id]);
+			return true;
+		}
+		else 
+			return false;
+	}
+
+	public function getOne($position_id){
+		return $this->where(['position_id'=>$position_id])->find();
+	}
+
+	public function updatePos($position_id,$level,$position_name){
+		return $this->where(['position_id'=>$position_id])->update(['level'=>$level,"position_name"=>$position_name]);
+	}
+
 
 }
 

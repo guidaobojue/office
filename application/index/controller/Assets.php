@@ -208,7 +208,7 @@ class Assets extends \think\Controller
 
 		foreach($list as $k => $v){
 			$temp =  array_merge($v->getData(),$models[$v['model_id']]);
-			if(isset($roams[$temp['item_id']])){
+			if(isset($roams[$temp['item_id']]) && $roams[$temp['item_id']]['status'] != 4){
 				$temp['isRoam'] = 1;
 			}
 			else{
@@ -293,8 +293,6 @@ class Assets extends \think\Controller
 			4 => $roam['office_approval_user_id'],
 		];
 
-
-		$user_id = 68;
 		$score = 1;
 		foreach($users_id as $k => $v){
 			if($user_id == $v){
@@ -405,38 +403,78 @@ class Assets extends \think\Controller
 			$data[] = $temp;
 
 
-		$endLogModel = model("RoamEndLog");
-		$logs = $endLogModel->getByITemId($item_id);
 
-		$userIds = [];
-		foreach($logs as $k => $v){
-			$userIds[] = $v['user_id'];
-			$userIds[] = $v['to_user_id'];
-		}
-		$userIds = array_unique($userIds);
-		$users = [];
+		$roamModel = model("roam");
+		$roamRs = $roamModel->getEndByItemId($item_id);
+		$roamRs = array_reverse($roamRs);
 		$userModel = model("user");
-		foreach($userIds as $k => $v){
-			$users[$v] = $userModel->getOne($v);
+		$logs = [];
+		foreach($roamRs as $k => $v){
+			$temp = $v;
+			$temp['apply_user'] = $userModel->getOne($v['apply_user_id']);
+			$temp['use_user'] = $userModel->getOne($v['use_user_id']);
+			$temp['apply_approval_user'] = $userModel->getOne($v['apply_approval_user_id']);
+			$temp['use_approval_user'] = $userModel->getOne($v['use_approval_user_id']);
+			$temp['office_approval_user'] = $userModel->getOne($v['office_approval_user_id']);
+			$logs[] = $temp;
 		}
-
-		foreach($logs as $k => $v){
-			if(isset($users[$v['user_id']]))
-				$logs[$k]['user'] = $users[$v['user_id']];
-			if(isset($users[$v['to_user_id']]))
-				$logs[$k]['to_user'] = $users[$v['to_user_id']];
-		}
-
-
 
 		$this->assign("item",$item);
 		$user_id = $item['user_id'];
-		$model = model("user");
-		$user = $model->getDetail($user_id);
+		$user = $userModel->getDetail($user_id);
 		$this->assign("user",$user);
 		$this->assign("logs",$logs);
+		$this->assign("item_id",$item_id);
 
 		return $this->fetch("item_detail");
+	}
+
+	public function print(){
+		$item_id = input("item_id");
+		if(!$item_id || !is_numeric($item_id))
+			return false;
+		$model = model("item");
+
+		$item = $model->getOne($item_id);
+		$temp = [];
+		$data = [];
+		foreach($item as $k => $v){
+			if(count($temp)<2){
+				$temp[] = $v;
+			}
+			else{
+				$data[] = $temp;
+				$temp = [];
+			}
+		}
+		if(!empty($temp))
+			$data[] = $temp;
+
+
+
+		$roamModel = model("roam");
+		$roamRs = $roamModel->getByItemId($item_id);
+		$roamRs = array_reverse($roamRs);
+		$userModel = model("user");
+		$logs = [];
+		foreach($roamRs as $k => $v){
+			$temp = $v;
+			$temp['apply_user'] = $userModel->getOne($v['apply_user_id']);
+			$temp['use_user'] = $userModel->getOne($v['use_user_id']);
+			$temp['apply_approval_user'] = $userModel->getOne($v['apply_approval_user_id']);
+			$temp['use_approval_user'] = $userModel->getOne($v['use_approval_user_id']);
+			$temp['office_approval_user'] = $userModel->getOne($v['office_approval_user_id']);
+			$logs[] = $temp;
+		}
+
+		$this->assign("item",$item);
+		$user_id = $item['user_id'];
+		$user = $userModel->getDetail($user_id);
+		$this->assign("user",$user);
+		$this->assign("logs",$logs);
+		$this->assign("item_id",$item_id);
+
+		return $this->fetch("item_print");
 	}
 
 

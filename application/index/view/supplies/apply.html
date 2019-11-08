@@ -1,9 +1,4 @@
 {include file="./static/public_template/dxheader.html"/}
-<style>
-.af{
-	font-size:0.8em;
-}
-</style>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 	<!-- Content Header (Page header) -->
@@ -12,13 +7,8 @@
 	<section class="content">
 
 		<div class="row">
-			<div class="col-lg-9">
-				<p class="wrapper-title"><i class="fa fa-file-text-o"></i> 菜单列表</p>
-			</div>
-			<div class="col-lg-2">
-				<p class="wrapper-title" style="float:right">
-				<a class="btn btn-primary " href="/index/category/update">更新缓存</a>
-				</p>
+			<div class="col-lg-10">
+				<p class="wrapper-title"><i class="fa fa-file-text-o"></i>列表</p>
 			</div>
 		</div>
 		<div class="row">
@@ -31,8 +21,37 @@
 							<div class="table-responsive">
 
 								<div >
-									<table class="table table-bordered table-hover" style="float:left width:10%" >
-										<?=$list;?>
+									<table class="table table-bordered table-hover" style="float:left" >						
+										<tr>
+											<th>编号</th>
+											<th>名称</th>
+											<th>时间</th>
+											<th>状态</th>
+											<th>操作</th>
+										</tr>
+										{if condition="!empty($list)" }
+										{foreach name="list" item="k"}
+										<tr>
+											<td>{$k.supplies_id}</td>
+											<td>{$k.name}</td>
+											<td>{$k.time|date="Y-m-d H;i:s",###}</td>
+											<td>
+												{if condition="$k.status eq 1"}
+												正在进行中
+												{elseif condition="$k.status eq 2"}
+												已经结束 
+												{/if}
+											</td>
+											<td>
+												<a href="/index/supplies/apply/id/{$k.supplies_id}" target="_blank">申报</a>
+											</td>
+
+										</tr>
+										{/foreach}
+
+
+										{/if}
+
 									</table>
 								</div>
 
@@ -46,35 +65,29 @@
 			<!-- /.col -->
 		</div>
 		<!-- /.row -->
+		<div class="box-footer">
+			<ul class="pagination pagination-sm no-margin pull-right">
+			</ul>
+		</div> 
 	</section>
 	<!-- /.content -->
 </div>
 {include file="./static/public_template/footer.html"/}
-
-
-<?php if(isset($tip)):?>
-	<script>
-		alert("更新成功");
-	</script>
-<?php endif;?>
-
 <!-- /.content-wrapper -->
 <!-- 制作图表js -->
 <script src="__PUBLIC__/js/Chart.js"></script>
 
 	<script src="/public/static/Template/plugins/datepicker/bootstrap-datepicker.js"></script>
 <script type="text/javascript">
-	function delUser(id){
-		var fs = confirm("确认删除吗?");
+	function read(id){
 		$.ajax({
-			url:"/index/manager/delUser}",
-			data:{'user_id':id},
+			url:"/index/supplies/end",
+			data:{'id':id},
 			dataType:'json',
 			type:'POST',
 			success:function(rs){
-
-				$("#tr_"+id).hide();
-				alert("删除成功");
+				$("#comment_"+id).html("已读");
+				window.location.href=window.location.href;
 
 			}
 		})
@@ -87,15 +100,5 @@ $('.submit').click(function(){
 	$(this).parents('form').attr('action', $(this).attr('action'));
 	$(this).parents('form').submit();
 })
-
-$('#start_time').datepicker({
-	autoclose: true,
-	format: "yyyy-mm-dd",
-});
-
-$('#end_time').datepicker({
-	autoclose: true,
-	format: "yyyy-mm-dd",
-});
 
 </script>

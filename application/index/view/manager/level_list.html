@@ -1,9 +1,4 @@
 {include file="./static/public_template/dxheader.html"/}
-<style>
-.af{
-	font-size:0.8em;
-}
-</style>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 	<!-- Content Header (Page header) -->
@@ -13,11 +8,9 @@
 
 		<div class="row">
 			<div class="col-lg-9">
-				<p class="wrapper-title"><i class="fa fa-file-text-o"></i> 菜单列表</p>
+				<p class="wrapper-title"><i class="fa fa-file-text-o"></i>级别管理</p>
 			</div>
 			<div class="col-lg-2">
-				<p class="wrapper-title" style="float:right">
-				<a class="btn btn-primary " href="/index/category/update">更新缓存</a>
 				</p>
 			</div>
 		</div>
@@ -31,8 +24,31 @@
 							<div class="table-responsive">
 
 								<div >
-									<table class="table table-bordered table-hover" style="float:left width:10%" >
-										<?=$list;?>
+									<table class="table table-bordered table-hover" style="float:left" >						
+										<tr>
+											<th>编号</th>
+											<th>级别名称</th>
+											<th>级别等级 </th>
+											<th>操作</th>
+										</tr>
+										{if condition="!empty($list)" }
+										{foreach name="list" item="k"}
+										<tr>
+											<td>{$k.position_id}</td>
+											<td>{$k.position_name}</td>
+											<td>{$k.level}</td>
+											<td>
+												<a href="/index/manager/chgPosition/position_id/{$k.position_id}" target="_blank">修改</a>
+											</td>
+
+
+
+										</tr>
+										{/foreach}
+
+
+										{/if}
+
 									</table>
 								</div>
 
@@ -46,33 +62,27 @@
 			<!-- /.col -->
 		</div>
 		<!-- /.row -->
+		<div class="box-footer">
+			<ul class="pagination pagination-sm no-margin pull-right">
+			</ul>
+		</div> 
 	</section>
 	<!-- /.content -->
 </div>
 {include file="./static/public_template/footer.html"/}
-
-
-<?php if(isset($tip)):?>
-	<script>
-		alert("更新成功");
-	</script>
-<?php endif;?>
-
 <!-- /.content-wrapper -->
 <!-- 制作图表js -->
 <script src="__PUBLIC__/js/Chart.js"></script>
 
 	<script src="/public/static/Template/plugins/datepicker/bootstrap-datepicker.js"></script>
 <script type="text/javascript">
-	function delUser(id){
+	function delGroup(id){
 		var fs = confirm("确认删除吗?");
 		$.ajax({
-			url:"/index/manager/delUser}",
-			data:{'user_id':id},
+			url:"/index/manager/delGroup",
 			dataType:'json',
 			type:'POST',
 			success:function(rs){
-
 				$("#tr_"+id).hide();
 				alert("删除成功");
 

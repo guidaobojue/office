@@ -86,7 +86,23 @@ class Roam extends Model
 		$this->where(['roam_id'=>$roam_id])->update(['status'=>$status]);
 	}
 
+	public function getByItemId($item_id){
+		$rs = $this->where(['item_id'=>$item_id])->select();
+		$temp = [];
+		foreach($rs as $k => $v){
+			$temp[] = $v->data;
+		}
+		return $temp;
+	}
 
+	public function getEndByItemId($item_id){
+		$rs = $this->where(["status"=>4,'item_id'=>$item_id])->select();
+		$temp = [];
+		foreach($rs as $k => $v){
+			$temp[] = $v->data;
+		}
+		return $temp;
+	}
 }
 
 

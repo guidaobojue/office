@@ -35,7 +35,7 @@ class Record extends Model
 			}
 			$temp['company_name'] = $v[1];
 			$temp['address'] = $v[2];
-			$temp['street'] = $v[9];
+			$temp['street'] = $v[3];
 			$datas[] = $temp;
 		}
 

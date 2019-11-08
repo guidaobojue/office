@@ -14,7 +14,7 @@ class level extends Model
 
 
 	public function getAll(){
-		return $this->select();
+		return  $this->select();
 	}
 
 

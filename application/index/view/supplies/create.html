@@ -1,0 +1,142 @@
+{include file="./static/public_template/dxheader.html"/}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+
+	<!-- Main content -->
+	<section class="content">
+
+		<div class="row">
+			<div class="col-lg-10">
+				<p class="wrapper-title"><i class="fa fa-file-text-o"></i>办公用品列表</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="box">
+					<div class="box-header">
+					</div>
+					<div class="box-body">
+						<div class="table" >
+							<div class="table-responsive">
+								<form method="POST" class="form-horizontal" name="form1" action="/index/supplies/create">
+									<div class="form-group" > 
+										<div class="col-sm-4 tr_department">
+											<label class="col-sm-3 control-label">名称</label>
+											<div class="col-sm-6"><input type="text" class="form-control" required="" name="name" value=""></div>
+										</div>
+										<div class="form-group col-sm-3">
+
+											<div class=" col-sm-offset-3  recharge-btn">
+												<button class="btn btn-primary " type="submit" name="sub" value="1">增加</button>
+											</div>
+										</div>
+									</div>
+
+
+									<div class="hr-line-dashed"></div>
+								</form>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<!-- /.box-body -->
+			</div>
+			<!-- /.box -->
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="box">
+					<div class="box-header">
+					</div>
+					<div class="box-body">
+						<div class="table" >
+							<div class="table-responsive">
+
+								<div >
+									<table class="table table-bordered table-hover" style="float:left" >						
+										<tr>
+											<th>编号</th>
+											<th>名称</th>
+											<th>时间</th>
+											<th>状态</th>
+											<th>操作</th>
+										</tr>
+										{if condition="!empty($list)" }
+										{foreach name="list" item="k"}
+										<tr>
+											<td>{$k.supplies_id}</td>
+											<td>{$k.name}</td>
+											<td>{$k.time|date="Y-m-d H;i:s",###}</td>
+											<td>
+												{if condition="$k.status eq 1"}
+												正在进行中
+												{elseif condition="$k.status eq 2"}
+												已经结束 
+												{/if}
+											</td>
+											<td>
+												<a href="/index/supplies/detail/id/{$k.supplies_id}" target="_blank">详情</a> |
+												{if condition="$k.status eq 1"}
+												<a href="javascript:read({$k.supplies_id})" >设置完结</a> 
+												{/if}
+											</td>
+
+										</tr>
+										{/foreach}
+
+
+										{/if}
+
+									</table>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<!-- /.box-body -->
+				</div>
+				<!-- /.box -->
+			</div>
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
+		<div class="box-footer">
+			<ul class="pagination pagination-sm no-margin pull-right">
+				{$page}
+			</ul>
+		</div> 
+	</section>
+	<!-- /.content -->
+</div>
+{include file="./static/public_template/footer.html"/}
+<!-- /.content-wrapper -->
+<!-- 制作图表js -->
+<script src="__PUBLIC__/js/Chart.js"></script>
+
+	<script src="/public/static/Template/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script type="text/javascript">
+	function read(id){
+		$.ajax({
+			url:"/index/supplies/end",
+			data:{'id':id},
+			dataType:'json',
+			type:'POST',
+			success:function(rs){
+				$("#comment_"+id).html("已读");
+				window.location.href=window.location.href;
+
+			}
+		})
+	}
+
+	//Date picker
+
+
+$('.submit').click(function(){
+	$(this).parents('form').attr('action', $(this).attr('action'));
+	$(this).parents('form').submit();
+})
+
+</script>

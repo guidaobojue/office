@@ -1,0 +1,438 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+		<title>南院科技-公服中心工具平台</title>
+
+		<link href="/public/static/vip/css/bootstrap.min.css" rel="stylesheet">
+		<link href="/public/static/vip/font-awesome/css/font-awesome.css" rel="stylesheet">
+		<link href="/public/static/vip/css/animate.css" rel="stylesheet">
+		<link href="/public/static/vip/css/style.css" rel="stylesheet">
+		<!-- Daterange picker -->
+		<link rel="stylesheet" href="/public/static/Template//plugins/datepicker/datepicker3.css"> 
+		<link rel="stylesheet" href="/public/static/Template/plugins/daterangepicker/daterangepicker.css">
+		<!-- Daterange picker -->
+		<link rel="stylesheet" href="/public/static/vip/css/content.css">
+		<link href="/public/static/vip/css/sweetalert/sweetalert.css" rel="stylesheet">
+		<link rel="stylesheet" href="/public/static/vip/css/content.css">
+		<link rel="stylesheet" type="text/css" href="/public/static/layui/css/layui.css"/>
+
+
+
+		<link rel="stylesheet" href="/public/static/vip/css/jasny-bootstrap.min.css">
+		<link rel="stylesheet" href="/public/static/vip/css/bootstrap-social.css">
+
+
+		<style>
+.widget h2{
+	font-size: 24px;
+}
+label {
+	margin-left: 5px;
+	font-weight: 300;
+}
+    em{
+	    margin-left: 5px;
+    }
+    .widget ul{
+	    font-size: 18px;
+    }
+
+
+
+    .input_radio div{
+	    width:50%;
+    }
+    .input_radio .t{
+	    width:100%;
+	    height:40px;
+    }
+    .input_radio .f{
+	    float:left;
+    }
+    .input_radio .s{
+	    float:left;
+    }
+
+		</style>
+
+	</head>
+
+	<body>
+		<div id="wrapper" class="index" style="width:100%">
+			<div id="" class="gray-bg dashbard-1">
+				<div class="row border-bottom">
+					<nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+						<div class="navbar-header">
+							<a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="javascript:void(0)"><i class="fa fa-bars"></i> </a>
+						</div>
+					</nav>
+				</div>
+				<style>
+.tool{
+	position: fixed; 
+	float: right; 
+	right: 10%; 
+	background-color: #807b65;
+	color: #00ff1c;
+	top:50%;
+	z-index:1
+}
+.tool div{
+	float:left;
+}
+.frag:hover{
+}
+.tool li{
+	cursor:pointer;
+	padding:10px 20px;
+
+}
+.tool li:hover{
+	background-color:yellow;
+}
+				</style>
+				<div class="row wrapper white-bg">
+					<div class="col-lg-10">
+						<p class="wrapper-title"><i class="fa"></i>问卷调查</p>
+					</div>
+
+					<div class="col-lg-2">
+
+					</div>
+				</div>
+				<div class="wrapper wrapper-content animated fadeInRight">
+					<div class="row">
+						<div class="col-lg-12">
+							<form method="POST" class="form-horizontal" name="form1" action="/index/question/report">
+								<input type="hidden" name="question_id" value="1"/>
+								<div class="ibox float-e-margins">
+									<div class="ibox-title">
+										<h5> 	2019年下半年北京市单位用人需求调查表</h5>
+									</div>
+
+									<div class="ibox-content" id="main" style="background-color:rgb(243, 243, 244);">
+										<div class="form-group" > 
+											<div class="col-sm-10 tr_department">
+												<label class="col-sm-3 control-label">1.单位全称:</label>
+												<div class="col-sm-3">
+													<input type="text" class="form-control"  name="answer[3]" value="">
+												</div>
+											</div>
+										</div>
+										<div class="form-group" > 
+											<div class="col-sm-10 tr_department">
+												<label class="col-sm-3 control-label">2.单位类型:</label>
+												<div class="col-sm-3 input_radio">
+													<div class="t">
+														<div class="f">
+															<input type="radio" class="form-control"  name="answer[1]" value="0">
+														</div>
+														<div class="s">
+															国家机关											</div>
+													</div>
+													<div class="t">
+														<div class="f">
+															<input type="radio" class="form-control"  name="answer[1]" value="1">
+														</div>
+														<div class="s">
+															事业单位											</div>
+													</div>
+													<div class="t">
+														<div class="f">
+															<input type="radio" class="form-control"  name="answer[1]" value="2">
+														</div>
+														<div class="s">
+															企业											</div>
+													</div>
+													<div class="t">
+														<div class="f">
+															<input type="radio" class="form-control"  name="answer[1]" value="3">
+														</div>
+														<div class="s">
+															个体工商户											</div>
+													</div>
+													<div class="t">
+														<div class="f">
+															<input type="radio" class="form-control"  name="answer[1]" value="4">
+														</div>
+														<div class="s">
+															社会团体											</div>
+													</div>
+													<div class="t">
+														<div class="f">
+															<input type="radio" class="form-control"  name="answer[1]" value="5">
+														</div>
+														<div class="s">
+															民办非企业单位											</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="form-group" > 
+											<div class="col-sm-10 tr_department">
+												<label class="col-sm-3 control-label">3.企业当前用工总人数:</label>
+												<div class="col-sm-3">
+													<input type="text" class="form-control"  name="answer[4]" value="">
+												</div>
+											</div>
+										</div>
+										<div class="form-group" > 
+											<div class="col-sm-10 tr_department">
+												<label class="col-sm-3 control-label">(1)其中男性:</label>
+												<div class="col-sm-1">
+													<input type="text" class="form-control"  name="answer[5]" value="">
+												</div>
+												<label class="col-sm-2 control-label">其中女性:</label>
+												<div class="col-sm-1">
+													<input type="text" class="form-control"  name="answer[6]" value="">
+												</div>
+											</div>
+										</div>
+										<hr>
+										<div class="form-group" > 
+											<div class="col-sm-10 tr_department">
+												<label class="col-sm-3 control-label">(2)16-24岁:</label>
+												<div class="col-sm-1">
+													<input type="text" class="form-control"  name="answer[7]" value="">
+												</div>
+												<label class="col-sm-2 control-label">25-34岁:</label>
+												<div class="col-sm-1">
+													<input type="text" class="form-control"  name="answer[8]" value="">
+												</div>
+											</div>
+										</div>
+										<div class="form-group" > 
+											<div class="col-sm-10 tr_department">
+												<label class="col-sm-3 control-label">35-44岁:</label>
+												<div class="col-sm-1">
+													<input type="text" class="form-control"  name="answer[9]" value="">
+												</div>
+												<label class="col-sm-2 control-label">45岁及以上:</label>
+												<div class="col-sm-1">
+													<input type="text" class="form-control"  name="answer[15]" value="">
+												</div>
+											</div>
+										</div>
+										<hr>
+										<div class="form-group" > 
+											<div class="col-sm-10 tr_department">
+												<label class="col-sm-3 control-label">(3)本科及以上:</label>
+												<div class="col-sm-1">
+													<input type="text" class="form-control"  name="answer[10]" value="">
+												</div>
+												<label class="col-sm-2 control-label">大专:</label>
+												<div class="col-sm-1">
+													<input type="text" class="form-control"  name="answer[11]" value="">
+												</div>
+											</div>
+										</div>
+										<div class="form-group" > 
+											<div class="col-sm-10 tr_department">
+												<label class="col-sm-3 control-label">中专\技校\职高:</label>
+												<div class="col-sm-1">
+													<input type="text" class="form-control"  name="answer[12]" value="">
+												</div>
+												<label class="col-sm-2 control-label">高中:</label>
+												<div class="col-sm-1">
+													<input type="text" class="form-control"  name="answer[13]" value="">
+												</div>
+											</div>
+										</div>
+										<div class="form-group" > 
+											<div class="col-sm-10 tr_department">
+												<label class="col-sm-3 control-label">初中及以下:</label>
+												<div class="col-sm-1">
+													<input type="text" class="form-control"  name="answer[14]" value="">
+												</div>
+											</div>
+										</div>
+										<div class="form-group" > 
+											<div class="col-sm-10 tr_department">
+												<label class="col-sm-3 control-label">15.是否愿意接受深访:</label>
+												<div class="col-sm-3 input_radio">
+													<div class="t">
+														<div class="f">
+															<input type="radio" class="form-control"  name="answer[2]" value="0">
+														</div>
+														<div class="s">
+															是											</div>
+													</div>
+													<div class="t">
+														<div class="f">
+															<input type="radio" class="form-control"  name="answer[2]" value="1">
+														</div>
+														<div class="s">
+															否											</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="form-group" > </div>
+
+									</div>
+									<div class="ibox-content">
+										<div class="form-group" > 
+											<div class="col-sm-6 tr_department">
+												<input type="submit" class="btn btn-primary"  value="提交">
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div> </div>
+
+
+					<!--
+	     <div class="footer">
+	     <div class="pull-right">
+	     Version 1.0.0
+	     </div>
+	     <div>
+
+	     <strong>Copyright © 2018</strong> 南院科技. All rights reserved.
+	     </div>
+	     </div>
+					-->
+
+
+
+
+
+
+
+
+					<script src="/public/static/vip/js/jquery-2.1.1.js"></script>
+					<script src="/public/static/vip/js/bootstrap.min.js"></script>
+					<script src="/public/static/vip/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+
+					<script src="/public/static/vip/js/plugins/pace/pace.min.js"></script>
+					<script src="/public/static/vip/js/cropbox.js"></script>
+					<script src="/public/static/vip/js/plugins/sweetalert/sweetalert.min.js"></script>
+
+					<!-- Custom and plugin javascript -->
+
+					<!-- iCheck -->
+
+					<!-- Mainly scripts -->
+
+
+					<script src="/public/static/vip/js/jasny-bootstrap.min.js"></script>
+					<script src="/public/static/vip/js/full_height.js"></script>
+
+
+
+					<!-- Peity -->
+
+
+					<!-- Custom and plugin javascript -->
+					<script src="/public/static/vip/js/plugins/slimscroll/jquery.slimscroll.js"></script>
+					<script src="/public/static/vip/js/inspinia.js"></script>
+					<script src="/public/static/vip/js/echarts.min.js"></script>
+					<script src="/public/static/vip/js/plugins/pace/pace.min.js"></script>
+
+
+					<script>
+						$(".nav_list_1").addClass("active");
+					</script>
+
+			</div>
+		</div>
+		<script>
+
+			var n = 1;
+function getStr(i,arg=null){
+	var str = "";
+	if(i!=3){
+		n++;
+	}
+	if(i == 0){
+		str = ' <div class="form-group" > <div class="col-sm-6 tr_department"> <label class="col-sm-3 control-label">题目:</label> <div class="col-sm-6"> <input type="text" class="form-control"  name="select['+n+']" value=""> </div><div onclick="closeSelect(this)">X</div>  </div></div> ';
+	}
+	else if(i == 1){
+		str = ' <div class="form-group" > <div class="col-sm-6 tr_department"> <label class="col-sm-3 control-label">多选:</label> <div class="col-sm-6"> <input type="text" class="form-control"  name="box['+n+']" value=""> </div><div onclick="closeSelect(this)">X</div>  </div></div> ';
+	}
+	else if(i == 2){
+		str = ' <div class="form-group" > <div class="col-sm-6 tr_department"> <label class="col-sm-3 control-label">填空:</label> <div class="col-sm-6"> <input type="text" class="form-control"  name="blank['+n+']" value=""> </div><div onclick="closeSelect(this)">X</div>  </div></div> ';
+	}
+	else if(i == 3){
+		str = ' <div class="form-group option" style="float:left;width:20%"> <div class=""> <label class="col-sm-4 control-label">选项:</label> <div class="col-sm-6"> <input type="text" class="form-control"  name="option['+n+'][]" value=""> </div> </div> </div> ';
+	}
+	else if(i == 4){
+		str = '<div class="form-group" style="background-color:yellow" onclick="openFrag('+arg+')"> <div class="col-sm-6 tr_department"> <label class="col-sm-3 control-label">碎片</label> </div> </div>';
+	}
+	return str;
+}
+
+function openFrag(n){
+	window.open("/index/question/editFrag/id/"+n);
+}
+
+function closeSelect(obj){
+	var parents = $(obj).parent();
+	var option = null;
+	option = $(parents).next();
+	delOption(option);
+	$(option).remove();
+	$(parents).remove();
+}
+
+function delOption(obj){
+	var s = $(obj).hasClass("option");
+	if(s){
+		obj = $(obj).next();
+		delOption(obj);
+	}
+	$(obj).remove();
+}
+
+
+$(".selected").click(function(){
+	$("#main").append(getStr(0));
+});
+
+$(".box").click(function(){
+	$("#main").append(getStr(1));
+});
+
+$(".blank").click(function(){
+	$("#main").append(getStr(2));
+});
+
+$(".option").click(function(){
+	$("#main").append(getStr(3));
+});
+
+$(".frag").click(function(){
+	$.ajax({
+		url:"/index/question/addFrag",
+		data:{"name":""},
+		dataType:"json",
+		type:"POST",
+		success:function(data){
+			if(data){
+				$("#main").append(getStr(4,data));
+			}
+		}
+	});
+});
+
+$(".frag").hover(function(){
+	$(".frag_ul").show(1000);
+});
+		</script>
+
+		<!-- Mainly scripts -->
+	</body>
+</html>
+
+
+

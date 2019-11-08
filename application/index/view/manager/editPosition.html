@@ -2,7 +2,7 @@
 {include file="./static/public_template/dxheader.html"/}
 <div class="row wrapper white-bg">
 	<div class="col-lg-10">
-		<p class="wrapper-title"><i class="fa"></i> 编缉用户</p>
+		<p class="wrapper-title"><i class="fa"></i>编缉级别</p>
 	</div>
 
 	<div class="col-lg-2">
@@ -14,53 +14,27 @@
 		<div class="col-lg-12">
 			<div class="ibox float-e-margins">
 				<div class="ibox-title">
-					<h5>编织用户</h5>
+					<h5>编缉级别</h5>
 				</div>
 				<div class="ibox-content">
-					<form method="POST" class="form-horizontal" name="form1" action="/index/manager/editUser">
+					<form method="POST" class="form-horizontal" name="form1" action="/index/manager/chgPosition">
 						<div class="form-group" > 
 							<div class="col-sm-6 tr_department">
-								<label class="col-sm-3 control-label">登录名:</label>
-								<label class="col-sm-3 control-label" style="text-align:left">
-									{$user.uname}
-								</label>
-							</div>
-							<div class="col-sm-6 tr_area">
-								<label class="col-sm-3 control-label">密码:</label>
+								<label class="col-sm-3 control-label">名别名称:</label>
 								<div class="col-sm-6">
-									<input type="text" class="form-control"  name="passwd" value="">
+									<input type="text" class="form-control"  name="position_name" value="{$position.position_name}">
 								</div>
 							</div>
-						</div>
-						<div class="hr-line-dashed"></div>
-						<div class="form-group" > 
 							<div class="col-sm-6 tr_area">
-								<label class="col-sm-3 control-label">群组:</label>
+								<label class="col-sm-3 control-label">等级:</label>
 								<div class="col-sm-6">
-									<select name="group_id">
-										{foreach name="groups" item="k"}
-										<option {if condition="isset($group_id) and $group_id == $k.group_id"} selected="selected"{/if} value="{$k.group_id}">{$k.group_name}</option>
-										{/foreach}
-									</select>
-
-								</div>
-							</div>
-							<div class="col-sm-6 tr_service">
-								<label class="col-sm-3 control-label">级别</label>
-								<div class="col-sm-6">
-
-									<select name="position_id">
-										{foreach name="positions" item="k"}
-										<option {if condition="$user.position_id== $k.position_id"} selected="selected"{/if} value="{$k.position_id}">{$k.position_name}</option>
-										{/foreach}
-									</select>
-								
+									<input type="text" class="form-control"  name="level" value="{$position.level}">
 								</div>
 							</div>
 						</div>
 						<div class="hr-line-dashed"></div>
 						<div class="form-group col-sm-7">
-							<input type="hidden" name="user_id" value="{$user_id}"/>
+							<input type="hidden" name="position_id" value="{$position_id}"/>
 
 							<div class=" col-sm-offset-3  recharge-btn">
 								<button class="btn btn-primary " type="submit" name="sub" value="1">确定</button>

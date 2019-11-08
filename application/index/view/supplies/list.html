@@ -7,18 +7,8 @@
 	<section class="content">
 
 		<div class="row">
-			<div class="col-lg-9">
-				<form action="/index/manager/search" method="POST">
-				<p class="wrapper-title"><i class="fa fa-file-text-o"></i> 用户列表 
-					<input style="width:30%" type="text" name="search"/>
-					<button class="btn btn-primary " >搜索</button>
-				</p>
-				</form>
-			</div>
-			<div class="col-lg-2">
-				<p class="wrapper-title" style="float:right">
-				<a class="btn btn-primary " href="/index/manager/addUser" target="_blank">新增用户</a>
-				</p>
+			<div class="col-lg-10">
+				<p class="wrapper-title"><i class="fa fa-file-text-o"></i>列表</p>
 			</div>
 		</div>
 		<div class="row">
@@ -34,35 +24,29 @@
 									<table class="table table-bordered table-hover" style="float:left" >						
 										<tr>
 											<th>编号</th>
-											<th>登录名</th>
-											<th>职位</th>
-											<th>群组</th>
-											<th>创建时间</th>
+											<th>名称</th>
+											<th>时间</th>
+											<th>状态</th>
 											<th>操作</th>
 										</tr>
 										{if condition="!empty($list)" }
 										{foreach name="list" item="k"}
-										<tr id="tr_{$k.user_id}">
-											<td>{$k.user_id}</td>
-											<td>{$k.uname}</td>
-											<td>{$k.position['position_name']}</td>
+										<tr>
+											<td>{$k.supplies_id}</td>
+											<td>{$k.name}</td>
+											<td>{$k.time|date="Y-m-d H;i:s",###}</td>
 											<td>
-												{if condition="count($k.groups) == 1"}
-												{$k.groups[0]['group_name']}
-												{else}
-												{foreach name="k.groups" item="ik"}
-												{$ik['group_name']} |
-												{/foreach}
+												{if condition="$k.status eq 1"}
+												正在进行中
+												{elseif condition="$k.status eq 2"}
+												已经结束 
 												{/if}
 											</td>
-											<td>{$k.last_time|date="Y-m-d",###}
 											<td>
-												<a href="/index/manager/editUser/user_id/{$k.user_id}" target="_blank">编缉</a> |
-												<a href="javascript:delUser({$k.user_id})" >删除</a>
-												
+												<a href="/index/supplies/apply/id/{$k.supplies_id}" target="_blank">申报</a>
+												|
+												<a href="/index/supplies/myApply/id/{$k.supplies_id}" target="_blank">我的清单</a>
 											</td>
-
-
 
 										</tr>
 										{/foreach}
@@ -98,38 +82,26 @@
 
 	<script src="/public/static/Template/plugins/datepicker/bootstrap-datepicker.js"></script>
 <script type="text/javascript">
-	function delUser(id){
-		var fs = confirm("确认删除吗?");
-		if(fs){
-			$.ajax({
-				url:"/index/manager/delUser",
-				data:{'user_id':id},
-				dataType:'json',
-				type:'POST',
-				success:function(rs){
-					$("#tr_"+id).hide();
+	function read(id){
+		$.ajax({
+			url:"/index/supplies/end",
+			data:{'id':id},
+			dataType:'json',
+			type:'POST',
+			success:function(rs){
+				$("#comment_"+id).html("已读");
+				window.location.href=window.location.href;
 
-				}
-			})
-		}
+			}
+		})
 	}
 
-//Date picker
+	//Date picker
 
 
 $('.submit').click(function(){
 	$(this).parents('form').attr('action', $(this).attr('action'));
 	$(this).parents('form').submit();
 })
-
-$('#start_time').datepicker({
-	autoclose: true,
-	format: "yyyy-mm-dd",
-});
-
-$('#end_time').datepicker({
-	autoclose: true,
-	format: "yyyy-mm-dd",
-});
 
 </script>

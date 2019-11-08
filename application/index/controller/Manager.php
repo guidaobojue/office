@@ -25,6 +25,36 @@ class Manager extends \think\Controller
 	}
 
 
+	public function level(){
+		$model = model("position");
+		$rs = $model->getAll();
+		$this->assign("list",$rs);
+
+		return $this->fetch("level_list");
+	}
+
+	public function chgPosition(){
+		$position_id = input("position_id");
+		$model = model("position");
+
+		if(!empty($_POST)){
+			$level = input("level");
+			$position_name = input("position_name");
+			$model->updatePos($position_id,$level,$position_name);
+			$this->redirect("/index/manager/level");
+
+		}
+
+		$rs = $model->getOne($position_id);
+		$this->assign("position",$rs);
+		$this->assign("position_id",$position_id);
+		return $this->fetch("editPosition");
+
+	}
+
+
+
+
 	public function search(){
 		$search = input("search");
 
@@ -101,7 +131,6 @@ class Manager extends \think\Controller
 		}
 		unset($v);
 
-		$this->assign("levels",$levels);
 		$this->assign("groups",$groups);
 
 
@@ -220,23 +249,23 @@ class Manager extends \think\Controller
 		$userModel = model("user");
 		$levelModel = model("level");
 		$groupModel = model("group");
+		$positionModel = model("position");
 
 
 		if(input("sub")){
 
 			$passwd = input("passwd");
-			$level_id = input("level_id");
+			$position_id = input("position_id");
 			$group_id = input("group_id");
 
-			$data['level_id'] = $level_id;
-			if(!empty($passwd))
+			#$data['position_id'] = $position_id;
+			if(!empty($passwd)){
 				$data['pwd']  = md5($passwd);
+				$userModel->editInfo($user_id,$data);
+			}
 
-			$userModel->editInfo($user_id,$data);
 			$groupModel->editUserGroup($user_id,$group_id);
-
-
-
+			$positionModel->updateUser($user_id,$position_id);
 
 
 			$groupInfo = $groupModel->getOneByUserId($user_id);
@@ -266,9 +295,15 @@ class Manager extends \think\Controller
 		$levelInfo = $levelModel->getOne($level_id);
 
 
+		$positionModel = model("Position");
+		$positionRs = $positionModel->getAll();
+		$userPosition = $positionModel->getOneByUserId($userInfo->user_id);
+		$userInfo->position_id = $userPosition['position_id'];
+
+
 		$this->assign("user",$userInfo);
 		$this->assign("groups",$groups);
-
+		$this->assign("positions",$positionRs);
 
 		$this->assign("user_id",$user_id);
 		$this->assign("level_id",$level_id);

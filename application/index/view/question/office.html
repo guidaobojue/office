@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>南院科技-公服中心工具平台</title>
+		<!-- Tell the browser to be responsive to screen width -->
+		<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+		<!-- Bootstrap 3.3.6 -->
+		<link rel="stylesheet" href="<?=DP_CSS;?>bootstrap/css/bootstrap.min.css">
+		<!-- Font Awesome -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+		<!-- Ionicons -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+		<!-- Theme style -->
+		<link rel="stylesheet" href="<?=DP_CSS;?>dist/css/AdminLTE.min.css">
+		<!-- AdminLTE Skins. Choose a skin from the css/skins
+	  folder instead of downloading all of them to reduce the load. -->
+	  <link rel="stylesheet" href="/public/static/Template/dist/css/skins/_all-skins.min.css">
+
+	  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	  <!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	  <![endif]-->
+	</head>
+	<body class="hold-transition skin-blue sidebar-mini">
+		<div class="wrapper">
+			<!-- Left side column. contains the logo and sidebar -->
+
+			<!-- Content Wrapper. Contains page content -->
+			<div class="content-wrapper" style="margin-left:0px">
+				<!-- Content Header (Page header) -->
+				<section class="content-header">
+					<h1>
+						丰台区就业状况调查
+						<small>(企业版)</small>
+					</h1>
+				</section>
+
+				<!-- Main content -->
+				<section class="content">
+					<div class="row">
+						<!-- left column -->
+						<div class="col-md-10" style="margin-left:8.5%">
+							<!-- general form elements -->
+							<!-- /.box -->
+
+							<!-- Form Element sizes -->
+							<div class="box box-success">
+								<form method="POST" class="form-horizontal" name="form1" action="/index/question/report">
+									<input type="hidden" name="question_id" value="2"/>
+									<div class="box-header with-border">
+										<h3 class="box-title">1.企业名称</h3>
+									</div>
+									<div class="box-body">
+										<input class="form-control input-lg"  name="answer[21]" type="text" placeholder="">
+									</div>
+									<div class="box-header with-border">
+										<h3 class="box-title">2.统一信用代码</h3>
+									</div>
+									<div class="box-body">
+										<input class="form-control input-lg" type="text" name="answer[22]" placeholder="">
+									</div>
+
+									<div class="box-header with-border">
+										<h3 class="box-title">3.行业类别</h3>
+									</div>
+									<div class="box-body">
+										<div class="col-md-6">
+											<div class="form-group">
+												<select class="form-control select2" style="width:100%" name="answer[16]">
+													<option value="0" selected="selected" >租赁和商务服务业</option>
+													<option value="1" >房地产业</option>
+													<option value="2" >交通运输、仓储和邮政业	</option>
+													<option value="3" >信息传输、计算机服务和软件业</option>
+													<option value="4" >建筑业</option>
+													<option value="5" >教育</option>
+													<option value="6" >科学研究、技术服务和地质勘查业</option>
+													<option value="7" >金融业</option>
+													<option value="8" >文化、体育和娱乐业</option>
+													<option value="9" >电力、燃气及水的生产和供应业</option>
+													<option value="10" >卫生、社会保障和社会福利业</option>
+													<option value="11" >水利 、环境和公共设施管理业</option>
+													<option value="12" >公共管理与社会组织</option>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="box-header with-border">
+										<h3 class="box-title">4.企业当前用工总人数</h3>
+									</div>
+									<div class="box-body">
+										<input class="form-control input-lg" type="text" name="answer[23]" placeholder="">
+									</div>
+									<div class="box-header with-border">
+										<h3 class="box-title">5.外地户籍人数</h3>
+									</div>
+									<div class="box-body">
+										<input class="form-control input-lg" name="answer[24]" type="text" placeholder="">
+									</div>
+
+									<div class="box-header with-border">
+										<h3 class="box-title">6.外地户籍平均薪酬</h3>
+									</div>
+									<div class="box-body">
+										<input class="form-control input-lg" name="answer[25]" type="text" placeholder="">
+									</div>
+
+									<div class="box-header with-border">
+										<h3 class="box-title">7.丰台区户籍平均薪酬</h3>
+									</div>
+									<div class="box-body">
+										<input class="form-control input-lg" name="answer[26]" type="text" placeholder="">
+									</div>
+									<div class="box-header with-border">
+										<h3 class="box-title">8.丰台区户籍人数(男)</h3>
+									</div>
+									<div class="box-body">
+										<input class="form-control input-lg" name="answer[27]" type="text" placeholder="">
+									</div>
+									<div class="box-header with-border">
+										<h3 class="box-title">9.丰台区户籍人数(女)</h3>
+									</div>
+									<div class="box-body">
+										<input class="form-control input-lg" name="answer[28]" type="text" placeholder="">
+									</div>
+									<div class="box-header with-border">
+										<h3 class="box-title">10.增员人数</h3>
+									</div>
+									<div class="box-body">
+										<input class="form-control input-lg" name="answer[29]" type="text" placeholder="">
+									</div>
+									<div class="box-header with-border">
+										<h3 class="box-title">11.减员人数</h3>
+									</div>
+									<div class="box-body">
+										<input class="form-control input-lg" name="answer[30]" type="text" placeholder="">
+									</div>
+
+									<div class="box-header with-border">
+										<h3 class="box-title">12.优惠政策</h3>
+									</div>
+									<div class="box-body">
+										<div class="col-md-6">
+											<div class="form-group">
+												<select class="form-control select1" style="width: 100%;" name="answer[17]">
+													<option value="0" selected="selected">未办理过任何优惠政策</option>
+													<option value="1" >岗补</option>
+													<option value="2" >社补</option>
+													<option value="3" >创业场地租赁</option>
+													<option value="4" >一次性招用奖励</option>
+													<option value="5" >其他优惠政策</option>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="box-header with-border">
+										<h3 class="box-title">13.贵公司目前常用的招聘渠道是？</h3>
+									</div>
+									<div class="box-body">
+										<div class="col-md-6">
+											<div class="form-group">
+												<select class="form-control select1" style="width: 100%;" name="answer[18]">
+													<option value="0" selected="selected">现场招聘会</option>
+													<option value="1" >互联网招聘（网站、手机APP等）</option>
+													<option value="2" >委托专业招聘机构</option>
+													<option value="3" >自行发布招聘信息</option>
+													<option value="4" >熟人介绍</option>
+													<option value="5" >校园招聘</option>
+													<option value="6" >其他</option>
+												</select>
+											</div>
+										</div>
+									</div>
+
+									<div class="box-header with-border">
+										<h3 class="box-title">14.更看重招聘平台的哪些功能</h3>
+									</div>
+									<div class="box-body">
+										<div class="col-md-6">
+											<div class="form-group">
+												<select class="form-control select2" style="width: 100%;" name="answer[19]">
+													<option value="0" selected="selected">丰台本地化推广</option>
+													<option value="1" >完全免费</option>
+													<option value="2" >政府信誉审核</option>
+													<option value="3" >联系方式免费公开</option>
+													<option value="4" >视频面试</option>
+													<option value="5" >短信提醒</option>
+													<option value="6" >优惠政策咨询及通知</option>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="box-header with-border">
+										<h3 class="box-title">15.您是否愿意接受深访</h3>
+									</div>
+									<div class="box-body">
+										<div class="col-md-6">
+											<div class="form-group">
+												<select class="form-control select2" style="width: 100%;" name="answer[19]">
+													<option value="0">是</option>
+													<option value="1" selected="selected">否</option>
+												</select>
+											</div>
+										</div>
+									</div>
+
+									<div class="box-header with-border">
+										<h3 class="box-title">16.对人力社保局的需求和建议</h3>
+									</div>
+									<div class="box-body">
+										<input class="form-control input-lg" name="answer[31]" type="text" placeholder="">
+									</div>
+
+									<div class="ibox-content">
+										<div class="form-group" > 
+											<div class="col-sm-6 tr_department">
+												<input type="submit" class="btn btn-primary"  value="提交">
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+							<!-- /.box-body -->
+						</div>
+						<!-- /.box -->
+
+
+
+					</div>
+					<!--/.col (left) -->
+			</div>
+			<!-- /.row -->
+				</section>
+				<!-- /.content -->
+		</div>
+		<!-- /.content-wrapper -->
+		<footer class="main-footer">
+			<div class="pull-right hidden-xs">
+				<b>Version</b> 2.3.6
+			</div>
+			<strong>Copyright &copy; 2014-2016 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights
+			reserved.
+		</footer>
+
+		<!-- Control Sidebar -->
+		<div class="control-sidebar-bg"></div>
+		</div>
+		<!-- ./wrapper -->
+
+		<!-- jQuery 2.2.3 -->
+		<script src="<?=DP_CSS;?>plugins/jQuery/jquery-2.2.3.min.js"></script>
+		<!-- Bootstrap 3.3.6 -->
+		<script src="<?=DP_CSS;?>bootstrap/js/bootstrap.min.js"></script>
+		<!-- FastClick -->
+		<script src="<?=DP_CSS;?>plugins/fastclick/fastclick.js"></script>
+		<!-- AdminLTE App -->
+		<script src="<?=DP_CSS;?>dist/js/app.min.js"></script>
+		<!-- AdminLTE for demo purposes -->
+		<script src="<?=DP_CSS;?>dist/js/demo.js"></script>
+	</body>
+</html>
+
+

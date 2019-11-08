@@ -195,23 +195,30 @@ class user extends Model
 		if(empty($users))
 			return false;
 
-		$levels = [2=>10,1=>1];
+
+		$positionModel = model("position");
+		$positionRs = $positionModel->getAll();
+		$temp = [];
+		foreach($positionRs as $k => $v){
+			$temp[$v->data['position_id']] = $v->data['level'];
+		}
+
+		$level = $temp;
 
 		$top = [];
 		foreach($users as $k => $v){
-			if(empty($top))
+			if(empty($top)){
 				$top = $v;
+				if(empty($top['position_id'])){
+					$top['position_id'] = 1;
+				}
+			}
 			else{
-				if($levels[$top['position_id']] < $levels[$v['position_id']])
-					$top = $v;
+				$top_level = isset($level[$top['position_id']])  ? $level[$top['position_id']] : 1;
+				$current_level = isset($level[$v['position_id']]) ? $level[$v['position_id']] : 1;
 			}
 		}
-
 		return $top;
-
-
-
-
 
 
 

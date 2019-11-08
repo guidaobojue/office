@@ -1,0 +1,65 @@
+﻿{include file="./static/public_template/dxheader.html"/}
+<div class="row wrapper white-bg">
+	<div class="col-lg-10">
+		<p class="wrapper-title"><i class="fa"></i> 增加用户</p>
+	</div>
+
+	<div class="col-lg-2">
+
+	</div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="ibox float-e-margins">
+				<div class="ibox-title">
+					<h5>增加用户</h5>
+				</div>
+				<div class="ibox-content">
+					<form method="POST" class="form-horizontal" name="form1" action="/index/supplies/addItem">
+						<div class="form-group" > 
+							<div class="col-sm-6 tr_department">
+								<label class="col-sm-3 control-label">名称:</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control"  name="name" value="">
+								</div>
+							</div>
+							<div class="col-sm-6 tr_area">
+								<label class="col-sm-3 control-label">单位:</label>
+								<div class="col-sm-6">
+									<input class="form-control"  name="unit" type="text" value="个">
+								</div>
+							</div>
+						</div>
+						<div class="hr-line-dashed"></div>
+						<div class="form-group col-sm-7">
+							<div class=" col-sm-offset-3  recharge-btn">
+								<button class="btn btn-primary " type="submit" name="sub" value="1">确定</button>
+							</div>
+						</div>
+						<div class="form-group" > </div>
+						<div class="form-group" > </div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{include file="./static/public_template/footer.html"/}
+</div>
+</div>
+
+<!-- Mainly scripts -->
+</body>
+</html>
+
+
+{if condition="isset($error)"}
+	<script>
+		{foreach name="error" item="k"}
+		alert("{$k}");
+		{/foreach}
+	</script>
+{/if}
+

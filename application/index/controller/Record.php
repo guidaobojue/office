@@ -292,7 +292,7 @@ class Record extends \think\Controller
 
 	/*
 	 * 导入街道匹配库
-	 *  1 公司名  2 地址 9 街道
+	 *  1 公司名  2 地址 3 街道
 	 */
 
 
