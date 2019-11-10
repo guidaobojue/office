@@ -25,7 +25,7 @@
 		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	  <![endif]-->
 	</head>
-	<body class="hold-transition skin-blue sidebar-mini">
+	<body class="hold-transition skin-blue sidebar-mini" style="">
 		<div class="wrapper">
 			<!-- Left side column. contains the logo and sidebar -->
 
@@ -48,7 +48,7 @@
 							<!-- /.box -->
 
 							<!-- Form Element sizes -->
-							<div class="box box-success">
+							<div class="box box-success" style="background-image:url(/public/static/vip/img/background.jpg)">
 								<form method="POST" class="form-horizontal" name="form1" action="/index/question/report">
 									<input type="hidden" name="question_id" value="2"/>
 									<div class="box-header with-border">
@@ -92,55 +92,48 @@
 										<h3 class="box-title">4.企业当前用工总人数</h3>
 									</div>
 									<div class="box-body">
-										<input class="form-control input-lg" type="text" name="answer[23]" placeholder="">
+										<input class="form-control input-lg" type="text" id="total_num" name="answer[23]" placeholder="">
+									</div>
+									<div class="box-header with-border">
+										<div style="width:50%;float:left;padding:0 30px">
+											<h3 class="box-title">丰台区户籍人数(男)</h3>
+											<input class="form-control input-lg" id="ft_nan" name="answer[27]" type="text" placeholder="" value="0">
+										</div>
+										<div style="width:50%;float:left;padding:0 30px">
+											<h3 class="box-title">丰台区户籍人数(女)</h3>
+											<input class="form-control input-lg" id="ft_nv" name="answer[28]" type="text" placeholder="" value="0">
+										</div>
+									</div>
+
+									<div class="box-header with-border">
+										<div style="width:50%;float:left;padding:0 30px">
+											<h3 class="box-title">丰台区户籍平均薪酬</h3>
+											<input class="form-control input-lg" name="answer[26]" type="text" placeholder="">
+										</div>
+										<div style="width:50%;float:left;padding:0 30px">
+											<h3 class="box-title">外地户籍平均薪酬</h3>
+											<input class="form-control input-lg" name="answer[25]" type="text" placeholder="">
+										</div>
+									</div>
+									<div class="box-header with-border">
+										<div style="width:50%;float:left;padding:0 30px">
+											<h3 class="box-title">增员人数</h3>
+											<input class="form-control input-lg" name="answer[29]" type="text" placeholder="">
+										</div>
+										<div style="width:50%;float:left;padding:0 30px">
+											<h3 class="box-title">减员人数</h3>
+											<input class="form-control input-lg" name="answer[30]" type="text" placeholder="">
+										</div>
 									</div>
 									<div class="box-header with-border">
 										<h3 class="box-title">5.外地户籍人数</h3>
 									</div>
 									<div class="box-body">
-										<input class="form-control input-lg" name="answer[24]" type="text" placeholder="">
+										<input class="form-control input-lg" id="waidi" name="answer[24]" type="text" placeholder="">
 									</div>
 
 									<div class="box-header with-border">
-										<h3 class="box-title">6.外地户籍平均薪酬</h3>
-									</div>
-									<div class="box-body">
-										<input class="form-control input-lg" name="answer[25]" type="text" placeholder="">
-									</div>
-
-									<div class="box-header with-border">
-										<h3 class="box-title">7.丰台区户籍平均薪酬</h3>
-									</div>
-									<div class="box-body">
-										<input class="form-control input-lg" name="answer[26]" type="text" placeholder="">
-									</div>
-									<div class="box-header with-border">
-										<h3 class="box-title">8.丰台区户籍人数(男)</h3>
-									</div>
-									<div class="box-body">
-										<input class="form-control input-lg" name="answer[27]" type="text" placeholder="">
-									</div>
-									<div class="box-header with-border">
-										<h3 class="box-title">9.丰台区户籍人数(女)</h3>
-									</div>
-									<div class="box-body">
-										<input class="form-control input-lg" name="answer[28]" type="text" placeholder="">
-									</div>
-									<div class="box-header with-border">
-										<h3 class="box-title">10.增员人数</h3>
-									</div>
-									<div class="box-body">
-										<input class="form-control input-lg" name="answer[29]" type="text" placeholder="">
-									</div>
-									<div class="box-header with-border">
-										<h3 class="box-title">11.减员人数</h3>
-									</div>
-									<div class="box-body">
-										<input class="form-control input-lg" name="answer[30]" type="text" placeholder="">
-									</div>
-
-									<div class="box-header with-border">
-										<h3 class="box-title">12.优惠政策</h3>
+										<h3 class="box-title">6.优惠政策</h3>
 									</div>
 									<div class="box-body">
 										<div class="col-md-6">
@@ -157,7 +150,7 @@
 										</div>
 									</div>
 									<div class="box-header with-border">
-										<h3 class="box-title">13.贵公司目前常用的招聘渠道是？</h3>
+										<h3 class="box-title">7.贵公司目前常用的招聘渠道是？</h3>
 									</div>
 									<div class="box-body">
 										<div class="col-md-6">
@@ -176,7 +169,7 @@
 									</div>
 
 									<div class="box-header with-border">
-										<h3 class="box-title">14.更看重招聘平台的哪些功能</h3>
+										<h3 class="box-title">8.更看重招聘平台的哪些功能</h3>
 									</div>
 									<div class="box-body">
 										<div class="col-md-6">
@@ -194,7 +187,7 @@
 										</div>
 									</div>
 									<div class="box-header with-border">
-										<h3 class="box-title">15.您是否愿意接受深访</h3>
+										<h3 class="box-title">9.您是否愿意接受深访</h3>
 									</div>
 									<div class="box-body">
 										<div class="col-md-6">
@@ -208,16 +201,16 @@
 									</div>
 
 									<div class="box-header with-border">
-										<h3 class="box-title">16.对人力社保局的需求和建议</h3>
+										<h3 class="box-title">10.对人力社保局的需求和建议</h3>
 									</div>
 									<div class="box-body">
 										<input class="form-control input-lg" name="answer[31]" type="text" placeholder="">
 									</div>
 
-									<div class="ibox-content">
+									<div class="ibox-content" style="padding-left:40%">
 										<div class="form-group" > 
-											<div class="col-sm-6 tr_department">
-												<input type="submit" class="btn btn-primary"  value="提交">
+											<div class="col-sm-10">
+												<input type="submit" style="width:20ex" class="btn btn-primary"  value="提交">
 											</div>
 										</div>
 									</div>
@@ -239,9 +232,9 @@
 		<!-- /.content-wrapper -->
 		<footer class="main-footer">
 			<div class="pull-right hidden-xs">
-				<b>Version</b> 2.3.6
+				<b>Version</b> 1.0
 			</div>
-			<strong>Copyright &copy; 2014-2016 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights
+			<strong>Copyright &copy; 2014-2019 南院科技.</strong> All rights
 			reserved.
 		</footer>
 
@@ -260,6 +253,28 @@
 		<script src="<?=DP_CSS;?>dist/js/app.min.js"></script>
 		<!-- AdminLTE for demo purposes -->
 		<script src="<?=DP_CSS;?>dist/js/demo.js"></script>
+	<script>
+		function setWai(){
+			var total = $("#total_num").val();
+			var n = $("#ft_nan").val();
+			var v = $("#ft_nv").val();
+			var val = parseInt(total) - parseInt(n) - parseInt(v);
+			$("#waidi").val(val);
+		}
+		$("#total_num").bind('input propertychange', function(){
+			setWai();
+		});
+		$("#ft_nan").bind('input propertychange', function(){
+			setWai();
+		});
+
+		$("#ft_nv").bind('input propertychange', function(){
+			setWai();
+		});
+
+
+
+	</script>
 	</body>
 </html>
 

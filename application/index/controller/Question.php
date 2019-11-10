@@ -119,7 +119,7 @@ class Question extends \think\Controller
 		$data['table_id'] = $question_id;
 		$data['content'] = json_encode($answer);
 		$model->addAnswer($data);
-		$this->success();
+		return $this->fetch("success");
 		
 	}
 
