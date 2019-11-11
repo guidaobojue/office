@@ -119,7 +119,7 @@ class Question extends \think\Controller
 		$data['table_id'] = $question_id;
 		$data['content'] = json_encode($answer);
 		$model->addAnswer($data);
-		$this->success();
+		return $this->fetch("success");
 		
 	}
 
@@ -144,16 +144,22 @@ class Question extends \think\Controller
 		$answerRs = $answerModel->getAllByQid($question_id);
 
 		$data = [];
-		foreach($answerRs as $k => &$v){
-			foreach($v['content'] as $ik => $iv){
-				if($selectRs[$ik]['type'] == 0){
-					$item = $items[$ik][$iv];
-					$v['content'][$ik] = $item['name'];
+		foreach($answerRs as $k => $v){
+			$contents = [];
+			foreach($selectRs as $ik => $iv){
+				$content = $v['content'];
+				if(isset($content[$ik])){
+					if($iv['type'] == 0){
+						$temp = $items[$ik];
+						$contents[] = $temp[0]['name'];
+					}
+					else{
+						$contents[] = $content[$ik];
+					}
 				}
 			}
-			$data[] = $v['content'];
+			$data[] = $contents;
 		}
-		unset($v);
 
 		$title = [];
 		foreach($selectRs as $k => $v){
@@ -161,7 +167,10 @@ class Question extends \think\Controller
 		}
 		
 
-
+		$data = [];
+		if(empty($data)){
+			$data[] = array_fill(0,count($title),"无");
+		}
 		$rs = writeExcel($data,$title);
 		$this->redirect("/xls/".$rs);
 
