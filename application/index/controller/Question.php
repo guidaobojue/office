@@ -181,6 +181,13 @@ class Question extends \think\Controller
 
 	}
 
+
+
+
+	public function suc(){
+		return $this->fetch("success");
+	}
+
 	public function office(){
 		return $this->fetch("office");
 	}

@@ -54,41 +54,79 @@
 											<h5 class="description-header">感谢您的合作</h5>
 											<span class="description-text">Thank you for your cooperation</span>
 										</div>
+										<section class="content">
+											<div class="callout callout-info">
+												<h4>Tip!</h4>
+												<p>
+												我们诚邀您体验由丰台人力资源和社会保障局开发的“丰台人人就业”，六大特色请您入驻: <br>
+												1.地图化界面，身边工作，一目了然。 <br>
+												2.便民实用，个人用微信+企业用网站，无需下载APP。 <br>
+												3.政府信用，免费公益，逐岗核实，真实有效。 <br>
+												4.本地化推广，宣传进社区。 <br>
+												5.一键导航，求职不再转圈圈。 <br>
+												6.在线视频招聘会，在家面试很放松，跨省跨国都不愁。 <br>
+												<div style="width:33%;float:left">
+													<span>&nbsp </span>
+												</div>
+												<div style="widht:33%">
+													<img src="/public/static/img/code.png" style="width:9em;"></img>
+												</div>
+												</p>
+											</div>
+											<!-- /.box -->
+										</section>
 										<!-- /.description-block -->
 									</div>
+									<div class="box-footer" style="margin:0 25px;">
+										<div style="width:100%;">
+											<button type="submit" onclick="index()" class="btn btn-info pull-right" style="font-size:1.5em;width:100%">点此进入"人人就业"</button>
+										</div>
+									</div>
+									<div class="box-footer" style="margin:0 25px;">
+										<div style="width:100%;">
+											<button type="submit" onclick="closeW()"  class="btn btn-default" style="width:100%;font-size:1.5em">关闭</button>
+										</div>
+									</div>
 									<!-- /.col -->
+									</div>
+									<!-- /.row -->
 								</div>
-								<!-- /.row -->
 							</div>
+							<!-- /.widget-user -->
 						</div>
-						<!-- /.widget-user -->
+						<div class="widget-user-header bg-aqua-active">
+						</div>
+						<div class="widget-user-image">
+						</div>
+						<!-- /.col -->
+						<!-- /.col -->
 					</div>
-					<div class="widget-user-header bg-aqua-active">
-					</div>
-					<div class="widget-user-image">
-					</div>
-					<!-- /.col -->
-					<!-- /.col -->
+
+					<!-- Main content -->
+					<!-- /.content -->
 				</div>
+				<!-- /.content-wrapper -->
 
-				<!-- Main content -->
-				<!-- /.content -->
+				<!-- Control Sidebar -->
+				<div class="control-sidebar-bg"></div>
 			</div>
-			<!-- /.content-wrapper -->
+			<!-- ./wrapper -->
 
-			<!-- Control Sidebar -->
-			<div class="control-sidebar-bg"></div>
-		</div>
-		<!-- ./wrapper -->
+			<!-- jQuery 2.2.3 -->
+			<script src="<?=DP_CSS;?>plugins/jQuery/jquery-2.2.3.min.js"></script>
+			<script>
+				function closeW(){
+					window.close();
+				}
+function index(){
+	window.location.href = "https://jy.ftrbj.com";
+}
 
-		<!-- jQuery 2.2.3 -->
-		<script src="<?=DP_CSS;?>plugins/jQuery/jquery-2.2.3.min.js"></script>
-		<script>
-			$("#alert_tip").hide(3000);
-		</script>
-		<!-- Bootstrap 3.3.6 -->
-		<!-- FastClick -->
-		<!-- AdminLTE for demo purposes -->
+			</script>
+			<!-- Bootstrap 3.3.6 -->
+			<!-- FastClick -->
+			<!-- AdminLTE for demo purposes -->
+
 	</body>
 </html>
 
