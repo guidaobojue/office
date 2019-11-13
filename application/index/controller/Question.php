@@ -116,7 +116,7 @@ class Question extends \think\Controller
 		$question_id = input("question_id");
 		$answer = $_POST['answer'];
 		foreach($answer as $k => &$v){
-			if(empty($v))
+			if(empty($v) && $v != 0)
 				die("问卷填写有误");
 		}
 
