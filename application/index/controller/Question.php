@@ -115,6 +115,11 @@ class Question extends \think\Controller
 	public function report(){
 		$question_id = input("question_id");
 		$answer = $_POST['answer'];
+		foreach($answer as $k => &$v){
+			if(empty($v))
+				die("问卷填写有误");
+		}
+
 		$model = model("answer");
 		$data['table_id'] = $question_id;
 		$data['content'] = json_encode($answer);

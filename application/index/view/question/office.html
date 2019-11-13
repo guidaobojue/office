@@ -55,13 +55,13 @@
 										<h3 class="box-title">1.企业名称</h3>
 									</div>
 									<div class="box-body">
-										<input class="form-control input-lg"  name="answer[21]" type="text" placeholder="">
+										<input id="company_name" class="form-control input-lg"  name="answer[21]" type="text" placeholder="">
 									</div>
 									<div class="box-header with-border">
 										<h3 class="box-title">2.统一信用代码</h3>
 									</div>
 									<div class="box-body">
-										<input class="form-control input-lg" type="text" name="answer[22]" placeholder="">
+										<input id="company_id" class="form-control input-lg" type="text" name="answer[22]" placeholder="">
 									</div>
 
 									<div class="box-header with-border">
@@ -108,21 +108,21 @@
 									<div class="box-header with-border">
 										<div style="width:50%;float:left;padding:0 30px">
 											<h3 class="box-title">丰台区户籍平均薪酬</h3>
-											<input class="form-control input-lg" name="answer[26]" type="text" placeholder="">
+											<input id="av_money" class="form-control input-lg" name="answer[26]" type="text" placeholder="">
 										</div>
 										<div style="width:50%;float:left;padding:0 30px">
 											<h3 class="box-title">外地户籍平均薪酬</h3>
-											<input class="form-control input-lg" name="answer[25]" type="text" placeholder="">
+											<input id="wav_money" class="form-control input-lg" name="answer[25]" type="text" placeholder="">
 										</div>
 									</div>
 									<div class="box-header with-border">
 										<div style="width:50%;float:left;padding:0 30px">
 											<h3 class="box-title">增员人数</h3>
-											<input class="form-control input-lg" name="answer[29]" type="text" placeholder="">
+											<input id="add_people" class="form-control input-lg" name="answer[29]" type="text" placeholder="">
 										</div>
 										<div style="width:50%;float:left;padding:0 30px">
 											<h3 class="box-title">减员人数</h3>
-											<input class="form-control input-lg" name="answer[30]" type="text" placeholder="">
+											<input id="sub_people" class="form-control input-lg" name="answer[30]" type="text" placeholder="">
 										</div>
 									</div>
 									<div class="box-header with-border">
@@ -204,13 +204,13 @@
 										<h3 class="box-title">10.对人力社保局的需求和建议</h3>
 									</div>
 									<div class="box-body">
-										<input class="form-control input-lg" name="answer[31]" type="text" placeholder="">
+										<input id="comments" class="form-control input-lg" name="answer[31]" type="text" placeholder="">
 									</div>
 
 									<div class="ibox-content" style="padding-left:40%">
 										<div class="form-group" > 
 											<div class="col-sm-10">
-												<input type="submit" style="width:20ex" class="btn btn-primary"  value="提交">
+												<input type="button" onclick="check();" style="width:20ex" class="btn btn-primary"  value="提交">
 											</div>
 										</div>
 									</div>
@@ -253,28 +253,45 @@
 		<script src="<?=DP_CSS;?>dist/js/app.min.js"></script>
 		<!-- AdminLTE for demo purposes -->
 		<script src="<?=DP_CSS;?>dist/js/demo.js"></script>
-	<script>
-		function setWai(){
-			var total = $("#total_num").val();
-			var n = $("#ft_nan").val();
-			var v = $("#ft_nv").val();
-			var val = parseInt(total) - parseInt(n) - parseInt(v);
-			$("#waidi").val(val);
+		<script>
+			function setWai(){
+				var total = $("#total_num").val();
+				var n = $("#ft_nan").val();
+				var v = $("#ft_nv").val();
+				var val = parseInt(total) - parseInt(n) - parseInt(v);
+				$("#waidi").val(val);
+			}
+$("#total_num").bind('input propertychange', function(){
+	setWai();
+});
+$("#ft_nan").bind('input propertychange', function(){
+	setWai();
+});
+
+$("#ft_nv").bind('input propertychange', function(){
+	setWai();
+});
+
+function check(){
+	var fs = true;
+	$(".control-label").remove();
+	$(".input-lg").each(function(){
+		var val = $(this).val();
+		if(val == ""){
+			var str = ' <label class="control-label" for="inputError"> <i class="fa fa-times-circle-o"></i> 不可为空 </label> ';
+			$(this).parent().append(str);
+			$(this).parent().addClass("has-error");
+			fs = false;
 		}
-		$("#total_num").bind('input propertychange', function(){
-			setWai();
-		});
-		$("#ft_nan").bind('input propertychange', function(){
-			setWai();
-		});
+	})
+	if(fs){
+		form1.submit();
 
-		$("#ft_nv").bind('input propertychange', function(){
-			setWai();
-		});
+	}
+}
 
 
-
-	</script>
+		</script>
 	</body>
 </html>
 
