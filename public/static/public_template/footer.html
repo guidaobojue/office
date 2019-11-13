@@ -1,0 +1,56 @@
+
+<!--
+<div class="footer">
+	<div class="pull-right">
+		Version 1.0.0
+	</div>
+	<div>
+
+		<strong>Copyright © 2018</strong> 南院科技. All rights reserved.
+	</div>
+</div>
+-->
+
+
+
+
+
+
+
+
+<script src="<?=VIP_JS;?>jquery-2.1.1.js"></script>
+<script src="<?=VIP_JS;?>bootstrap.min.js"></script>
+<script src="<?=VIP_JS;?>plugins/metisMenu/jquery.metisMenu.js"></script>
+
+<script src="<?=VIP_JS;?>plugins/pace/pace.min.js"></script>
+<script src="<?=VIP_JS;?>cropbox.js"></script>
+<script src="<?=VIP_JS;?>plugins/sweetalert/sweetalert.min.js"></script>
+
+<!-- Custom and plugin javascript -->
+
+<!-- iCheck -->
+
+<!-- Mainly scripts -->
+
+
+<script src="<?=VIP_JS;?>jasny-bootstrap.min.js"></script>
+<script src="<?=VIP_JS;?>full_height.js"></script>
+
+
+
+<!-- Peity -->
+
+
+<!-- Custom and plugin javascript -->
+<script src="<?=VIP_JS;?>plugins/slimscroll/jquery.slimscroll.js"></script>
+<script src="<?=VIP_JS;?>inspinia.js"></script>
+<script src="<?=VIP_JS;?>echarts.min.js"></script>
+<script src="<?=VIP_JS;?>plugins/pace/pace.min.js"></script>
+
+
+	<script>
+		<?php if(!isset($list_num)):?>
+		<?php $list_num = 1;?>
+		<?php endif;?>
+		$(".nav_list_{$list_num}").addClass("active");
+	</script>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>AdminLTE 2 | Dashboard</title>
+		<!-- Tell the browser to be responsive to screen width -->
+		<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+		<!-- Bootstrap 3.3.6 -->
+		<link rel="stylesheet" href="__TEMPLATE__/bootstrap/css/bootstrap.min.css">
+		<!-- Font Awesome -->
+		<link rel="stylesheet" href="/Public/css/font-awesome.min.css">
+		<!-- Ionicons -->
+		<link rel="stylesheet" href="/Public/css/ionicons.min.css">
+		<!-- Theme style -->
+		<link rel="stylesheet" href="__TEMPLATE__/dist/css/AdminLTE.min.css">
+		<!-- AdminLTE Skins. Choose a skin from the css/skins
+	  folder instead of downloading all of them to reduce the load. -->
+	  <link rel="stylesheet" href="__TEMPLATE__/dist/css/skins/_all-skins.min.css">
+	  <!-- iCheck -->
+	  <link rel="stylesheet" href="__TEMPLATE__/plugins/iCheck/flat/blue.css">
+	  <!-- Morris chart -->
+	  <link rel="stylesheet" href="__TEMPLATE__/plugins/morris/morris.css">
+	  <!-- jvectormap -->
+	  <link rel="stylesheet" href="__TEMPLATE__/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
+	  <!-- Date Picker -->
+	  <link rel="stylesheet" href="__TEMPLATE__/plugins/datepicker/datepicker3.css">
+	  <!-- Daterange picker -->
+	  <link rel="stylesheet" href="__TEMPLATE__/plugins/daterangepicker/daterangepicker.css">
+	  <!-- bootstrap wysihtml5 - text editor -->
+	  <link rel="stylesheet" href="__TEMPLATE__/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+	  <script src="__TEMPLATE__/plugins/jQuery/jquery-2.2.3.min.js"></script>
+	  <!--  calenda -->
+	  <!-- Font Awesome -->
+	  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css"> -->
+	  <!-- Ionicons -->
+	  <!-- fullCalendar 2.2.5-->
+	  <link rel="stylesheet" href="/Public/Template/plugins/fullcalendar/fullcalendar.min.css">
+	  <link rel="stylesheet" href="/Public/Template/plugins/fullcalendar/fullcalendar.print.css" media="print">
+
+	</head>
+	<body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
+		<div class="wrapper">
+			<header class="main-header">
+				<!-- Logo -->
+
+				<!-- Header Navbar: style can be found in header.less -->
+				<nav class="navbar navbar-static-top" style="margin-left:0px">
+					<!-- Sidebar toggle button-->
+					<!-- Navbar Right Menu -->
+					<div class="navbar-custom-menu">
+						<ul class="nav navbar-nav">
+
+						</ul>
+					</div>
+				</nav>
+			</header>
+			<!-- Left side column. contains the logo and sidebar -->
+
+			<script>
+function showDiv()
+{
+	var Idiv     = document.getElementById("Idiv");
+	var mou_head = document.getElementById('mou_head');
+	Idiv.style.display = "block";
+	//以下部分要将弹出层居中显示
+	//Idiv.style.left=(document.documentElement.clientWidth-Idiv.clientWidth)/2+document.documentElement.scrollLeft+"px";
+	Idiv.style.left="35%";
+	Idiv.style.top =(document.documentElement.clientHeight-Idiv.clientHeight)/2+document.documentElement.scrollTop-50+"px";
+
+	//以下部分使整个页面至灰不可点击
+	var procbg = document.createElement("div"); //首先创建一个div
+	procbg.setAttribute("id","mybg"); //定义该div的id
+	procbg.style.background = "#000000";
+	procbg.style.width = "100%";
+	procbg.style.height = "100%";
+	procbg.style.position = "fixed";
+	procbg.style.top = "0";
+	procbg.style.left = "0";
+	procbg.style.zIndex = "500";
+	procbg.style.opacity = "0.6";
+	procbg.style.filter = "Alpha(opacity=70)";
+	//背景层加入页面
+	document.body.appendChild(procbg);
+	document.body.style.overflow = "hidden"; //取消滚动条
+
+	//以下部分实现弹出层的拖拽效果
+	var posX;
+	var posY;
+	mou_head.onmousedown=function(e)
+	{
+		if(!e) e = window.event; //IE
+		posX = e.clientX - parseInt(Idiv.style.left);
+		posY = e.clientY - parseInt(Idiv.style.top);
+		document.onmousemove = mousemove;
+	}
+	document.onmouseup = function()
+	{
+		document.onmousemove = null;
+	}
+	function mousemove(ev)
+	{
+		if(ev==null) ev = window.event;//IE
+		Idiv.style.left = (ev.clientX - posX) + "px";
+		Idiv.style.top = (ev.clientY - posY) + "px";
+	}
+}
+function closeDiv() //关闭弹出层
+{
+	var Idiv=document.getElementById("Idiv");
+	Idiv.style.display="none";
+	document.body.style.overflow = "auto"; //恢复页面滚动条
+	var body = document.getElementsByTagName("body");
+	var mybg = document.getElementById("mybg");
+	body[0].removeChild(mybg);
+}
+function logout(){
+	var rs = confirm("您确定退出吗?");
+	if(rs)
+		window.location.href='/Index/logout';
+}
+			</script>
+
+
