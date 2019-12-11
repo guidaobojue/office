@@ -24,6 +24,11 @@
 		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	  <![endif]-->
+<style>
+.checkboxs{
+	width:30px;
+}
+</style>
 	</head>
 	<body class="hold-transition skin-blue sidebar-mini" style="">
 		<div class="wrapper">
@@ -62,20 +67,20 @@
 								<form method="POST" class="form-horizontal" name="form1" action="/index/question/report">
 									<input type="hidden" name="question_id" value="2"/>
 									<div class="box-header with-border">
-										<h3 class="box-title">1.企业名称</h3>
+										<h4 class="box-title">1.贵企业名称</h3>
 									</div>
 									<div class="box-body">
 										<input id="company_name" class="form-control input-lg"  name="answer[21]" type="text" placeholder="">
 									</div>
 									<div class="box-header with-border">
-										<h3 class="box-title">2.统一信用代码</h3>
+										<h3 class="box-title">2.贵企业统一信用代码(组织机构代码)</h3>
 									</div>
 									<div class="box-body">
 										<input id="company_id" class="form-control input-lg" type="text" name="answer[22]" placeholder="">
 									</div>
 
 									<div class="box-header with-border">
-										<h3 class="box-title">3.行业类别</h3>
+										<h3 class="box-title">3.贵企业行业类别</h3>
 									</div>
 									<div class="box-body">
 										<div class="col-md-6">
@@ -99,66 +104,80 @@
 										</div>
 									</div>
 									<div class="box-header with-border">
-										<h3 class="box-title">4.企业当前用工总人数</h3>
+										<h3 class="box-title">4.贵企业当前用工总人数</h3>
 									</div>
 									<div class="box-body">
 										<input class="form-control input-lg" type="text" id="total_num" name="answer[23]" placeholder="">
 									</div>
 									<div class="box-header with-border">
-										<div style="width:50%;float:left;padding:0 30px">
-											<h3 class="box-title">丰台区户籍人数(男)</h3>
-											<input class="form-control input-lg" id="ft_nan" name="answer[27]" type="text" placeholder="" value="0">
+										<div style="width:100%;float:left;padding:0 30px">
+											<h3 class="box-title">4.1其中丰台区户籍人数</h3>
 										</div>
-										<div style="width:50%;float:left;padding:0 30px">
-											<h3 class="box-title">丰台区户籍人数(女)</h3>
-											<input class="form-control input-lg" id="ft_nv" name="answer[28]" type="text" placeholder="" value="0">
+										<div style="padding:37px 0px 51px 40px">
+											<div style="width:45%;float:left">
+												<span style="padding-right:10px;float:left;font-size:20px;line-height:2">男:</span>
+												<input class="form-control input-lg" style="float:left;width:80%"  name="answer[27]" type="text" placeholder="" value="0">
+											</div>
+											<div style="width:45%;float:left">
+												<span style="padding-right:10px;float:left;font-size:20px;line-height:2">女:</span>
+												<input class="form-control input-lg" style="float:left;width:80%"  name="answer[28]" type="text" placeholder="" value="0">
+											</div>
 										</div>
+										<div style="width:100%;float:left;padding:20px 30px">
+											<h3 class="box-title" style="padding:10px 0px">4.2 其中外地户籍人数</h3>
+											<input class="form-control input-lg" name="answer[24]" type="text" placeholder="">
+										</div>
+
 									</div>
 
+
 									<div class="box-header with-border">
-										<div style="width:50%;float:left;padding:0 30px">
-											<h3 class="box-title">丰台区户籍平均薪酬</h3>
-											<input id="av_money" class="form-control input-lg" name="answer[26]" type="text" placeholder="">
-										</div>
-										<div style="width:50%;float:left;padding:0 30px">
-											<h3 class="box-title">外地户籍平均薪酬</h3>
-											<input id="wav_money" class="form-control input-lg" name="answer[25]" type="text" placeholder="">
+										<h3 class="box-title">5.1  贵企业2019年内增员人数</h3>
+									</div>
+									<div class="box-body">
+										<input id="add_people" class="form-control input-lg" name="answer[29]" type="text" placeholder="">
+									</div>
+									<div class="box-header with-border">
+										<h3 class="box-title">5.2  贵企业2019年内减员人数</h3>
+									</div>
+									<div class="box-body">
+										<input id="add_people" class="form-control input-lg" name="answer[30]" type="text" placeholder="">
+									</div>
+									<div class="box-header with-border">
+										<h3 class="box-title">6 贵单位内丰台区户籍员工平均薪酬</h3>
+									</div>
+									<div class="box-body">
+										<input id="add_people" class="form-control input-lg" name="answer[29]" type="text" placeholder="">
+									</div>
+
+
+
+									<div class="box-header with-border">
+										<h3 class="box-title">7.贵单位是否享受过我局的就业相关优惠政策(多选)</h3>
+									</div>
+									<div class="box-body">
+										<div class="col-md-6">
+											<div class="form-group">
+												<input type="checkbox" name="answer[17]" class="checkboxs" value="岗位补贴"/>岗位补贴
+												<input type="checkbox" name="answer[17]" class="checkboxs" value="社保补贴"/>社保补贴
+												<input type="checkbox" name="answer[17]" class="checkboxs" value="创业场地租赁"/>创业场地租赁
+												<input type="checkbox" name="answer[17]" class="checkboxs" value="一次性招用奖励"/>一次性招用奖励
+												<input type="checkbox" name="answer[17]" class="checkboxs" value="规模招用补贴"/>规模招用补贴
+												<input type="checkbox" name="answer[17]" class="checkboxs" value="稳岗补贴"/>稳岗补贴
+												<input type="checkbox" name="answer[17]" class="checkboxs" value="小额担保贷款"/>小额担保贷款
+												<input type="checkbox" name="answer[17]" class="checkboxs" value="创业带动奖励"/>创业带动奖励
+												<input type="checkbox" name="answer[17]" class="checkboxs" value="岗位补贴"/>岗位补贴
+											</div>
 										</div>
 									</div>
 									<div class="box-header with-border">
-										<div style="width:50%;float:left;padding:0 30px">
-											<h3 class="box-title">增员人数</h3>
-											<input id="add_people" class="form-control input-lg" name="answer[29]" type="text" placeholder="">
-										</div>
-										<div style="width:50%;float:left;padding:0 30px">
-											<h3 class="box-title">减员人数</h3>
-											<input id="sub_people" class="form-control input-lg" name="answer[30]" type="text" placeholder="">
-										</div>
-									</div>
-									<div class="box-header with-border">
-										<h3 class="box-title">5.外地户籍人数</h3>
+										<h3 class="box-title">其他优惠政策(如有请简要填写)</h3>
 									</div>
 									<div class="box-body">
 										<input class="form-control input-lg" id="waidi" name="answer[24]" type="text" placeholder="">
 									</div>
 
-									<div class="box-header with-border">
-										<h3 class="box-title">6.优惠政策</h3>
-									</div>
-									<div class="box-body">
-										<div class="col-md-6">
-											<div class="form-group">
-												<select class="form-control select1" style="width: 100%;" name="answer[17]">
-													<option value="0" selected="selected">未办理过任何优惠政策</option>
-													<option value="1" >岗补</option>
-													<option value="2" >社补</option>
-													<option value="3" >创业场地租赁</option>
-													<option value="4" >一次性招用奖励</option>
-													<option value="5" >其他优惠政策</option>
-												</select>
-											</div>
-										</div>
-									</div>
+
 									<div class="box-header with-border">
 										<h3 class="box-title">7.贵公司目前常用的招聘渠道是？</h3>
 									</div>
@@ -179,7 +198,7 @@
 									</div>
 
 									<div class="box-header with-border">
-										<h3 class="box-title">8.更看重招聘平台的哪些功能</h3>
+										<h3 class="box-title">8.对于一个招聘平台您更看重它的哪些功能(多选)</h3>
 									</div>
 									<div class="box-body">
 										<div class="col-md-6">
@@ -197,7 +216,7 @@
 										</div>
 									</div>
 									<div class="box-header with-border">
-										<h3 class="box-title">9.您是否愿意接受深访</h3>
+										<h3 class="box-title">9.贵公司是否愿意接受深访(如果是,我局将将与您对接安排上门访问)</h3>
 									</div>
 									<div class="box-body">
 										<div class="col-md-6">
@@ -211,7 +230,7 @@
 									</div>
 
 									<div class="box-header with-border">
-										<h3 class="box-title">10.对人力社保局的需求和建议</h3>
+										<h3 class="box-title">10您或贵公司对我局的需求 和建议(我们将认真听取您 的需求,并在今后进行改进)</h3>
 									</div>
 									<div class="box-body">
 										<input id="comments" class="form-control input-lg" name="answer[31]" type="text" placeholder="">
@@ -221,6 +240,8 @@
 										<div class="form-group" > 
 											<div class="col-sm-10">
 												<input type="button" onclick="check();" style="width:20ex" class="btn btn-primary"  value="提交">
+												丰台区人力资源及社会保障局 
+												丰台区人力资源公共服务中心
 											</div>
 										</div>
 									</div>

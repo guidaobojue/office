@@ -11,9 +11,20 @@ class UserRoam extends Model
 		//TODO:自定义的初始化
 	}
 
-
 	public function getLists($user_id){
-		$rs = $this->where(['user_id'=>$user_id,])->order("create_time desc")->paginate();
+		#$rs = $this->table("vp_user_roam a")->join("vp_roam b","a.roam_id=b.roam_id","left")->where("a.user_id = '$user_id'")->select();
+		$rs = $this->table("vp_user_roam a")->join("vp_roam b","a.roam_id=b.roam_id","left")->where("a.user_id = '$user_id'")->order("b.create_time desc")->paginate(10);
+		return $rs;
+
+	}
+
+	public function getCheckLists($user_id){
+		$rs = $this->table("vp_user_roam a")->join("vp_roam b","a.roam_id=b.roam_id","left")->where("a.user_id = '$user_id' and b.status <> 4")->order("b.create_time desc")->paginate(10);
+		return $rs;
+	}
+
+	public function getFinishLists($user_id){
+		$rs = $this->table("vp_user_roam a")->join("vp_roam b","a.roam_id=b.roam_id","left")->where("a.user_id = '$user_id' and b.status=4")->order("b.create_time desc")->paginate(10);
 		return $rs;
 	}
 

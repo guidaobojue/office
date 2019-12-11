@@ -20,15 +20,32 @@
 			<div class="col-xs-12">
 				<div class="box">
 					<div class="box-header">
+						<div>
+							<div style="float:left">
+								<button onclick="getAll();" type="button" class="btn btn-block btn-default">查看所有</button>
+							</div>
+							<div style="float:left">
+								<button onclick="checkList();" type="button" class="btn btn-block btn-default">审批中</button>
+							</div>
+							<div style="float:left">
+								<button onclick="hasFinish();" type="button" class="btn btn-block btn-default">己完结</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12">
+				<div class="box">
+					<div class="box-header">
 					</div>
 					<div class="box-body">
 						<div class="table" >
 							<div class="table-responsive">
 
 								<div >
-										{if condition="!empty($list)" }
-										{foreach name="list" item="k"}
-										<table class="table table-bordered table-hover" style="float:left;{:back_color($k.roam_status)}" >
+									{if condition="!empty($list)" }
+									{foreach name="list" item="k"}
+									<table class="table table-bordered table-hover" style="float:left;{:back_color($k.status)}" >
 										<tr>
 											<th class="asset_a" style="width:15%">编号</th>
 											<th class="asset_b" style="width:15%">物品名称</th>
@@ -36,12 +53,12 @@
 											<th class="asset_d" style="width:15%">型号</th>
 											<th class="asset_e" style="width:15%">大类</th>
 										</tr>
-										<tr class="tr_{$k.item_id}_1">
-											<td>{$k.item_no}</td>
-											<td>{$k.model_name}</td>
-											<td>{$k.price}</td>
-											<td>{$k.model_no}</td>
-											<td>{$k.category}</td>
+										<tr class="tr_{$k.item.item_id}_1">
+											<td>{$k.item['item_no']}</td>
+											<td>{$k.item['model_name']}</td>
+											<td>{$k.item['price']}</td>
+											<td>{$k.item['model_no']}</td>
+											<td>{$k.item['category']}</td>
 											</td>
 
 
@@ -54,20 +71,20 @@
 											<th>办公室</th>
 											<th>操作</th>
 										</tr>
-										<tr class="tr_{$k.item_id}_2 two_row">
-											<td>{$k.users['apply_user']['uname']}:{:span(1,$k.roam_status)}</td>
-											<td>{$k.users['apply_approval_user']['uname']}:{:span(2,$k.roam_status)}</td>
-											<td>{$k.users['use_approval_user']['uname']}:{:span(3,$k.roam_status)}</td>
-											<td>{$k.users['office_approval_user']['uname']}:{:span(4,$k.roam_status)}</td>
+										<tr class="tr_{$k.item.item_id}_2 two_row">
+											<td>{$k.users['apply_user']['uname']}:{:span(1,$k.status)}</td>
+											<td>{$k.users['apply_approval_user']['uname']}:{:span(2,$k.status)}</td>
+											<td>{$k.users['use_approval_user']['uname']}:{:span(3,$k.status)}</td>
+											<td>{$k.users['office_approval_user']['uname']}:{:span(4,$k.status)}</td>
 											<td id="roam_{$k.roam_id}">
-												{:operation($k.users,$_SESSION['user'],$k.roam_status,$k.roam_id)}
+												{:operation($k.users,$_SESSION['user'],$k.status,$k.roam_id)}
 											</td>
 										</tr>
 									</table>
-										{/foreach}
+									{/foreach}
 
 
-										{/if}
+									{/if}
 								</div>
 
 							</div>
@@ -93,16 +110,16 @@
 <!-- 制作图表js -->
 <script src="__PUBLIC__/js/Chart.js"></script>
 
-	<script src="/public/static/Template/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script src="/public/static/Template/plugins/datepicker/bootstrap-datepicker.js"></script>
 <script type="text/javascript">
 
 	//Date picker
 
 
-$('.submit').click(function(){
-	$(this).parents('form').attr('action', $(this).attr('action'));
-	$(this).parents('form').submit();
-})
+	$('.submit').click(function(){
+		$(this).parents('form').attr('action', $(this).attr('action'));
+		$(this).parents('form').submit();
+	})
 
 
 
@@ -119,7 +136,6 @@ function apply(item_id){
 				$("#tr_"+item_id + " .href").attr({"href":"javascript:;"});
 				$("#tr_"+item_id + " .href").css("color","red");
 				$("#tr_"+item_id + " .href").html("申请中");
-				window.location.href = window.location.href;
 			}
 		});
 
@@ -128,28 +144,37 @@ function apply(item_id){
 }
 
 function allow(roam_id){
-		$.ajax({
-			url:"/index/assets/allow",
-			data:{'roam_id':roam_id},
-			type:"get",
-			dataType:"json",
-			success:function(data){
-				$("#roam_"+roam_id).html("<span style='color:green'>已同意</span>");
-				window.location.href = window.location.href;
-			}
-		});
+	$.ajax({
+		url:"/index/assets/allow",
+		data:{'roam_id':roam_id},
+		type:"get",
+		dataType:"json",
+		success:function(data){
+			//$("#roam_"+roam_id).html("<span style='color:green'>已同意</span>");
+			window.location.href = window.location.href;
+		}
+	});
 }
 function deny(roam_id){
-		$.ajax({
-			url:"/index/assets/deny",
-			data:{'roam_id':roam_id},
-			type:"get",
-			dataType:"json",
-			success:function(data){
-				$("#roam_"+roam_id).html("<span style='color:red'>已驳回</span>");
-				window.location.href = window.location.href;
-			}
-		});
+	$.ajax({
+		url:"/index/assets/deny",
+		data:{'roam_id':roam_id},
+		type:"get",
+		dataType:"json",
+		success:function(data){
+			//$("#roam_"+roam_id).html("<span style='color:red'>已驳回</span>");
+			window.location.href = window.location.href;
+		}
+	});
+}
+function hasFinish(){
+	window.location.href="/index/assets/hasFinish";
+}
+function checkList(){
+	window.location.href="/index/assets/checkList";
+}
+function getAll(){
+	window.location.href="/index/assets/verify";
 }
 
 

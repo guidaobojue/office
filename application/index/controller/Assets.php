@@ -148,6 +148,60 @@ class Assets extends \think\Controller
 
 	}
 
+	public function hasFinish(){
+		$user = $_SESSION['user'];
+		$user_id = $user['user_id'];
+
+		$model = model("UserRoam");
+		$lists = $model->getFinishLists($user_id);
+		$model = model("roam");
+		$data = [];
+		$temp = [];
+
+
+
+		$itemModel = model("item");
+		$userModel = model("user");
+		foreach($lists as $k => &$v){
+			$item = $itemModel->getOne($v['item_id']);
+			$users = $userModel->getRoamUsers($v);
+			$v->users = $users;
+			$v->item = $item;
+		}
+
+		$this->assign("list",$lists);
+		$this->assign("page",$lists->render());
+		$this->assign("tip",3);
+		return $this->fetch("apply_list");
+	}
+	public function checkList(){
+		$user = $_SESSION['user'];
+		$user_id = $user['user_id'];
+
+		$model = model("UserRoam");
+		$lists = $model->getCheckLists($user_id);
+		$model = model("roam");
+		$data = [];
+		$temp = [];
+
+
+
+		$itemModel = model("item");
+		$userModel = model("user");
+		foreach($lists as $k => &$v){
+			$item = $itemModel->getOne($v['item_id']);
+			$users = $userModel->getRoamUsers($v);
+			$v->users = $users;
+			$v->item = $item;
+		}
+
+
+
+		$this->assign("tip",2);
+		$this->assign("list",$lists);
+		$this->assign("page",$lists->render());
+		return $this->fetch("apply_list");
+	}
 
 	public function verify(){
 		$this->assign("list_num",21);
@@ -164,22 +218,17 @@ class Assets extends \think\Controller
 
 		$itemModel = model("item");
 		$userModel = model("user");
-		foreach($lists as $k => $v){
-			$temp  = $model->getOne($v['roam_id']);
-			$temp['roam_status'] = $temp['status'];
-			$item = $itemModel->getOne($temp['item_id']);
-
-			$users = $userModel->getRoamUsers($temp);
-			$temp['users'] = $users;
-			$data[] = array_merge($temp,$item);
+		$model = model("roam");
+		foreach($lists as $k => &$v){
+			$item = $itemModel->getOne($v['item_id']);
+			$users = $userModel->getRoamUsers($v);
+			$v->users = $users;
+			$v->item = $item;
 		}
 
-
-
-		$this->assign("list",$data);
+		$this->assign("list",$lists);
 		$this->assign("page",$lists->render());
 		return $this->fetch("apply_list");
-
 	}
 
 	public function asset(){
@@ -200,15 +249,22 @@ class Assets extends \think\Controller
 		$model = model("itemModel");
 		$models = $model->getAll();
 
-		$model = model("roam");
-		$roams = $model->getRoamIng();
+
+		$roamModel = model("roam");
+
+		$page = Request::instance()->get("page",1);
+
+
 
 		$data = [];
 		$temp = [];
 
+
+
 		foreach($list as $k => $v){
 			$temp =  array_merge($v->getData(),$models[$v['model_id']]);
-			if(isset($roams[$temp['item_id']]) && $roams[$temp['item_id']]['status'] != 4){
+			$isRoamIng = $roamModel->checkRoamIng($temp['item_id']);
+			if($isRoamIng){
 				$temp['isRoam'] = 1;
 			}
 			else{
@@ -217,6 +273,7 @@ class Assets extends \think\Controller
 			$data[] = $temp;
 		}
 		$this->assign("list",$data);
+		$this->assign("tip",1);
 		return $this->fetch("asset_list");
 
 	}
@@ -258,6 +315,11 @@ class Assets extends \think\Controller
 		$office_approval_user_id = 8;
 
 		$model = model("roam");
+
+		$checkIng = $model->checkRoamIng($item_id);
+		if($checkIng)
+			die(json_encode(false));
+
 		$roam_id = $model->apply($item_id,$user_id,$apply_approval_user_id,$use_user_id,$use_approval_user_id,$office_approval_user_id);
 
 		$model = model("message");
@@ -284,6 +346,7 @@ class Assets extends \think\Controller
 		$logModel = model("RoamLog");
 
 		$roam = $model->getOne($roam_id);
+		
 		$use_user_id = $roam['use_user_id'];
 
 		$users_id = [
@@ -405,6 +468,7 @@ class Assets extends \think\Controller
 
 
 		$roamModel = model("roam");
+		$depModel = model("user_department");
 		$roamRs = $roamModel->getEndByItemId($item_id);
 		$roamRs = array_reverse($roamRs);
 		$userModel = model("user");
@@ -416,6 +480,11 @@ class Assets extends \think\Controller
 			$temp['apply_approval_user'] = $userModel->getOne($v['apply_approval_user_id']);
 			$temp['use_approval_user'] = $userModel->getOne($v['use_approval_user_id']);
 			$temp['office_approval_user'] = $userModel->getOne($v['office_approval_user_id']);
+
+			$temp['use_dep'] = $depModel->getOneByUid($temp['use_user_id']);
+			$temp['apply_dep'] = $depModel->getOneByUid($temp['apply_user_id']);
+
+
 			$logs[] = $temp;
 		}
 
@@ -456,6 +525,7 @@ class Assets extends \think\Controller
 		$roamRs = $roamModel->getByItemId($item_id);
 		$roamRs = array_reverse($roamRs);
 		$userModel = model("user");
+		$depModel = model("user_department");
 		$logs = [];
 		foreach($roamRs as $k => $v){
 			$temp = $v;
@@ -464,6 +534,8 @@ class Assets extends \think\Controller
 			$temp['apply_approval_user'] = $userModel->getOne($v['apply_approval_user_id']);
 			$temp['use_approval_user'] = $userModel->getOne($v['use_approval_user_id']);
 			$temp['office_approval_user'] = $userModel->getOne($v['office_approval_user_id']);
+			$temp['use_dep'] = $depModel->getOneByUid($temp['use_user_id']);
+			$temp['apply_dep'] = $depModel->getOneByUid($temp['apply_user_id']);
 			$logs[] = $temp;
 		}
 

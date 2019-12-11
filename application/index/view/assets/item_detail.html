@@ -39,7 +39,6 @@
 										</label>
 									</div>
 								</div>
-								<div class="hr-line-dashed"></div>
 
 								<div class="form-group" > 
 									<div class="col-sm-6 ">
@@ -59,7 +58,6 @@
 										</label>
 									</div>
 								</div>
-								<div class="hr-line-dashed"></div>
 								<div class="form-group" > 
 									<div class="col-sm-6 ">
 										<label class="col-sm-3 control-label">
@@ -78,7 +76,6 @@
 										</label>
 									</div>
 								</div>
-								<div class="hr-line-dashed"></div>
 								<div class="form-group" > 
 									<div class="col-sm-6 ">
 										<label class="col-sm-3 control-label">
@@ -97,7 +94,6 @@
 										</label>
 									</div>
 								</div>
-								<div class="hr-line-dashed"></div>
 								<div class="form-group" > 
 									<div class="col-sm-6 ">
 										<label class="col-sm-3 control-label">
@@ -116,7 +112,6 @@
 										</label>
 									</div>
 								</div>
-								<div class="hr-line-dashed"></div>
 								<div class="form-group" > 
 									<div class="col-sm-6 ">
 										<label class="col-sm-3 control-label">
@@ -135,7 +130,6 @@
 										</label>
 									</div>
 								</div>
-								<div class="hr-line-dashed"></div>
 								<div class="form-group" > 
 									<div class="col-sm-6 ">
 										<label class="col-sm-3 control-label">
@@ -154,7 +148,6 @@
 										</label>
 									</div>
 								</div>
-								<div class="hr-line-dashed"></div>
 								<div class="form-group" > 
 									<div class="col-sm-6 ">
 										<label class="col-sm-3 control-label">
@@ -173,7 +166,6 @@
 										</label>
 									</div>
 								</div>
-								<div class="hr-line-dashed"></div>
 								<div class="form-group" > 
 									<div class="col-sm-6 ">
 										<label class="col-sm-3 control-label">
@@ -188,17 +180,18 @@
 										</label>
 									</div>
 								</div>
-								<div class="hr-line-dashed"></div>
 
 								<div class="form-group" > 
 									流转记录
 									<table class="table table-bordered table-hover" style="float:left" >
 										<tr>
-											<td style="width:20%">时间</td>
-											<td style="width:20%">申请人</td>
-											<td style="width:20%">流出审批</td>
-											<td style="width:20%">流入审批</td>
-											<td style="width:20%">办公室审批</td>
+											<td style="width:14%">时间</td>
+											<td style="width:14%">申请人</td>
+											<td style="width:14%">流出审批</td>
+											<td style="width:14%">流入审批</td>
+											<td style="width:14%">办公室审批</td>
+											<td style="width:14%">流出科室</td>
+											<td style="width:14%">流入科室</td>
 										</tr>
 										{foreach name="logs" item="k"}
 										<tr>
@@ -207,6 +200,8 @@
 											<td>{$k.use_approval_user['uname']}</td>
 											<td>{$k.apply_approval_user['uname']}</td>
 											<td>{$k.office_approval_user['uname']}</td>
+											<td>{$k.use_dep['dep_name']}</td>
+											<td>{$k.apply_dep['dep_name']}</td>
 										</tr>
 										{/foreach}
 									</table>

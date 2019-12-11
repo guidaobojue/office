@@ -172,7 +172,6 @@ class Question extends \think\Controller
 		}
 		
 
-		$data = [];
 		if(empty($data)){
 			$data[] = array_fill(0,count($title),"无");
 		}

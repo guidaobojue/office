@@ -18,7 +18,7 @@ class Roam extends Model
 	public function apply($item_id,$user_id,$apply_approval_user_id,$use_user_id,$use_approval_user_id,$office_approval_user_id){
 		$rs = $this->select(['item_id'=>$item_id]);
 		foreach($rs as $k => $v){
-			if($v['status'] != 5)
+			if((int)$v['status'] != 4)
 				return false;
 		}
 		$time = time();
@@ -27,10 +27,10 @@ class Roam extends Model
 			'apply_user_id'=>$user_id,
 			'use_user_id'=>$use_user_id,
 			'create_time'=>$time,
-			'status'=>1,
 			'apply_approval_user_id' => $apply_approval_user_id,
 			'use_approval_user_id' => $use_approval_user_id,
 			'office_approval_user_id' =>$office_approval_user_id,
+			'status' => 1,
 		]);
 
 		$roam_id = $this->roam_id;
@@ -49,18 +49,11 @@ class Roam extends Model
 
 	}
 
-	public function getRoamIng(){
-		$rs = $this->where("status <>5 ")->select();
-		$data = [];
-		foreach($rs as $k => $v){
-			$data[$v->data['item_id']] = $v->data;
-		}
-		return $data;
-
-	}
 
 	public function getOne($roam_id){
-		$rs = $this->find(['roam_id'=>$roam_id]);
+		#$rs = $this->join("vp_user_roam b","vp_roam.roam_id = b.roam_id")->where("vp_roam.roam_id='$roam_id'")->find();
+		#return $rs->data;
+		$rs = $this->where("roam_id = '$roam_id'")->find();
 		return $rs->data;
 	}
 
@@ -103,6 +96,23 @@ class Roam extends Model
 		}
 		return $temp;
 	}
-}
 
+	public function getRoamIng($user_id = null){
+		if(is_null($user_id))
+			$rs = $this->where("status <>5")->select();
+		else
+			$rs = $this->where("status <>5 and user_id = $user_id")->select();
+		return $rs;
+	}
+
+	public function checkRoamIng($item_id){
+		$rs = $this->where("item_id = '$item_id' and status <> 4")->find();
+		if(!$rs)
+			return false;
+		else 
+			return true;
+
+	}
+
+}
 

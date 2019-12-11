@@ -39,4 +39,15 @@ class UserDepartment extends Model
 			return $rs->data;
 	}
 
+	public function getOneByUid($uid){
+		$rs = $this->where("user_id = '$uid'")->find();
+		if(!$rs){
+			return false;
+		}
+		else{
+			$depId = $rs->department_id;
+			$depRs = $this->table("vp_department")->where("department_id='$depId'")->find();
+			return $depRs;
+		}
+	}
 }
