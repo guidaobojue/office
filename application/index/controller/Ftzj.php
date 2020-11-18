@@ -12,6 +12,21 @@ class Ftzj extends \think\Controller
 	public function __construct(){
 		parent::__construct();
 	}
+	/*
+	 * barrage 大屏显示 
+	 * admin 后台控制 
+	 * exportJob 导出xls
+	 * editCom 修改公司
+	 * job 显示职位 
+	 * delCom 删除公司
+	 * addCom 增加公司
+	 * addJob 增加职位
+	 * addTime 延长半年
+	 * editJob 修改职位
+	 * delJob 删除职位
+	 * changeShow 显示控制 
+	 *
+	 */
 
 	/*
 	 * 大屏显示数据
@@ -27,17 +42,29 @@ class Ftzj extends \think\Controller
 		return $this->fetch("index");
 	}
 
+	public function barrage2() {
+		$coms = $this->getData();
+		$data = [];
+		foreach($coms as $k => $v){
+			if($v['is_show'] == 1)
+				$data[] = $v;
+		}
+		$this->assign("list",$data);
+		return $this->fetch("index2");
+	}
 
 	/*
 	 * @desc 定时抓取数据
 	 */
 	public function timing(){
+		return [];
 		$time = strtotime(date("Y-m-d",time()));
 		$cache_data = cache_get('timing');
 		$temp = [];
+		$cache_data = false;
 		if(!$cache_data){
 			//不存在
-			$json = file_get_contents("https://api.ftrbj.com/api/Rec/?ts=$time");
+			$json = file_get_contents("http://api.ftrbj.com/api/Rec/?ts=$time");
 			$data = json_decode($json,true);
 			$data = $this->filter($data);
 			#$data = $data['data'];
@@ -46,7 +73,7 @@ class Ftzj extends \think\Controller
 			$conTime = $cache_data['time'];
 			if($time > $conTime){
 				//不存在
-				$json= file_get_contents("https://api.ftrbj.com/api/Rec/?ts=$time");
+				$json= file_get_contents("http://api.ftrbj.com/api/Rec/?ts=$time");
 				#$json = Config::get("data");
 				$data = json_decode($json,true);
 				$data = $this->filter($data);
@@ -62,7 +89,8 @@ class Ftzj extends \think\Controller
 			'data' => $data,
 		];
 		cache_set('timing',$rs);
-		return $data;
+		return [];
+		#return $data;
 	}
 
 

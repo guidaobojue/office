@@ -13,6 +13,12 @@ class Comment extends \think\Controller
 	public function __construct(){
 		parent::__construct();
 	}
+	/*
+	 * commentList 评论列表
+	 * details 评论详情
+	 * auditing 审核评论 
+	 *
+	 */
 
 
 	public function thanks(){

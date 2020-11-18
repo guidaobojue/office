@@ -11,6 +11,12 @@ class Record extends \think\Controller
 		parent::__construct();
 	}
 
+	/*
+	 * supplement 文件匹配
+	 * status 文档状态 
+	 * street 街道分配
+	 */
+
 	public function search(){
 	}
 
@@ -201,7 +207,11 @@ class Record extends \think\Controller
 
 	}
 
+	/*
+	 * 用途不明
+	 */
 	public function exportStreet(){
+		exit;
 		$filename = input("post.filename");
 		$columns = input("post.columns");
 		$uploads_dir = "../upload/";

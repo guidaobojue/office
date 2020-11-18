@@ -15,6 +15,15 @@ class Category extends \think\Controller
 		parent::__construct();
 
 	}
+	/*
+	 * index 菜单列表
+	 * update 更新菜单缓存
+	 * addCategory 增加菜单
+	 * editCategory 修改菜单
+	 * delCategory 删除菜单
+	 *
+	 *
+	 */
 
 	public function index() {
 		$this->assign("list_num",14);
@@ -359,7 +368,6 @@ class Category extends \think\Controller
 
 		];
 	}
-
 
 }
 

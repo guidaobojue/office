@@ -183,9 +183,8 @@
 
 								<div class="form-group" > 
 									流转记录
-									<table class="table table-bordered table-hover" style="float:left" >
+									<table class="table table-bordered dataTable" role="grid" aria-describedby="example1_info">
 										<tr>
-											<td style="width:14%">时间</td>
 											<td style="width:14%">申请人</td>
 											<td style="width:14%">流出审批</td>
 											<td style="width:14%">流入审批</td>
@@ -193,9 +192,9 @@
 											<td style="width:14%">流出科室</td>
 											<td style="width:14%">流入科室</td>
 										</tr>
+										<?php $i=1;?>
 										{foreach name="logs" item="k"}
-										<tr>
-											<td>{$k['create_time']|date="Y-m-d H:i:s",###}</td>
+										<tr style="background-color: #f9f9f9">
 											<td>{$k.apply_user['uname']}</td>
 											<td>{$k.use_approval_user['uname']}</td>
 											<td>{$k.apply_approval_user['uname']}</td>
@@ -203,6 +202,14 @@
 											<td>{$k.use_dep['dep_name']}</td>
 											<td>{$k.apply_dep['dep_name']}</td>
 										</tr>
+										<tr>
+											<td>{$k['apply_time']|date="Y-m-d H:i:s",###}</td>
+											<td>{$k['use_approval_time']|date="Y-m-d H:i:s",###}</td>
+											<td>{$k['apply_approval_time']|date="Y-m-d H:i:s",###}</td>
+											<td>{$k['office_approval_time']|date="Y-m-d H:i:s",###}</td>
+											<td colspan="2">原因: {$k.reason}</td>
+										</tr>
+										<?php $i++;?>
 										{/foreach}
 									</table>
 								</div>

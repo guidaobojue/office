@@ -106,6 +106,9 @@ class user extends Model
 		return $list;
 	}
 
+	public function searchName($name){
+		return $this->where("uname like '%$name%'")->field(['user_id',"uname","nickname"])->find();
+	}
 
 	public function getListByDep($dep_id){
 		$rs = $this->query("select a.*,b.* from vp_user_department a left join vp_user b on a.user_id=b.user_id where a.department_id = '$dep_id'");
@@ -119,6 +122,7 @@ class user extends Model
 	}
 
 
+	
 	public function getUserIdByName($name){
 
 	}

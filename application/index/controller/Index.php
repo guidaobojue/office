@@ -28,6 +28,9 @@ class Index extends \think\Controller
 		return $this->fetch("index");
 	}
 
+	public function noPri(){
+		$this->error("没有权限","/index/index/index");
+	}
 
 
 
@@ -94,7 +97,9 @@ class Index extends \think\Controller
 	public function logout(){
 		unset($_SESSION['user']);
 		$this->redirect("/");
+
 	}
+
 
 
 }

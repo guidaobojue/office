@@ -15,7 +15,7 @@ class Roam extends Model
 	/*
 	 * status  1:流入部门同意 2:流入部门领导同意 3:流出部门同意  4:办公室审批同意   5:流入部门领导不同意 6:流出部门领导不同意 7:办公室不同意
 	 */
-	public function apply($item_id,$user_id,$apply_approval_user_id,$use_user_id,$use_approval_user_id,$office_approval_user_id){
+	public function apply($item_id,$user_id,$apply_approval_user_id,$use_user_id,$use_approval_user_id,$office_approval_user_id,$reason){
 		$rs = $this->select(['item_id'=>$item_id]);
 		foreach($rs as $k => $v){
 			if((int)$v['status'] != 4)
@@ -26,11 +26,12 @@ class Roam extends Model
 			'item_id'=>$item_id,
 			'apply_user_id'=>$user_id,
 			'use_user_id'=>$use_user_id,
-			'create_time'=>$time,
+			'apply_time'=>$time,
 			'apply_approval_user_id' => $apply_approval_user_id,
 			'use_approval_user_id' => $use_approval_user_id,
 			'office_approval_user_id' =>$office_approval_user_id,
 			'status' => 1,
+			'reason' => $reason,
 		]);
 
 		$roam_id = $this->roam_id;
@@ -67,8 +68,21 @@ class Roam extends Model
 		$rs = $this->find(['roam_id'=>$roam_id]);
 		if(empty($rs))
 			return false;
+
+		$orders =  ['use_approval_time','apply_approval_time','office_approval_time'];
+		$timeArg = "";
+		foreach($orders as $k => $v){
+			if(empty($rs->$v)){
+				$timeArg = $v;
+				break;
+			}
+		}
+
 		$status= $rs->data['status']+1;
-		$this->where(['roam_id'=>$roam_id])->update(['status'=>$status]);
+		if(empty($timeArg))
+			$this->where(['roam_id'=>$roam_id])->update(['status'=>$status]);
+		else
+			$this->where(['roam_id'=>$roam_id])->update(['status'=>$status,$timeArg => time()]);
 	}
 
 	public function deny($roam_id){

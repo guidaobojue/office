@@ -17,7 +17,7 @@ class UserMessage extends Model
 	}
 
 	public function list($user_id){
-		return $this->where(['user_id'=>$user_id])->order("create_time")->paginate();
+		return $this->where(['user_id'=>$user_id])->order("user_message_id desc")->paginate(10);
 
 	}
 

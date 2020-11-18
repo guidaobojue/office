@@ -61,6 +61,7 @@ function readExcel($file){
 		}
 		$data[] = $temp;
 	}
+	$objPHPExcel->disconnectWorksheets();
 	return ['title'=>$title,'data'=>$data];
 }
 
@@ -114,13 +115,17 @@ function writeExcel($data,$title = null,$file_name = null){
 		foreach($range as $ik => $iv){
 			$tmpKeys[]  = $iv.$i;
 		}
+		if(count($tmpKeys) != count($v)){
+			$v = array_slice($v,0,count($tmpKeys));
+		}
 		$tmp =  array_combine($tmpKeys,$v);
+		#var_dump($tmp,$list);
 		$list = array_merge($tmp,$list);
 		$i++;
 	}
 
 	foreach($list as $k => $v){
-		$objPHPExcel->setActiveSheetIndex(0) ->setCellValue($k, $v);
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue($k, $v,PHPExcel_Cell_DataType::TYPE_STRING);
 	}
 
 

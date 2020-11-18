@@ -1,4 +1,5 @@
 <?php
+exit;
 namespace app\index\controller;
 use \think\view;
 use \think\Request;

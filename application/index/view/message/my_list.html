@@ -28,16 +28,18 @@
 								<div >
 										<table class="table table-bordered table-hover ">
 										<tr>
-											<th class="asset_a" style="width:15%">标题</th>
-											<th class="asset_b" style="width:15%">内容</th>
-											<th class="asset_c" style="width:15%">路径</th>
-											<th class="asset_e" style="width:15%">状态</th>
+											<th class="asset_a" style="width:20%">编号</th>
+											<th class="asset_a" style="width:20%">标题</th>
+											<th class="asset_b" style="width:20%">内容</th>
+											<th class="asset_c" style="width:20%">路径</th>
+											<th class="asset_e" style="width:20%">状态</th>
 										</tr>
 										{if condition="!empty($list)" }
 										{foreach name="list" item="k"}
 										<tr message_id= "{$k.message_id}"class="message_{$k.message_id} table_ul" {if condition="$k.status eq 0"} style="background:#99de99" {/if}
 											
 											>
+											<td>{$k.message_id}</td>
 											<td>{$k.title}</td>
 											<td>{$k.content}</td>
 											<td><a href="{$k.url}" target="_blank">{$k.url}</a></td>

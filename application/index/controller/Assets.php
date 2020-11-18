@@ -13,6 +13,23 @@ class Assets extends \think\Controller
 		parent::__construct();
 	}
 
+	/*
+	 * addItem 增加物品
+	 * myassets 个人资产
+	 * hasFinish 己完结流转
+	 * checkList 正在进行中流转
+	 * verify  审核列表
+	 * asset 当事人资产
+	 * apply_confirm 流转确认
+	 * applys 申请流转
+	 * allow 审核通过
+	 * deny 审核不通过
+	 * roam 人员列表明
+	 * detail 资产详情
+	 * print 打印
+	 *
+	 *
+	 */
 
 	public function addItem(){
 		$this->assign("list_num",21);
@@ -278,30 +295,65 @@ class Assets extends \think\Controller
 
 	}
 
-	public function roam_detail(){
+	public function apply_confirm(){
+		#$item_ids= Request::instance()->post('ids',[]);
+		$item_ids = $_POST["ids"];
+		foreach($item_ids as $k => $v){
+			if(!is_numeric($v)){
+				return ;
+			}
+		}
+		$itemModel = model("item");
+		$items = [];
+		foreach($item_ids as $k => $v){
+			$items[] = $itemModel->getOne($v);
+		}
 
-	}	
+		$depModel = model("department");
+		$deps = $depModel->getAll();
 
+		#$list = $model->list();
+		#$this->assign("list",$list);
+		#$this->assign("page",$list->render());
 
+		$this->assign("item_ids",implode(",",$item_ids));
+		$this->assign("deps",$deps);
+		$this->assign("items",$items);
+		return $this->fetch("apply_confirm");
 
-	public function apply(){
+	}
+
+	public function applys(){
+		$reason = input("reason");
+		$item_ids = input("item_ids");
+		$send_to_user_id = input("use_user_id");
 		$user = $_SESSION['user'];
-		$user_id = $user['user_id'];
-		$item_id = Request::instance()->get("item_id",false);
-		if(!is_numeric($item_id) || !$item_id)
-			return false;
+		$apply_user_id = $user['user_id'];
 
+		$item_ids = explode(",",$item_ids);
+		foreach($item_ids as $k => $v){
+			if(!is_numeric($v))
+				return false;
+		}
+
+		foreach($item_ids as $k => $v){
+			$rs = 	$this->apply($apply_user_id,$send_to_user_id,$v,$reason);
+		}
+		return $this->success("流转申请成功","/index/assets/roam");
+
+		
+	}
+
+	private function apply($apply_user_id,$send_to_user_id,$item_id,$reason){
 		$model = model("item");
 		$item = $model->getOne($item_id);
+		$user = $_SESSION['user'];
 		if(!$item)
 			return false;
 
-
-
 		$model = model("user");
 
-
-		$top = $model->getTop($user_id);
+		$top = $model->getTop($send_to_user_id);
 		if(!$top)
 			return false;
 		$apply_approval_user_id = $top['user_id'];
@@ -314,24 +366,23 @@ class Assets extends \think\Controller
 
 		$office_approval_user_id = 8;
 
-		$model = model("roam");
+		$model = new \app\index\model\Roam();
 
 		$checkIng = $model->checkRoamIng($item_id);
-		if($checkIng)
-			die(json_encode(false));
+		if($checkIng){
+		//	die(json_encode(false));
+			return ;
+		}
 
-		$roam_id = $model->apply($item_id,$user_id,$apply_approval_user_id,$use_user_id,$use_approval_user_id,$office_approval_user_id);
+		$roam_id = $model->apply($item_id,$apply_user_id,$apply_approval_user_id,$use_user_id,$use_approval_user_id,$office_approval_user_id,$reason);
 
 		$model = model("message");
 
 		$title = "固定资产流转";
 		$message = "申请人:".$user['uname']." 申请资产:".$item['model_name'];
 		$url = "/index/assets/verify";
-		$model->notify([$user_id,$apply_approval_user_id,$use_user_id,$use_approval_user_id,$office_approval_user_id],$title,$message,$url);
+		$model->notify([$apply_user_id,$apply_approval_user_id,$use_user_id,$use_approval_user_id,$office_approval_user_id],$title,$message."@原因:".$reason,$url);
 		$rs = false;
-		if($roam_id)
-			$rs = true;
-		echo json_encode($rs);
 	}
 
 
@@ -428,8 +479,6 @@ class Assets extends \think\Controller
 
 
 	public function roam(){
-		$this->assign("list_num",21);
-		$page = Request::instance()->get('page',1);
 		$model = model("user");
 		$depModel = model("department");
 		$deps = $depModel->getAll();
@@ -438,7 +487,6 @@ class Assets extends \think\Controller
 		#$this->assign("list",$list);
 		#$this->assign("page",$list->render());
 
-		$this->assign("list",['1'=>'123']);
 		$this->assign("deps",$deps);
 		return $this->fetch("department_list");
 	}

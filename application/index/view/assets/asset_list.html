@@ -21,8 +21,10 @@
 							<div class="table-responsive">
 
 								<div >
+									<form name="form1" action="/index/assets/apply_confirm" method="POST">
 									<table class="table table-bordered table-hover" style="float:left" >						
 										<tr>
+											<th>操作</th>
 											<th>编号</th>
 											<th>物品名称</th>
 											<th>会计号</th>
@@ -31,7 +33,14 @@
 										</tr>
 										{if condition="!empty($list)" }
 										{foreach name="list" item="k"}
-										<tr id="tr_{$k.item_id}">
+										<tr id="tr_{$k.item_id}" class="ctr">
+											<td align="center">
+												{if condition="$k.isRoam eq 1"}
+												<input type="checkbox" disabled>
+												{else}
+												<input type="checkbox" name="ids[]" value="{$k.item_id}"/>
+												{/if}
+											</td>
 											<td>{$k.item_no}</td>
 											<td>{$k.model_name}</td>
 											<td>{$k.account_no}</td>
@@ -41,7 +50,6 @@
 												{if condition="$k.isRoam eq 1"}
 												<a class="href"  style="color:red" href="javascript:void(0);" >申请中</a>
 												{else}
-												<a class="href"  href="javascript:apply({$k.item_id})" >申请</a>
 												{/if}
 												
 											</td>
@@ -53,8 +61,15 @@
 
 
 										{/if}
+										<tr>
+											<td>
+												<button type="button" onclick="form1.submit()" class="btn btn-block btn-primary btn-lg">提交</button>
+											</td>
+
+										</tr>
 
 									</table>
+									</form>
 								</div>
 
 							</div>
@@ -111,9 +126,21 @@ function apply(item_id){
 		});
 
 	}
-
 }
 
+$(".ctr").click(function(){
+	var obj = $(this).children("td").children("input");
+	if(obj.attr("name") == undefined){
+		return false;
+	}
+	if(obj.prop("checked")){
+		obj.prop("checked",false);
+	}
+	else{
+		obj.prop("checked",true);
+	}
+
+})
 
 
 </script>

@@ -25,12 +25,55 @@ class pri{
 	}
 
 
-	public function checkPri(){
-		return true;
-		if(!in_array($action,['login','timing','comment','details','question','qrcode','qrupload','barrage'])){
+	public function checkPri($module,$controller,$action){
+		if($this->pass($module,$controller,$action))
+			return true;
+
+		if(!$this->checkSession())
+			return false;
+
+		$pris = $this->getPri();
+		$userGroupInfo = $this->getUserGroupInfo();
+		$gid = $userGroupInfo['group_id'];
+		if($gid == 1)
+			return true;
+		
+		foreach($pris as $k => $v){
+			if($v['module_name'] == strtolower($module) && $v['controller_name'] == strtolower($controller) && $v['method'] == strtolower($action))
+				return true;
 		}
+
+		return false;
 	}
 
+	private function pass(){
+		/*
+		$configs = [
+			['m'=> 'index', 'c'=> 'index','a' => 'login'],
+			['m'=> 'index', 'c'=> 'index','a' => 'logout'],
+			['m'=> 'index', 'c'=> 'index','a' => 'login'],
+			['m'=> 'index', 'c'=> 'index','a' => 'login'],
+			['m'=> 'index', 'c'=> 'index','a' => 'login'],
+			['m'=> 'index', 'c'=> 'index','a' => 'login'],
+			['m'=> 'index', 'c'=> 'index','a' => 'login'],
+		];
+		if(in_array($action,['login','timing','comment','details','question','qrcode','qrupload','barrage',"nopri",'logout'])){
+			return true;
+		}
+		 */
+		return true;
+	}
+
+
+
+	public function getUserGroupInfo(){
+		$user_id = $_SESSION['user']['user_id'];
+		$model = model("group");
+		$groupInfo = $model->getOneByUserId($user_id);
+		if(!empty($groupInfo))
+			$groupInfo = array_pop($groupInfo);
+		return $groupInfo;
+	}
 
 	public function category(){
 		if(!isset($_SESSION['user']))
@@ -73,6 +116,17 @@ class pri{
 	public function detail($data){
 	}
 
+
+
+	public function updatePri(){
+		$model = model("grouppri");
+		$list = $model->getAllInfo();
+		cache_set("pri_list",$list);
+	}
+
+	public function getPri(){
+		return cache_get("pri_list");
+	}
 
 
 	public function update($n){

@@ -4,6 +4,7 @@ use \think\view;
 use \think\Request;
 use \think\Model;
 use app\extra\pri;
+use \think\Config;
 
 class Manager extends \think\Controller
 {
@@ -14,14 +15,72 @@ class Manager extends \think\Controller
 
 	}
 
-	public function index()
-	{
+	/*
+	 * user 用户列表 
+	 * editUser 修改用户
+	 * addUser 增加用户
+	 * delUser 删除用户
+	 * level 级别列表
+	 * chgPosition 级别修改
+	 * search 搜索用户
+	 * register 增加群组
+	 * delGroup 删除群组
+	 * editGroup 编缉群组 
+	 * group  群组列表
+	 * update 更新群组缓存 
+	 * pri 查看群组权限 
+	 *
+	 */
 
-		if(!isset($_SESSION['user'])){
-			$this->redirect("/index/index/login");
-			return true;
+	public function changePri(){
+		$selected = isset($_POST['selected']) ? $_POST['selected'] : false;
+		if(empty($selected)){
+			$group_id = input("group_id");
+			$groupModel = model("group");
+			$groupInfo = $groupModel->getOne($group_id);
+			$priModel = model("pri");
+
+			$groupPriModel = model("grouppri");
+			$pris = $priModel->getAll();
+
+			$selectedPris = $groupPriModel->getSelectedPri($group_id);
+			$temp = [];
+			foreach($selectedPris as $k => $v){
+				$temp[] = $v->pri_id;
+			}
+
+			$data = [];
+			$top = reset($pris);
+			$top_name = $top->controller_name;
+			$top->isnew = true;
+			foreach($pris as $k => &$v){
+				if($v->controller_name != $top_name){
+					$v->isnew = true;
+					$top_name = $v->controller_name;
+				}
+				if(in_array($v->pri_id,$temp)){
+					$v->selected = true;
+				}
+				else{
+					$v->selected = false;
+				}
+			}
+
+
+
+			$this->assign("pris",$pris);
+			$this->assign("info",$groupInfo);
+			return $this->fetch("changePri");
 		}
-		return $this->fetch("index");
+		else{
+			$group_id = input("group_id");
+			if(empty($group_id))
+				$this->redirect("/index/manager/changePri");
+			$groupPriModel = model("grouppri");
+			$groupPriModel->delByGroupId($group_id);
+			$groupPriModel->addUserGroup($group_id,$selected);
+			$this->success("修改成功","/index/manager/group");
+		}
 	}
 
 
@@ -82,7 +141,7 @@ class Manager extends \think\Controller
 		$positionModel = model("position");
 
 		foreach($list as $k => &$v){
-		#	$v['levelName'] = isset($levelRs[$v->level_id]) ? $levelRs[$v->level_id] : "";
+			#	$v['levelName'] = isset($levelRs[$v->level_id]) ? $levelRs[$v->level_id] : "";
 			$v['groups'] = isset($userGroups[$v->user_id]) ? $userGroups[$v->user_id] :  [];
 			$v['position'] = $positionModel->getOneByUserId($v->user_id);
 		}
@@ -125,9 +184,12 @@ class Manager extends \think\Controller
 		$positionModel = model("position");
 
 		foreach($list as $k => &$v){
-		#	$v['levelName'] = isset($levelRs[$v->level_id]) ? $levelRs[$v->level_id] : "";
+			#	$v['levelName'] = isset($levelRs[$v->level_id]) ? $levelRs[$v->level_id] : "";
 			$v['groups'] = isset($userGroups[$v->user_id]) ? $userGroups[$v->user_id] :  [];
 			$v['position'] = $positionModel->getOneByUserId($v->user_id);
+			if(empty($v['position'])){
+				$v['position'] = null;
+			}
 		}
 		unset($v);
 
@@ -143,6 +205,7 @@ class Manager extends \think\Controller
 
 
 	public function login(){
+		die("fuck");
 		if(!empty($_SESSION)){
 			$this->redirect("/index/index/index");
 			return ;
@@ -166,9 +229,9 @@ class Manager extends \think\Controller
 
 		}
 		else{
-				return $this->fetch("login");
+			return $this->fetch("login");
 		}
-				return $this->fetch("login");
+		return $this->fetch("login");
 	}
 
 
@@ -437,10 +500,8 @@ class Manager extends \think\Controller
 
 
 
-	public function category(){
-	}
 
-	public function build($n,$cates,$layer = 0,$selected){
+	private function build($n,$cates,$layer = 0,$selected){
 		$genTd = function($n){
 			$str = "";
 			for($i =2;$i<=$n;$i++){
@@ -484,5 +545,59 @@ class Manager extends \think\Controller
 
 	}
 
+	public function updatePri(){
+		$priObj = new pri();
+		$priObj->updatePri();
+		$this->success("修改成功","/index/manager/group");
+	}
+
+
+
+
+
+	public function installs(){
+		$configs = Config::get("pri");
+		$temp = [];
+		foreach($configs as $k => $v){
+			if(!in_array($v['c'],$temp))
+				$temp[] = $v['c'];
+		}
+		$modules = $temp;
+
+
+
+		$model = model("pri");
+		$actModules = $model->getModules();
+		$temp = [];
+		foreach($actModules as $k => $v){
+			if(!in_array(strtolower($v->controller_name),$temp))
+				$temp[] = strtolower($v->controller_name);
+		}
+
+		$this->assign("list",$modules);
+		$this->assign("active",$temp);
+		return $this->fetch("installs");
+	}
+
+	public function unstall(){
+		$name = input("name");
+		$model = model("Pri");
+		#$model->delByModule($name);
+		#$this->success("卸载成功");
+		$this->error("严禁删除");
+	}
+
+	public function active(){
+		$name = input("name");
+		$model = model("Pri");
+		$configs = Config::get("pri");
+		$obj = [];
+		foreach($configs as $k => $v){
+			if($v['c'] == trim($name))
+				$obj = $v;
+		}
+		$model->addModule($obj);
+		$this->success("安装成功");
+	}
 
 }

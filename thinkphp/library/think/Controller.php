@@ -59,12 +59,10 @@ class Controller
 
 	    $request = Request::instance();
 	    $action = $request->action();
-	    $pri = new pri();
-	    if(!$pri->checkSession()){
-	#	    $this->redirect("/index/index/login");
-	    }
 
-	    if(!$pri->checkPri()){
+	    $pri = new pri();
+
+	    if(!$pri->checkPri($request->module(),$request->controller(),$request->action())){
 		    $this->redirect("/index/index/noPri");
 	    }
 
@@ -82,6 +80,8 @@ class Controller
 		    }
 	    }
     }
+
+
 
     /**
      * 初始化操作
