@@ -1,0 +1,130 @@
+{include file="./static/public_template/dxheader.html"/}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+
+	<!-- Main content -->
+	<section class="content">
+
+		<div class="row">
+			<div class="col-lg-9">
+				<form action="/index/manager/search" method="POST">
+				<p class="wrapper-title"><i class="fa fa-file-text-o"></i> 安装列表 
+				</p>
+				</form>
+			</div>
+			<div class="col-lg-2">
+				<p class="wrapper-title" style="float:right">
+				</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="box">
+					<div class="box-header">
+					</div>
+					<div class="box-body">
+						<div class="table" >
+							<div class="table-responsive">
+
+								<div >
+									<table class="table table-bordered table-hover" style="float:left" >						
+										<tr>
+											<th>控制器</th>
+											<th>状态</th>
+											<th>操作</th>
+										</tr>
+										{if condition="!empty($list)" }
+										{foreach name="list" item="k"}
+										<tr>
+											<td>
+												{$k}
+											</td>
+											<?php if(in_array(strtolower($k),$active)): ?>
+											<td>
+												<span style="color:green">
+													己激活
+												</span>
+											</td>
+											<td>
+												<a href="/index/manager/unstall/name/{$k}">关闭</a>
+											</td>
+											<?php else:?>
+											<td>
+												<span style="color:red">
+													未激活
+												</span>
+											</td>
+											<td>
+												<a href="/index/manager/active/name/{$k}">激活</a>
+											</td>
+
+											<?php endif;?>
+										</tr>
+										{/foreach}
+
+
+										{/if}
+
+									</table>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<!-- /.box-body -->
+				</div>
+				<!-- /.box -->
+			</div>
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
+		<div class="box-footer">
+			<ul class="pagination pagination-sm no-margin pull-right">
+			</ul>
+		</div> 
+	</section>
+	<!-- /.content -->
+</div>
+{include file="./static/public_template/footer.html"/}
+<!-- /.content-wrapper -->
+<!-- 制作图表js -->
+<script src="__PUBLIC__/js/Chart.js"></script>
+
+<script src="/public/static/Template/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script type="text/javascript">
+	function delUser(id){
+		var fs = confirm("确认删除吗?");
+		if(fs){
+			$.ajax({
+				url:"/index/manager/delUser",
+				data:{'user_id':id},
+				dataType:'json',
+				type:'POST',
+				success:function(rs){
+					$("#tr_"+id).hide();
+
+				}
+			})
+		}
+	}
+
+//Date picker
+
+
+$('.submit').click(function(){
+	$(this).parents('form').attr('action', $(this).attr('action'));
+	$(this).parents('form').submit();
+})
+
+$('#start_time').datepicker({
+	autoclose: true,
+	format: "yyyy-mm-dd",
+});
+
+$('#end_time').datepicker({
+	autoclose: true,
+	format: "yyyy-mm-dd",
+});
+
+</script>

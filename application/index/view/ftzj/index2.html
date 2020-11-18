@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <title>招聘信息岗位发布</title>
+        <style>
+            body {
+               background: black;
+		margin:10px;
+
+            }
+	    span{
+		    font-size:1.6em;
+		    text-align:center;
+		    color:yellow;
+		    font-family:黑体;
+	    }
+
+            marquee {
+                font-size: 18px;
+                color: white;
+		height:800px;
+            }
+	    .t1{
+		    /*width:288px;*/
+
+	    }
+	    .t2{
+		    /*width:288px;*/
+	    }
+	    .t2 td{
+		    text-align:center;
+	    }
+	    td{
+		    #padding : 0px 5px;
+		    word-wrap:break-word;
+	    }
+	    .t1 tr{
+		    margin : 10px 0px;
+		    height:35px;
+/*	            width:100px;*/
+	    }
+	    .t2 td{
+		    text-align:center;
+	    }
+	    .job_name{
+		    width:25%;
+	    }
+	    .age{
+		    width:19%;
+	    }
+	    .money{
+		    width:17%;
+	    }
+
+	    .first td{
+		    border-top:1px #f64b4b;
+	    }
+	    .end td{
+		    border-top:1px #f64b4b;
+	    }
+        </style>
+    </head>
+
+    <body>
+	    <div style="position:relative;text-align:center;">
+		    <span style="font-size:1em;color:#0f6">招聘信息岗位发布</span>
+	    </div>
+	    <div style="position:relative;text-align:center;">
+		    <marquee direction="up" scrollamount="1">
+		    {foreach name="list" item="v"}
+		    <table class="t1" style="position:relative;text-align:center;margin:0 auto;">
+			    <tr class="first">
+				    <td style="width:25%"><span>法人码:</span></td>
+				    <td style="width:75%"><span>{$v['company_id']}</span></td>
+			    </tr>
+			    <tr>
+				    <td><span>单位简称:</span></td>
+				    <?php $company_name = $v['company_name'];?>
+				    <?php $arr = ['责任',"有限","北京","(",")","（","）"];?>
+				    <?php foreach($arr as $ak => $av):?>
+				    <?php $company_name = str_replace($av,"",$company_name);?>
+				    <?php endforeach;?>
+				    <td><span>{$company_name}</span></td>
+			    </tr>
+		    </table>
+		    <table class="t2" style="position:relative;text-align:center;margin:0 auto;">
+			    <tr>
+				    <td><span>职位</span></td>
+				    <td><span>年龄</span></td>
+				    <td><span>薪资</span></td>
+				    <td><span>地址</span></td>
+			    </tr>
+			    {if condition="isset($v['jobs'])"}
+			    {foreach name="$v['jobs']" item="iv"}
+			    <tr>
+				    <td class="job_name">
+					    <span>{$iv.job_name}</span>
+				    </td>
+				    <td class="age">
+					    <?php if(strpos($iv['age'],"-") !== false):?>
+					    <?php $ages = explode("-",$iv['age']);?>
+					    <span><?php echo (int)$ages[0] ."-".(int)$ages[1];?></span>
+					    <?php else:?>
+					    <span><?=(int)$iv['age'];?>岁</span>
+					    <?php endif;?>
+
+				    </td>
+				    <td class="money">
+					    <?php if(strpos($iv['money'],"-") !== false):?>
+					    <?php $moneys = explode("-",$iv['money']);?>
+
+					    <?php $min = floor((int)$moneys[0]/1000);?>
+					    <?php $max = floor((int)$moneys[1]/1000);?>
+					    <?php if($min == $max) $min--;?>
+					    <span style="width:100%"><?=$min."-".$max;?>K</span>
+					    <?php else:?>
+					    <span><?=(int)$iv['money']/1000;?>K</span>
+					    <?php endif;?>
+				    </td>
+				    <td class="address">
+					    <span>{$iv.address}</span>
+				    </td>
+			    </tr>
+			    {/foreach}
+			    <tr class="end">
+				    <td></td>
+				    <td></td>
+				    <td></td>
+				    <td></td>
+			    </tr>
+			    {/if}
+		    </table>
+		    <table class="t1" style="position:relative;text-align:center;margin:0 auto;">
+			    <tr>
+				    <td style="text-align:center" colspan="4"><span style="color:red"">========================================</span></td>
+			    </tr>
+		    </table>
+		    {/foreach}
+		    </marquee>
+	    </div>
+	    <script>
+		    var time = 1000 * 3600 * 2;
+setTimeout(function(){
+	window.location.href = window.location.href;
+},time)
+	    </script>
+
+    </body>
+
+
+</html>

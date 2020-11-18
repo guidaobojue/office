@@ -1,0 +1,195 @@
+{include file="./static/public_template/dxheader.html"/}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+
+	<!-- Main content -->
+	<section class="content">
+
+		<div class="row">
+			<div class="col-lg-9">
+				<form action="/index/common/certlist" method="POST">
+				<p class="wrapper-title"><i class="fa fa-file-text-o"></i> 工作居住证列表
+					<input style="" type="text" name="search">
+					<button class="btn btn-primary ">搜索</button>
+					<button class="btn btn-warning" onclick="window.location.href='/index/common/certlist'">返回</button>
+				<!--
+					<input style="width:30%" type="text" name="search"/>
+					<button class="btn btn-primary " >搜索</button>
+				-->
+				</p>
+				</form>
+			</div>
+			<div class="col-lg-2">
+				<p class="wrapper-title" style="float:right">
+				<a class="btn btn-primary " href="/index/common/cert" target="_blank">新增单位</a>
+				</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="box">
+					<div class="box-header">
+					</div>
+					<div class="box-body">
+						<div class="table" >
+							<div class="table-responsive">
+
+								<div >
+									<table class="table table-bordered table-hover" style="float:left" >						
+										<tr>
+											<th>编号</th>
+											<th>公司名</th>
+											<!--
+		   <th>经办人</th>
+		   <th>经办人电话</th>
+		   <th>负责人</th>
+		   <th>负责人电话</th>
+											-->
+											<th>新办数量</th>
+											<th>己受理</th>
+											<!--<th>操作</th>-->
+										</tr>
+										{if condition="!empty($list)" }
+										{foreach name="list" item="k"}
+										<tr id="tr_{$k.cert_id}">
+											<td>{$k.cert_id}</td>
+											<td>
+												<a href="/index/common/chgCert/id/{$k.cert_id}" target="_blank">{$k.company_name}</a>
+											</td>
+											<!--
+		   <td>{$k.user_name}</td>
+		   <td>{$k.tel}</td>
+		   <td>{$k.own_uname}</td>
+		   <td>{$k.own_tel}</td>
+											-->
+											<td>
+												<span id="new_num_{$k.cert_id}" style="display:inline-block;width:20px">
+													{$k.new_num}
+												</span>
+												<button type="button" onclick="newAdd({$k.cert_id})" class="btn btn-info" style="">
+													+
+												</button>
+												<button type="button" onclick="newSub({$k.cert_id})" class="btn btn-danger" style="">
+													-
+												</button>
+											</td>
+											<td>
+												<span id="has_num_{$k.cert_id}" style="display:inline-block;width:20px">
+													{$k.has_num}
+												</span>
+												<button type="button" onclick="hasAdd({$k.cert_id})" class="btn btn-info" style="">
+													+
+												</button>
+												<button type="button" onclick="hasSub({$k.cert_id})" class="btn btn-danger" style="">
+													-
+												</button>
+											</td>
+											<!--
+		   <td>
+		   <a href="/index/common/chgCert/id/{$k.cert_id}" target="_blank">修改</a>
+		   </td>
+											-->
+
+
+
+										</tr>
+										{/foreach}
+
+
+										{/if}
+
+									</table>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<!-- /.box-body -->
+				</div>
+				<!-- /.box -->
+			</div>
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
+		<div class="box-footer">
+			<ul class="pagination pagination-sm no-margin pull-right">
+				<?=$page;?>
+			</ul>
+		</div> 
+	</section>
+	<!-- /.content -->
+</div>
+{include file="./static/public_template/footer.html"/}
+<!-- /.content-wrapper -->
+<!-- 制作图表js -->
+<script src="__PUBLIC__/js/Chart.js"></script>
+
+<script src="/public/static/Template/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script type="text/javascript">
+	function newAdd(id){
+		$("#new_num_"+id).siblings().attr("disabled","disabled");
+		$.ajax({
+			url:"/index/common/addNewNum",
+			data:{'cert_id':id},
+			dataType:'json',
+			type:'POST',
+			success:function(rs){
+				$("#new_num_"+id).siblings().removeAttr("disabled");
+				$("#new_num_"+id).html(rs);
+
+			}
+		})
+	}
+
+function newSub(id){
+	$("#new_num_"+id).siblings().attr("disabled","disabled");
+	$.ajax({
+		url:"/index/common/subNewNum",
+		data:{'cert_id':id},
+		dataType:'json',
+		type:'POST',
+		success:function(rs){
+			$("#new_num_"+id).siblings().removeAttr("disabled");
+			$("#new_num_"+id).html(rs);
+
+		}
+	})
+}
+
+
+function hasAdd(id){
+	$("#has_num_"+id).siblings().attr("disabled","disabled");
+	$.ajax({
+		url:"/index/common/addHasNum",
+		data:{'cert_id':id},
+		dataType:'json',
+		type:'POST',
+		success:function(rs){
+			$("#has_num_"+id).siblings().removeAttr("disabled");
+			$("#has_num_"+id).html(rs);
+
+		}
+	})
+}
+
+function hasSub(id){
+	$("#has_num_"+id).siblings().attr("disabled","disabled");
+	$.ajax({
+		url:"/index/common/subHasNum",
+		data:{'cert_id':id},
+		dataType:'json',
+		type:'POST',
+		success:function(rs){
+			$("#has_num_"+id).siblings().removeAttr("disabled");
+			$("#has_num_"+id).html(rs);
+		}
+	})
+}
+
+
+
+//Date picker
+
+
+</script>

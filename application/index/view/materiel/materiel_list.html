@@ -1,0 +1,156 @@
+{include file="./static/public_template/dxheader.html"/}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+
+	<!-- Main content -->
+	<section class="content">
+
+		<div class="row">
+			<div class="col-lg-9">
+				<form action="/index/manager/search" method="POST">
+				<p class="wrapper-title"><i class="fa fa-file-text-o"></i> 墨盒列表 
+				<!--
+					<input style="width:30%" type="text" name="search"/>
+					<button class="btn btn-primary " >搜索</button>
+				-->
+				</p>
+				</form>
+			</div>
+			<div class="col-lg-1">
+				<p class="wrapper-title" style="float:right">
+				<a class="btn btn-primary " href="/index/materiel/add" target="_blank">进货</a>
+				</p>
+			</div>
+			<div class="col-lg-1">
+				<p class="wrapper-title" style="float:right">
+				<a class="btn btn-primary " href="/index/materiel/addItem" target="_blank">新增物料种类</a>
+				</p>
+			</div>
+			<div class="col-lg-1">
+				<p class="wrapper-title" style="float:right">
+				<a class="btn btn-primary " href="/index/printer/index" target="_blank">打印机种类</a>
+				</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="box">
+					<div class="box-header">
+					</div>
+					<div class="box-body">
+						<div class="table" >
+							<div class="table-responsive">
+
+								<div >
+									<table class="table table-bordered table-hover" style="float:left" >						
+										<tr>
+											<th style="width:16%">编号</th>
+											<th style="width:16%">名称</th>
+											<th style="width:16%">总计</th>
+											<th style="width:16%">消耗</th>
+										</tr>
+										{if condition="!empty($materiels)" }
+										{foreach name="materiels" item="k"}
+										<tr id="tr_{$k.machine_id}">
+											<td>
+												{$k.materiel_model_id}
+											</td>
+											<td>
+												{$k.model_name}
+											</td>
+											<td>
+												{$k.total}
+											</td>
+											<td>
+												<form action="/index/materiel/consume" method="POST">
+												<div style="width:20%;float:left">
+													<input type="hidden" name="materiel_model_id"/>
+													<input type="hidden" class="user_id" name="user_id" value=""/>
+													<input type="text" class="user_name" name="user_name" value=""/>
+													<input type="text" name="num" value="0"/>
+													<span style="width:60%"><input type="submit" class="btn btn-primary " name="sub" value="消耗"/></span>
+												</div>
+												</form>
+											</td>
+
+
+
+										</tr>
+										{/foreach}
+
+
+										{/if}
+
+									</table>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<!-- /.box-body -->
+				</div>
+				<!-- /.box -->
+			</div>
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
+		<div class="box-footer">
+			<ul class="pagination pagination-sm no-margin pull-right">
+				<?php if(isset($page)):?>
+				{$page}
+				<?php endif;?>
+			</ul>
+		</div> 
+	</section>
+	<!-- /.content -->
+</div>
+{include file="./static/public_template/footer.html"/}
+<!-- /.content-wrapper -->
+<!-- 制作图表js -->
+<script src="__PUBLIC__/static/js/Chart.js"></script>
+
+<script src="/public/static/Template/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script type="text/javascript">
+	function delItem(id){
+		var fs = confirm("确认删除吗?");
+		if(fs){
+			$.ajax({
+				url:"/index/materiel/del",
+				data:{'model_id':id},
+				dataType:'json',
+				type:'POST',
+				success:function(rs){
+					$("#tr_"+id).hide();
+
+				}
+			})
+		}
+	}
+
+//Date picker
+
+var name = "";
+$(".user_name").change(function(){
+	name = $(this).val();
+	_this = $(this);
+	$.ajax({
+		"url": "/index/api/user/method/searchname",
+		"data": {"param":name},
+		"dataType":'json',
+		"type":"POST",
+		"success":function(data){
+			if(data != null){
+				_this.css("background-color","rgb(223, 251, 216)");
+				_this.siblings(".user_id").val(data.user_id);
+				_this.val(data.uname);
+			}
+		},
+	})
+})
+
+$("#user_name").click(function(){
+	$("#user_name").css("background-color","");
+});
+
+</script>

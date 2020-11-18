@@ -1,0 +1,147 @@
+{include file="./static/public_template/dxheader.html"/}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+
+	<!-- Main content -->
+	<section class="content">
+
+		<div class="row">
+			<div class="col-lg-9">
+				<form action="/index/manager/search" method="POST">
+				<p class="wrapper-title"><i class="fa fa-file-text-o"></i> 物料列表 
+					<input style="width:30%" type="text" name="search"/>
+					<button class="btn btn-primary " >搜索</button>
+				</p>
+				</form>
+			</div>
+			<div class="col-lg-1">
+				<p class="wrapper-title" style="float:right">
+				<a class="btn btn-primary " href="/index/materiel/add" target="_blank">进货</a>
+				</p>
+			</div>
+			<div class="col-lg-1">
+				<p class="wrapper-title" style="float:right">
+				<a class="btn btn-primary " href="/index/materiel/addItem" target="_blank">新增物料种类</a>
+				</p>
+			</div>
+			<div class="col-lg-1">
+				<p class="wrapper-title" style="float:right">
+				<a class="btn btn-primary " href="/index/printer/index" target="_blank">打印机种类</a>
+				</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="box">
+					<div class="box-header">
+					</div>
+					<div class="box-body">
+						<div class="table" >
+							<div class="table-responsive">
+
+								<div >
+									<table class="table table-bordered table-hover" style="float:left" >						
+										<tr>
+											<th style="width:16%">编号</th>
+											<th style="width:16%">名称</th>
+											<th style="width:16%">总计</th>
+											<th style="width:16%">消耗</th>
+											<th style="width:16%">操作</th>
+										</tr>
+										{if condition="!empty($list)" }
+										{foreach name="list" item="k"}
+										<tr id="tr_{$k.machine_id}">
+											<td>{$k.machine_id}</td>
+											<td>{$k.machine_name}</td>
+											<td>{$k.total}</td>
+											<td>
+												<div style="width:20%;float:left">
+													<!--	<span style="width:60%"><input type="submit" class="btn btn-primary " name="sub" value="消耗"/></span>-->
+													<a href="/index/materiel/materiel_list/machine_id/{$k.machine_id}">消耗</a>
+												</div>
+											</td>
+											<td>
+												<a href="/index/materiel/stat/model_id/{$k.machine_id}">统计</a>
+
+											</td>
+
+
+
+										</tr>
+										{/foreach}
+
+
+										{/if}
+
+									</table>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<!-- /.box-body -->
+				</div>
+				<!-- /.box -->
+			</div>
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
+		<div class="box-footer">
+			<ul class="pagination pagination-sm no-margin pull-right">
+				<?php if(isset($page)):?>
+				{$page}
+				<?php endif;?>
+			</ul>
+		</div> 
+	</section>
+	<!-- /.content -->
+</div>
+{include file="./static/public_template/footer.html"/}
+<!-- /.content-wrapper -->
+<!-- 制作图表js -->
+<script src="__PUBLIC__/static/js/Chart.js"></script>
+
+<script src="/public/static/Template/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script type="text/javascript">
+	function delItem(id){
+		var fs = confirm("确认删除吗?");
+		if(fs){
+			$.ajax({
+				url:"/index/materiel/del",
+				data:{'model_id':id},
+				dataType:'json',
+				type:'POST',
+				success:function(rs){
+					$("#tr_"+id).hide();
+
+				}
+			})
+		}
+	}
+
+//Date picker
+
+var name = "";
+$(".user_name").change(function(){
+	name = $(this).val();
+	$.ajax({
+		"url": "/index/api/user/method/searchname",
+		"data": {"param":name},
+		"dataType":'json',
+		"type":"POST",
+		"success":function(data){
+			if(data != null){
+				$("#user_name").css("background-color","rgb(223, 251, 216)");
+				$("#user_id").val(data.user_id);
+				$("#user_name").val(data.uname);
+			}
+		},
+	})
+})
+
+$("#user_name").click(function(){
+	$("#user_name").css("background-color","");
+});
+
+</script>

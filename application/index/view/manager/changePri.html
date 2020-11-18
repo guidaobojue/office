@@ -1,0 +1,120 @@
+{include file="./static/public_template/dxheader.html"/}
+<style>
+.selected{
+	cursor:pointer;
+}
+</style>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+
+	<!-- Main content -->
+	<section class="content">
+
+		<div class="row">
+			<div class="col-lg-9">
+				<p class="wrapper-title"><i class="fa fa-file-text-o"></i> 群组－权限</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="box">
+					<div class="box-header">
+					</div>
+					<div class="box-body">
+						<div class="table" >
+							<div class="table-responsive">
+								<div>
+									<span style="font-size:2em">
+										群组名称 : {$info['group_name']}
+									</span>
+
+								</div>
+
+								<div >
+									<form name="form1" action="/index/manager/changePri" method="POST">
+										<table class="table table-bordered table-hover" style="float:left" >						
+											{foreach name="pris" item="pri"}
+											{if condition="isset($pri.isnew)"}
+											<tr>
+												<td colspan="3" align="center">
+													<span style="font-size:1.5em">
+														模块名 : {$pri.controller_name}
+													</span>
+												</td>
+											</tr>
+											<tr>
+												<th>选择 <span onclick="getall()">(全选)</span></th>
+												<th style="width:40%">名称</th>
+												<th style="width:40%">路径</th>
+											</tr>
+											{/if}
+											<tr class="pri_tr">
+												<td align="center">
+													{if condition="$pri.selected"}
+													<input type="checkbox" name="selected[]" value="{$pri.pri_id}" checked/>
+													{else}
+													<input type="checkbox" name="selected[]" value="{$pri.pri_id}"/>
+													{/if}
+												</td>
+												<td>
+													{$pri.pri_name}
+												</td>
+												<td>
+													{$pri.module_name}/{$pri.controller_name}/{$pri.method}
+												</td>
+											</tr>
+											{/foreach}
+
+											<tr><td>
+													<input type="hidden" name="group_id" value="{$info['group_id']}"/>
+													<button type="button" onclick="form1.submit()" style="position:fixed;top:30%;right:5%;width:10%;height:10%" class="btn btn-block btn-success btn-lg">提交</button>
+
+												</td></tr>
+										</table>
+									</form>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<!-- /.box-body -->
+				</div>
+				<!-- /.box -->
+			</div>
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
+		<div class="box-footer">
+			<ul class="pagination pagination-sm no-margin pull-right">
+			</ul>
+		</div> 
+	</section>
+	<!-- /.content -->
+</div>
+{include file="./static/public_template/footer.html"/}
+<script>
+	$(".pri_tr").click(function(){
+		var obj = $(this).children("td").children("input");
+		if(!obj.prop("checked")){
+			obj.prop("checked",true);
+		}
+		else{
+			obj.prop("checked",false);
+		}
+	});
+function getall(){
+	$(".pri_tr").each(function(){
+		var obj = $(this).children("td").children("input");
+		if(!obj.prop("checked")){
+			obj.prop("checked",true);
+		}
+		else{
+			obj.prop("checked",false);
+		}
+	})
+}
+</script>
+<!-- /.content-wrapper -->
+<!-- 制作图表js -->
+

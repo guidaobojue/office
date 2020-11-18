@@ -1,0 +1,212 @@
+{include file="./static/public_template/dxheader.html"/}
+<!-- Content Wrapper. Contains page content -->
+<style>
+.deps th{
+	cursor:pointer;
+}
+.deps th:hover{
+	color: #FF00FF
+}
+</style>
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+
+	<!-- Main content -->
+	<section class="content">
+
+		<div class="row">
+			<div class="col-lg-9">
+				<p class="wrapper-title"><i class="fa fa-file-text-o"></i>流转确认</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="box">
+					<div class="box-header">
+					</div>
+					<div class="box-body">
+						<div class="table"  id="vm_dep">
+							<div class="table-responsive" style="width:15%;float:left">
+									<form name="form1" action="/index/assets/applys" method="POST">
+									<table class="table table-bordered table-hover" style="float:left" >						
+										<tr>
+											<th style="width:50%">流入人</th>
+											<td class="apply_user"></td>
+										</tr>
+										<tr>
+											<th>流入部门</th>
+											<td class="apply_dep"></td>
+										</tr>
+										<tr>
+											<th>原因:</th>
+											<td><input style="width:100%" name="reason" value="工作需要"/></td>
+										</tr>
+
+									</table>
+									<table class="table table-bordered table-hover" style="float:left" >						
+										<tr>
+											<th>物品名</th>
+										</tr>
+										{foreach name="items" item="item"}
+										<tr>
+											<td colspan="2"> {$item.model_name} </td>
+										</tr>
+										{/foreach}
+										<tr>
+											<td>
+												<input type="hidden" name="item_ids" value="{$item_ids}"/>
+												<input type="hidden" name="use_user_id" id="use_user_id"/>
+												<button type="button" @click="submits()" class="btn btn-block btn-primary btn-lg">提交</button>
+											</td>
+										</tr>
+
+									</table>
+									</form>
+							</div>
+							<div class="table-responsive" style="width:80%;float:left">
+								<div >
+									<table class="table table-bordered table-hover" style="float:left" >						
+										<tr class="deps">
+											{foreach name="deps" item="k"}
+											<th class="nav_{$k.department_id}" @click="nav({$k.department_id})">{$k.dep_name}</th>
+											{/foreach}
+										</tr>
+
+
+									</table>
+								</div>
+
+								<div class="dep_user">
+									<table class="table table-bordered table-hover" style="float:left" >						
+										<tr>
+											<th @click="alert()">编号</th>
+											<th>姓名</th>
+										</tr>
+										<tr v-for="data in datas"  @click="confirms(data.user_id,data.uname)">
+											<td> {{data.user_id}} </td>
+											<td> {{data.uname}} </td>
+										</tr>
+
+									</table>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<!-- /.box-body -->
+				</div>
+				<!-- /.box -->
+			</div>
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
+		<div class="box-footer">
+			<ul class="pagination pagination-sm no-margin pull-right">
+			</ul>
+		</div> 
+	</section>
+	<!-- /.content -->
+</div>
+{include file="./static/public_template/footer.html"/}
+<!-- /.content-wrapper -->
+<!-- 制作图表js -->
+<script src="__PUBLIC__/js/Chart.js"></script>
+<script src="/public/static/js/vue.js"></script>
+<script>
+	$(".deps th").click(function(){
+
+	})
+
+var example1 = new Vue({
+	el: '#vm_dep',
+	data: {
+		datas : [],
+		job : [],
+		company : [],
+		seen : false,
+		page : 1,
+		dep:null,
+		user_id:null,
+	},
+	methods:{
+		submits:function(){
+			_this = this;
+			if(_this.user_id == null)
+				alert("请确认流入人");
+			else{
+				form1.submit();
+			}
+
+		},
+		confirms:function(user_id,uname){
+			_this = this;
+			//$(_this).css("background-color","red");
+			$(".apply_user").html(uname);
+			$(".apply_dep").html(_this.dep);
+			$("#use_user_id").val(user_id);
+			_this.user_id = user_id;
+
+		},
+		nav:function(dep_id){
+			$(".deps th").css({"color":""});
+			$(".nav_"+dep_id).css({"color": "#FF00FF"});
+			_this = this;
+			_this.dep = $(".nav_"+dep_id).html();
+			$.ajax({
+				url:"/index/user/getUserByDep",
+				data:{"dep_id":dep_id},
+				dataType:"json",
+				type:"get",
+				success:function(data){
+					_this.datas = data;
+				}
+			})
+		},
+
+
+	},
+	computed:{
+	}
+
+});
+
+
+</script>
+
+<script src="/public/static/Template/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script type="text/javascript">
+	function delUser(id){
+		var fs = confirm("确认删除吗?");
+		$.ajax({
+			url:"/index/manager/delUser",
+			data:{'user_id':id},
+			dataType:'json',
+			type:'POST',
+			success:function(rs){
+
+				$("#tr_"+id).hide();
+				alert("删除成功");
+
+			}
+		})
+	}
+
+//Date picker
+
+
+$('.submit').click(function(){
+	$(this).parents('form').attr('action', $(this).attr('action'));
+	$(this).parents('form').submit();
+})
+
+$('#start_time').datepicker({
+	autoclose: true,
+	format: "yyyy-mm-dd",
+});
+
+$('#end_time').datepicker({
+	autoclose: true,
+	format: "yyyy-mm-dd",
+});
+
+</script>
