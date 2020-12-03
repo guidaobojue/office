@@ -17,9 +17,6 @@ class Record extends \think\Controller
 	 * street 街道分配
 	 */
 
-	public function search(){
-	}
-
 	public function street(){
 		$uploads_dir = "../upload/";
 		$this->assign("list_num",2);
@@ -169,6 +166,7 @@ class Record extends \think\Controller
 	public function statusCheck(){
 		$akey = "5.电子版审核通过";
 		$allowCell = 17; //通过状态所在位置
+		$allowCell = 
 		$allowKey = '通过';
 
 		$filename1 = input("post.filename1");
@@ -205,47 +203,6 @@ class Record extends \think\Controller
 		return $this->fetch("statusSub");
 
 
-	}
-
-	/*
-	 * 用途不明
-	 */
-	public function exportStreet(){
-		exit;
-		$filename = input("post.filename");
-		$columns = input("post.columns");
-		$uploads_dir = "../upload/";
-		$recordModel = model("Record");
-		$path = $uploads_dir . $filename;
-		$excel = readExcel($path);
-
-		$data = $excel['data'];
-		$title = $excel['title'];
-
-		$tmp = [];
-		foreach($data as $k => $v){
-			$tmp[$v[$columns]][] = $v;
-		}
-
-
-
-		$rs = [];
-		$urls = [];
-		foreach($tmp as $k => $v){
-			$url = writeExcel($v,$title,$k."_".date("Y-m-d",time()));
-			$urls[] = WEB_DIR."/xls/".$url;
-			$rs[$k] = $url;
-		}
-
-
-		$zipFile = "街道_".date("Y-m-d"). ".zip ";
-		$zipPath = WEB_DIR."/xls/".$zipFile;
-		@unlink(trim($zipPath));
-		$system = "zip ".$zipPath .implode(" ",$urls);
-		exec($system,$rel);
-		$this->assign("zipFile",$zipFile);
-		$this->assign("filePath",$rs);
-		return $this->fetch("street");
 	}
 
 
@@ -334,13 +291,6 @@ class Record extends \think\Controller
 
 	}
 
-	public function comstreet(){
-		$company_name = input("company_name");
-		$model = model("vpcompany");
-		$rs = $model->getStreet($company_name);
-		echo json_encode($rs);
-
-	}
 	public function lookfor(){
 		return $this->fetch("lookfor");
 	}

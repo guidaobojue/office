@@ -118,17 +118,6 @@ class pri{
 
 
 
-	public function updatePri(){
-		$model = model("grouppri");
-		$list = $model->getAllInfo();
-		cache_set("pri_list",$list);
-	}
-
-	public function getPri(){
-		return cache_get("pri_list");
-	}
-
-
 	public function update($n){
 		$rs = cache_get('list');
 		$pri = false;

@@ -16,20 +16,12 @@
 					<h5></h5>
 				</div>
 				<div class="ibox-content">
-					<form method="POST" class="form-horizontal" name="form1" action="/index/materiel/add">
+					<form method="POST" class="form-horizontal" name="form1" action="/index/materiel/addPrint">
 						<div class="form-group"  id="materiel_list"> 
 							<div class="col-sm-10" style="margin:10px auto" id="lines">
 								<label class="col-sm-3 control-label">名称:</label>
 								<div class="col-sm-6">
-									<select name="materiel_model_id[]" class="control-label">
-										{foreach item="k" name="models"}
-										<option value="{$k.materiel_model_id}">{$k.model_name}</option>
-										{/foreach}
-									</select>
-								</div>
-								<label class="col-sm-3 control-label">数量:</label>
-								<div class="col-sm-6">
-									<input name="num[]"/>
+									<input name="model_names[]"/>
 								</div>
 							</div>
 						</div>
@@ -38,7 +30,7 @@
 
 							<div class=" col-sm-offset-3  recharge-btn">
 								<button class="btn btn-primary " type="submit" name="sub" value="1">确定</button>
-								<button class="btn btn-blue" type="button" onclick="addItem()">增加物料</button>
+								<button class="btn btn-blue" type="button" onclick="addItem()">增加打印机</button>
 							</div>
 							<div class=" col-sm-offset-7  recharge-btn">
 							</div>
@@ -53,7 +45,8 @@
 </div>
 	<script>
 		function addItem(){
-			var list = ' <div class="col-sm-10" style="margin:10px auto" id="lines"> <label class="col-sm-3 control-label">名称:</label> <div class="col-sm-6"> <select name="materiel_model_id[]" class="control-label"> {foreach item="k" name="models"} <option value="{$k.materiel_model_id}">{$k.model_name}</option> {/foreach} </select> </div> <label class="col-sm-3 control-label">数量:</label> <div class="col-sm-6"> <input name="num[]"/> </div> </div>';
+							
+			var list = ' <div class="col-sm-10" style="margin:10px auto" id="lines"> <label class="col-sm-3 control-label">名称:</label> <div class="col-sm-6"> <input name="model_names[]"/> </div> </div>';
 			$("#materiel_list").append(list);
 		}
 	</script>

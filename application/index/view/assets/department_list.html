@@ -75,7 +75,6 @@
 {include file="./static/public_template/footer.html"/}
 <!-- /.content-wrapper -->
 <!-- 制作图表js -->
-<script src="__PUBLIC__/js/Chart.js"></script>
 <script src="/public/static/js/vue.js"></script>
 <script>
 	$(".deps th").click(function(){
@@ -97,10 +96,10 @@ var example1 = new Vue({
 			$(".nav_"+dep_id).css({"color": "#FF00FF"});
 			_this = this;
 			$.ajax({
-				url:"/index/user/getUserByDep",
+				url:"/index/api/user/method/getUserByDep/param/"+dep_id,
 				data:{"dep_id":dep_id},
 				dataType:"json",
-				type:"get",
+				type:"post",
 				success:function(data){
 					console.log(data);
 					_this.datas = data;
@@ -118,7 +117,6 @@ var example1 = new Vue({
 
 </script>
 
-<script src="/public/static/Template/plugins/datepicker/bootstrap-datepicker.js"></script>
 <script type="text/javascript">
 	function delUser(id){
 		var fs = confirm("确认删除吗?");

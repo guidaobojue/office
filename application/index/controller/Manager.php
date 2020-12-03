@@ -15,23 +15,6 @@ class Manager extends \think\Controller
 
 	}
 
-	/*
-	 * user 用户列表 
-	 * editUser 修改用户
-	 * addUser 增加用户
-	 * delUser 删除用户
-	 * level 级别列表
-	 * chgPosition 级别修改
-	 * search 搜索用户
-	 * register 增加群组
-	 * delGroup 删除群组
-	 * editGroup 编缉群组 
-	 * group  群组列表
-	 * update 更新群组缓存 
-	 * pri 查看群组权限 
-	 *
-	 */
-
 	public function changePri(){
 		$selected = isset($_POST['selected']) ? $_POST['selected'] : false;
 		if(empty($selected)){
@@ -84,6 +67,7 @@ class Manager extends \think\Controller
 	}
 
 
+	/*--- 级别设置 ---*/
 	public function level(){
 		$model = model("position");
 		$rs = $model->getAll();
@@ -91,6 +75,55 @@ class Manager extends \think\Controller
 
 		return $this->fetch("level_list");
 	}
+
+
+
+
+	/*--- 评论管理 start ---*/
+	public function detail(){
+		$id = input("id");
+		$model = model("Comment");
+		$rs = $model->getOne($id);
+		if(empty($rs)){
+			if(isset($rs['thumb']) &&!empty($rs['thumb'])){
+				$rs['thumb'] = $rs['qr_thumb'];
+			}
+
+
+
+			$this->assign("info",$rs);
+			return $this->fetch("details");
+		}
+		else{
+			$this->redirect("/index/manager/commentList");
+		}
+	}
+
+
+	public function commentList(){
+		$this->assign("list_num",8);
+		$obj = model("comment");
+		$data = [];
+		$list= $obj->list();
+		$page = $list->render();
+		$this->assign("list",$list);
+		$this->assign("page",$page);
+		return $this->fetch("comment_list");
+	}
+
+
+
+	public function auditing(){
+		$id = input("id");
+		$model = model("Comment");
+		$model->read($id);
+		echo json_encode(1);
+
+	}
+
+
+	/*--- 评论 end ---*/
+
 
 	public function chgPosition(){
 		$position_id = input("position_id");
@@ -158,6 +191,8 @@ class Manager extends \think\Controller
 
 	}
 
+	/*---员工-- start*/
+
 	public function user(){
 		$this->assign("list_num",14);
 		$userModel = model("user");
@@ -204,63 +239,8 @@ class Manager extends \think\Controller
 	}
 
 
-	public function login(){
-		die("fuck");
-		if(!empty($_SESSION)){
-			$this->redirect("/index/index/index");
-			return ;
-		}
-
-		if(input("?post.uname")){
-			$uname = input("post.uname");
-			$pwd = input("post.pwd");
-
-			$userModel = model("User");
-			$rs = $userModel->login($uname,$pwd);
-
-			if($rs){
-				$this->redirect("/index/index/index");
-			}
-			else{
-				$this->error['uname'] = 'username error';
-				$this->assign("error",$this->error);
-				return $this->fetch("login");
-			}
-
-		}
-		else{
-			return $this->fetch("login");
-		}
-		return $this->fetch("login");
-	}
 
 
-	public function register(){
-		$error = [];
-		if(input("sub")){
-			$group_name = input("group_name");
-			if(empty($group_name))
-				$error['group_name'] = "不可为空";
-			$model = model("group");
-			$rs = $model->isExist($group_name);
-
-			if(!$rs)
-				$error['group_name'] = "已经存在";
-
-			if(empty($error)){
-				$this->assign("status","增加成功");
-				$model->addGroup($group_name);
-			}
-
-			else{
-				$this->assign("error",$error);
-			}
-
-
-
-		}
-		return $this->fetch("addGroup");
-	}
 
 
 	public function addUser(){
@@ -385,15 +365,9 @@ class Manager extends \think\Controller
 
 	}
 
-	public function delGroup(){
-		$group_id = input("group_id");
-		$model = model("group");
-		$model->delGroup($group_id);
-		echo json_encode(1);
+	/*---员工-- end*/
 
-	}
-
-
+	/*---群组-- start*/
 	public function group(){
 
 		$this->assign("list_num",14);
@@ -406,18 +380,32 @@ class Manager extends \think\Controller
 		return $this->fetch("group_list");
 	}
 
+	public function addGroup(){
+		$error = [];
+		if(input("sub")){
+			$group_name = input("group_name");
+			if(empty($group_name))
+				$error['group_name'] = "不可为空";
+			$model = model("group");
+			$rs = $model->isExist($group_name);
 
-	public function update(){
-		$priObj = new pri();
-		$model = model("group");
-		$rs = $model->getAll();
-		foreach($rs as $k => $v){
-			$priObj->update($v->group_id);
+			if(!$rs)
+				$error['group_name'] = "已经存在";
+
+			if(empty($error)){
+				$this->assign("status","增加成功");
+				$model->addGroup($group_name);
+			}
+
+			else{
+				$this->assign("error",$error);
+			}
+
+
+
 		}
-		$this->redirect("/index/manager/group");
-
+		return $this->fetch("addGroup");
 	}
-
 
 
 	public function editGroup(){
@@ -447,8 +435,23 @@ class Manager extends \think\Controller
 
 	}
 
+	public function delGroup(){
+		$group_id = input("group_id");
+		$model = model("group");
+		$model->delGroup($group_id);
+		echo json_encode(1);
 
-	public function pri(){
+	}
+
+
+
+
+
+
+	/*
+	 * @desc 菜单设置
+	 */
+	public function menu(){
 
 		$group_id = input("group_id");
 		if(isset($_POST['cate'])){
@@ -545,59 +548,464 @@ class Manager extends \think\Controller
 
 	}
 
-	public function updatePri(){
-		$priObj = new pri();
-		$priObj->updatePri();
-		$this->success("修改成功","/index/manager/group");
+
+
+
+
+
+
+
+	/*
+	 * index 菜单列表
+	 * update 更新菜单缓存
+	 * addCategory 增加菜单
+	 * editCategory 修改菜单
+	 * delCategory 删除菜单
+	 *
+	 *
+	 */
+
+	public function categorys() {
+		if(!isset($_SESSION['user'])){
+			$this->redirect("/index/index/login");
+			return true;
+		}
+
+		$model = model("category");
+		$list = $model->getAll();
+		$this->nodes = $list;
+
+		$tree = $this->build_tree($list);
+		$tree = $this->build_tr($tree,0);
+		$this->assign("list",$tree);
+		return $this->fetch("categorys");
+	}
+
+	private function build_tr($data,$i=0){
+		$href = "/index/manager";
+		++$i;
+		if(!empty($data['nodes'])){
+			$str = "";
+			$str .="<tr>".$this->genTd($i)."<td>".$data['category_name']." <a class='af' href='".$href."/addCategory?pid=".$data['category_id']."' >增加</a>|<a class='af'   href='".$href."/editCategory?cid=".$data['category_id']."'>修改</a>||<a class='af' href='javascript:confirmdel(".$data['category_id'].")'>删除</a></td>".$this->genTd(4-$i)."</tr>";
+			foreach($data['nodes'] as $k => $v){
+				$str.=$this->build_tr($v,$i);
+			}
+			return $str;
+
+		}
+		else{
+			return "<tr>".$this->genTd($i)."<td>".$data['category_name']." <a class='af' href='".$href."/addCategory?pid=".$data['category_id']."'>增加</a>|<a class='af'  href='".$href."/editCategory?cid=".$data['category_id']."'>修改</a>||<a class='af' href='javascript:confirmdel(".$data['category_id'].")'>删除</a></td>".$this->genTd(3-$i)."</tr>";
+		}
+
+	}
+
+
+
+	private function genTd($i){
+		$str = "";
+		for($j=1;$j<$i;$j++){
+			$str .= "<td></td>";
+		}
+		return $str;
+	}
+
+
+	private function build_tree($data){
+		$root = $data[1];
+		$childs = json_decode($root['childs'],true);
+		foreach($childs as $k => $v){
+			$root['nodes'][] = $this->build_node($v);
+		}
+		return $root;
+	}
+
+	private function build_node($id){
+		$obj = $this->nodes[$id];
+		if(!empty($obj['childs'])){
+			$childs = json_decode($obj['childs'],true);
+			foreach($childs as $K => $v){
+				$obj['nodes'][] = $this->build_node($v);
+			}
+		}
+		return $obj;
 	}
 
 
 
 
+	public function addCategory(){
+		if(isset($_POST['sub'])){
+			$pid = input("pid");
+			$category_name = input("category_name");
+			$url = input("url");
 
-	public function installs(){
-		$configs = Config::get("pri");
+			$model = model("category");
+
+			$model->addCategory([
+				'pid' => $pid,
+				'category_name' => $category_name,
+				'url' => $url,
+			]);
+
+			$this->redirect("/index/manager/categorys");
+
+
+		}
+		else{
+			$pid = input("get.pid");
+			$this->assign("pid",$pid);
+			$this->assign("icons",Config::get("icons"));
+			$model = model("category");
+			$list = $model->getAll();
+			$this->assign("category_name",$list[$pid]['category_name']);
+			$this->assign("list",$list);
+			return $this->fetch("addCategory");
+		}
+	}
+
+
+	public function init(){
+		exit;
+		$config = Config::get("initConfig");
+		$data[] = [
+			'category_id' => 1,
+			'category_name' => '根',
+			'url' => '',
+			'icon' => 'fa fa-files-o',
+			'parent_id' => 0,
+			'childs' => [2,5,8,11,14,19],
+		];
+
+
+
+
+		foreach($config as $k => $v){
+			$v['category_id'] = $v['id']+1;
+			$v['category_name'] = $v['name'];
+			$v['parent_id'] = $v['parent']+1;
+			unset($v['id']);
+			unset($v['name']);
+			unset($v['parent']);
+			foreach($v['childs'] as $ik => &$iv){
+				$iv +=1;
+			}
+
+
+
+			$v['childs'] = json_encode($v['childs']);
+
+			$data[] = $v;
+		}
+
+		$model = model("category");
+		$model->saveAll($data);
+		var_dump($data);
+		exit;
+	}
+
+
+	public function editCategory(){
+		if(isset($_POST['sub'])){
+			$cid = input("post.cid");
+			$category_name = input("post.category_name");
+			$url = input("post.url");
+			$data = [
+				'url' => $url,
+				'category_name' => $category_name,
+			];
+			model("category")->update($data,['category_id'=>$cid]);
+			$this->redirect("/index/manager/categorys");
+
+		}
+		else{
+			$cid = input("get.cid");
+			$model = model("category");
+			$node = $model->getOneByCid($cid);
+			$this->assign("cat",$node);
+			return $this->fetch("editCategory");
+		}
+	}
+
+	public function delCategory(){
+		$model = model("category");
+		$cid = input("cid");
+		$model->delCategory($cid);
+		return $this->redirect("/index/manager/categorys");
+	}
+
+
+	private function updateCategoryCache(){
+		$obj = new \app\extra\pri;
+
+		$groupModel= model("group");
+		$groups =  $groupModel->getAll();
+		foreach($groups as $k => $v){
+			$obj->update($v->group_id);
+		}
+
+		$model = model("category");
+		$rs = $model->getAll();
+		cache_set('list',$rs);
+	}
+
+
+
+	/*---模块管理 start---*/
+	public function modules(){
+		$configs = config::get("modules");
+
+		$model = model("modules");
+		$modules = $model->getAll();
+		$status = [];
+		foreach($modules as $k => $v){
+			$status[$v['filename']] = $v['status'];
+		}
+
 		$temp = [];
 		foreach($configs as $k => $v){
-			if(!in_array($v['c'],$temp))
-				$temp[] = $v['c'];
+			if(isset($status[$v['f']])){
+				$v['status'] = $status[$v['f']];
+			}
+			else{
+				$v['status'] = 0 ;
+			}
+			$temp[] = $v;
+
 		}
 		$modules = $temp;
-
-
-
-		$model = model("pri");
-		$actModules = $model->getModules();
-		$temp = [];
-		foreach($actModules as $k => $v){
-			if(!in_array(strtolower($v->controller_name),$temp))
-				$temp[] = strtolower($v->controller_name);
-		}
-
 		$this->assign("list",$modules);
-		$this->assign("active",$temp);
-		return $this->fetch("installs");
+		return $this->fetch("modules_list");
 	}
 
-	public function unstall(){
-		$name = input("name");
-		$model = model("Pri");
-		#$model->delByModule($name);
-		#$this->success("卸载成功");
-		$this->error("严禁删除");
-	}
 
-	public function active(){
-		$name = input("name");
-		$model = model("Pri");
-		$configs = Config::get("pri");
-		$obj = [];
-		foreach($configs as $k => $v){
-			if($v['c'] == trim($name))
-				$obj = $v;
+	
+	public function editGroupPri(){
+		$model = model("pri");
+		$configs = $model->getAll();
+		$group_id = input("group_id");
+		if(!is_numeric($group_id))
+			return false;
+
+
+
+		if(input("pids")){
+			$pids = input("pids");
+			if(!empty($pids)&& $pids!=","){
+				$pidArr = explode(",",$pids);
+				$pidArr = array_slice($pidArr,0,count($pidArr)-1);
+				$model->editGroupPri($group_id,$pidArr);
+			}
 		}
-		$model->addModule($obj);
-		$this->success("安装成功");
+		$temp = [];
+		$has = [];
+		$list = [];
+
+		$hasRs = $model->getByGroupId($group_id);
+		foreach($hasRs as $k => $v){
+			$has[] = $v->pri_id;
+		}
+
+
+
+		foreach($configs as $k => $v){
+			$d = $v->getData();
+			$cur = $k.":".$d['action'];
+			$temp = explode(":",$d['action']);
+			$d['module'] = $temp[0];
+			$d['name'] = $temp[1];
+			if(in_array($d['pri_id'],$has)){
+				$d['selected'] = true;
+			}
+			else{
+				$d['selected'] = false;
+
+			}
+			$list[$temp[0]][] = [
+				'desc' => $d['comment'],
+				'name' => $temp[1],
+				'selected' => $d['selected'],
+				'pri_id' => $d['pri_id'],
+			];
+		}
+
+		$temp = [];
+		foreach($has as $k=> $v){
+			$temp[] = $v."";
+		}
+
+		$this->assign("has",json_encode($temp));
+		$this->assign("group_id",$group_id);
+		$this->assign("list",$list);
+		$this->updateGroupPriCache();
+		return $this->fetch("group_pri");
 	}
+	public function updateCache(){
+		$this->updateCategoryCache();
+		$this->updateGroupPriCache();
+		return $this->redirect("/index/manager/group");
+	}
+
+	private function updateGroupPriCache(){
+		$model = model("pri");
+		$groupPris= $model->getAllGroupPri();
+		$pris = $model->getAll();
+
+		$temp = [];
+		foreach($pris as $k => $v){
+			$temp[$v->pri_id] = $v->action;
+		}
+
+		$pris = $temp;
+		
+
+		$data = [];
+		foreach($groupPris as $k => $v){
+			if(isset($pris[$v['pri_id']]))
+				$data[$v['group_id']][] = $pris[$v['pri_id']];
+			else
+				$data[$v['group_id']][] = "";
+		}
+
+		cache_set("groupPri",$data);
+	}
+
+
+	public function free(){
+		$model = model("pri");
+		$configs = $model->getAll();
+		$group_id = 0; //游客
+
+		if(input("pids")){
+			$pids = input("pids");
+			if(!empty($pids)&& $pids!=","){
+				$pidArr = explode(",",$pids);
+				$pidArr = array_slice($pidArr,0,count($pidArr)-1);
+				$model->editGroupPri($group_id,$pidArr);
+			}
+		}
+		$temp = [];
+		$has = [];
+		$list = [];
+
+		$hasRs = $model->getByGroupId($group_id);
+		foreach($hasRs as $k => $v){
+			$has[] = $v->pri_id;
+		}
+
+
+
+		foreach($configs as $k => $v){
+			$d = $v->getData();
+			$cur = $k.":".$d['action'];
+			$temp = explode(":",$d['action']);
+			$d['module'] = $temp[0];
+			$d['name'] = $temp[1];
+			if(in_array($d['pri_id'],$has)){
+				$d['selected'] = true;
+			}
+			else{
+				$d['selected'] = false;
+
+			}
+			$list[$temp[0]][] = [
+				'desc' => $d['comment'],
+				'name' => $temp[1],
+				'selected' => $d['selected'],
+				'pri_id' => $d['pri_id'],
+			];
+		}
+
+		$temp = [];
+		foreach($has as $k=> $v){
+			$temp[] = $v."";
+		}
+
+		$this->assign("has",json_encode($temp));
+		$this->assign("group_id",$group_id);
+		$this->assign("list",$list);
+		$this->updateGroupPriCache();
+		return $this->fetch("free");
+
+
+	}
+	
+
+
+	public function pris(){
+		$model = model("pri");
+		$configs = $model->getAll();
+		foreach($configs as $k => $v){
+			$d = $v->getData();
+			$cur = $k.":".$d['action'];
+			$temp = explode(":",$d['action']);
+			$d['module'] = $temp[0];
+			$d['name'] = $temp[1];
+			$list[$temp[0]][] = [
+				'desc' => $d['comment'],
+				'name' => $temp[1],
+				'pri_id' => $d['pri_id'],
+			];
+		}
+
+		$this->assign("list",$list);
+		return $this->fetch("pris");
+	}
+
+	public function addPri(){
+		$model = model("pri");
+		if(input("sub")){
+			$action = input("action");
+			$desc = input("comment");
+			if(empty($action) || empty($desc)){
+				$this->error("参数不可为空");
+			}
+
+			if(strpos($action,":") == false)
+				$this->error("参数错误");
+
+
+
+			$rs = $model->addPri($action,$desc);
+			if(!$rs){
+				$this->error("己存在");
+			}
+			else
+				$this->redirect("/index/manager/pris");
+		}
+		return $this->fetch("addPri");
+	}
+
+	public function delPri(){
+	}
+
+	public function editPri(){
+		$model = model("pri");
+		$pid = input("pid");
+		$this->assign("pid",$pid);
+		$pidInfo = $model->getByPid($pid);
+		if(input("sub")){
+			$action = input("action");
+			$desc = input("comment");
+			if(empty($action) || empty($desc)){
+				$this->error("参数不可为空");
+			}
+			if(strpos($action,":") === false)
+				$this->error("参数错误");
+
+
+
+			$rs = $model->editPri($pid,$action,$desc);
+			if(!$rs){
+				$this->error("未修改");
+			}
+			else
+				$this->redirect("/index/manager/pris");
+		}
+		$this->assign("pidInfo",$pidInfo);
+		return $this->fetch("editPri");
+
+
+	}
+
 
 }

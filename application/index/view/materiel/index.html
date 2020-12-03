@@ -9,13 +9,28 @@
 		<div class="row">
 			<div class="col-lg-9">
 				<form action="/index/manager/search" method="POST">
-				<p class="wrapper-title"><i class="fa fa-file-text-o"></i> 墨盒列表 
+				<p class="wrapper-title"><i class="fa fa-file-text-o"></i> 物料列表 
 				<!--
 					<input style="width:30%" type="text" name="search"/>
 					<button class="btn btn-primary " >搜索</button>
 				-->
 				</p>
 				</form>
+			</div>
+			<div class="col-lg-1">
+				<p class="wrapper-title" style="float:right">
+				<a class="btn btn-primary " href="/index/materiel/purchase">进货</a>
+				</p>
+			</div>
+			<div class="col-lg-1">
+				<p class="wrapper-title" style="float:right">
+				<a class="btn btn-primary " href="/index/materiel/addItem">新增墨盒种类</a>
+				</p>
+			</div>
+			<div class="col-lg-1">
+				<p class="wrapper-title" style="float:right">
+				<a class="btn btn-primary " href="/index/materiel/prints">打印机种类</a>
+				</p>
 			</div>
 		</div>
 		<div class="row">
@@ -35,31 +50,18 @@
 											<th style="width:16%">总计</th>
 											<th style="width:16%">消耗</th>
 										</tr>
-										{if condition="!empty($materiels)" }
-										{foreach name="materiels" item="k"}
+										{if condition="!empty($list)" }
+										{foreach name="list" item="k"}
 										<tr id="tr_{$k.machine_id}">
+											<td>{$k.machine_id}</td>
+											<td>{$k.machine_name}</td>
+											<td>{$k.total}</td>
 											<td>
-												{$k.materiel_model_id}
-											</td>
-											<td>
-												{$k.model_name}
-											</td>
-											<td>
-												{$k.total}
-											</td>
-											<td>
-												<form action="/index/materiel/consume" method="POST">
 												<div style="width:20%;float:left">
-													<input type="hidden" name="materiel_model_id" value="{$k.materiel_model_id}"/>
-													<input type="hidden" class="user_id" name="user_id" value=""/>
-													<input type="text" class="user_name" name="user_name" value=""/>
-													<input type="text" name="num" value="0"/>
-													<span style="width:60%"><input type="submit" class="btn btn-primary " name="sub" value="消耗"/></span>
+													<!--	<span style="width:60%"><input type="submit" class="btn btn-primary " name="sub" value="消耗"/></span>-->
+													<a href="/index/materiel/materiel_list/machine_id/{$k.machine_id}">消耗</a>
 												</div>
-												</form>
 											</td>
-
-
 
 
 										</tr>
@@ -119,7 +121,6 @@
 var name = "";
 $(".user_name").change(function(){
 	name = $(this).val();
-	_this = $(this);
 	$.ajax({
 		"url": "/index/api/user/method/searchname",
 		"data": {"param":name},
@@ -127,9 +128,9 @@ $(".user_name").change(function(){
 		"type":"POST",
 		"success":function(data){
 			if(data != null){
-				_this.css("background-color","rgb(223, 251, 216)");
-				_this.siblings(".user_id").val(data.user_id);
-				_this.val(data.uname);
+				$("#user_name").css("background-color","rgb(223, 251, 216)");
+				$("#user_id").val(data.user_id);
+				$("#user_name").val(data.uname);
 			}
 		},
 	})

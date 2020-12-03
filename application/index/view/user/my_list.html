@@ -100,7 +100,7 @@
 			$(this).css("background","");
 			$(this).children(".status").html("<span>己读</span>");
 			$.ajax({
-				url:"/index/message/read",
+				url:"/index/api/user/method/read/param/"+message_id,
 				data:{'message_id':message_id},
 				type:"post",
 				dataType:"json",

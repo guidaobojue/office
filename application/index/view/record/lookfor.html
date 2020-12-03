@@ -42,7 +42,7 @@
 	$("#company_id").blur(function(){
 		var company_name = $("#company_id").val();
 		$.ajax({
-			url:"/index/record/comstreet",
+			url:"/index/api/record/method/comstreet",
 			type:"POST",
 			dataType:"json",
 			data:{"company_name":company_name},
@@ -106,7 +106,6 @@
 		});
 	</script>
 	<?php endif;?>
-	<script> $(".nav_list_8").addClass("active"); </script>
 
 	</body>
 	</html>

@@ -13,16 +13,13 @@
 
 		<div class="row">
 			<div class="col-lg-9">
-				<p class="wrapper-title"><i class="fa fa-file-text-o"></i> 群组－菜单赋权</p>
+				<p class="wrapper-title"><i class="fa fa-file-text-o"></i> 模块</p>
 			</div>
-			<form action="/index/Manager/menu/group_id/{$group_id}" name="form1" method="POST">
-				<div class="col-lg-2">
-					<p class="wrapper-title" style="float:right">
-					<input type="hidden" name="cate" id="cate_id"/>
-					<a class="btn btn-primary" href="javascript:dosubmit()">提交修改</a>
-					</p>
-				</div>
-			</form>
+			<div class="col-lg-3">
+				<p>
+				<a class="btn btn-primary " href="/index/manager/addModule">新增模块</a>
+				</p>
+			</div>
 		</div>
 		<div class="row">
 			<div class="col-xs-12">
@@ -36,11 +33,27 @@
 								<div >
 									<table class="table table-bordered table-hover" style="float:left" >						
 										<tr>
-											<th>编号</th>
-											<th>名称</th>
+											<th>文件名</th>
+											<th>模块名</th>
+											<th>操作</th>
 										</tr>
-							{$table}
-
+							{foreach name="list" item="k"}
+							<tr>
+								<td>
+									{$k.f}
+								</td>
+								<td>
+									{$k.c}
+								</td>
+								<td>
+									{if condition="$k.status eq 0"}
+									<button type="button" class="btn btn-block btn-primary" onclick="javascripot:install({$k.f})">安装</button>
+									{else }
+									<button type="button" class="btn btn-block btn-success" onclick="javascripot:reinstall({$k.f})>重装</button>
+									{/if}
+								</td>
+							</tr>
+							{/foreach}
 									</table>
 								</div>
 
@@ -64,37 +77,15 @@
 {include file="./static/public_template/footer.html"/}
 <!-- /.content-wrapper -->
 <!-- 制作图表js -->
-<script src="__PUBLIC__/js/Chart.js"></script>
 
 <script src="/public/static/Template/plugins/datepicker/bootstrap-datepicker.js"></script>
 <script type="text/javascript">
-	var selected={$cated};
-$(".select").click(function(){
-	var isin = false;
-	var cate_id = $(this).attr("cate_id");
-	for(var i in selected){
-		if(selected[i] == cate_id){
-			isin = true;
-			selected[i] = -1;
-			$(this).css("background","");
-		}
-	}
-	if(!isin){
-		selected.push(cate_id);
-		$(this).css("background","#19db19");
-	}
 
-});
-function dosubmit(){
-	$("#cate_id").val(selected);
-	form1.submit();
+function install(filename){
 }
-{if condition="isset($status)"}
-alert("{$status},两秒后跳转");
-setTimeout(function(){
-window.location.href = "/index/manager/group";
-},3000)
-{/if}
+
+function reinstall(filename){
+}
 
 
 

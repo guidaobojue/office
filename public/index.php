@@ -20,6 +20,7 @@ define('APP_PATH', __DIR__ . '/../application/');
 define("VIP_CSS","/public/static/vip/css/");
 define("VIP_JS","/public/static/vip/js/");
 define("VIP_IMG","/public/static/vip/img/");
+define("TEMPLATE","/public/static/Template/");
 define('VIP_AWE',"/public/static/vip/font-awesome/css/");
 define('DP_CSS',"/public/static/Template/");
 define("DL","/");

@@ -1,7 +1,7 @@
 ﻿{include file="./static/public_template/dxheader.html"/}
 <div class="row wrapper white-bg">
 	<div class="col-lg-10">
-		<p class="wrapper-title"><i class="fa"></i>修改菜单</p>
+		<p class="wrapper-title"><i class="fa"></i> 进货</p>
 	</div>
 
 	<div class="col-lg-2">
@@ -13,46 +13,34 @@
 		<div class="col-lg-12">
 			<div class="ibox float-e-margins">
 				<div class="ibox-title">
-					<h5>修改菜单</h5>
+					<h5></h5>
 				</div>
 				<div class="ibox-content">
-					<form method="POST" class="form-horizontal" name="form1" action="/index/category/editCategory">
-						<div class="form-group" > 
-							<div class="col-sm-6 tr_department">
-								<label class="col-sm-3 control-label">菜单名:</label>
+					<form method="POST" class="form-horizontal" name="form1" action="/index/materiel/purchase">
+						<div class="form-group"  id="materiel_list"> 
+							<div class="col-sm-10" style="margin:10px auto" id="lines">
+								<label class="col-sm-3 control-label">名称:</label>
 								<div class="col-sm-6">
-									<input type="text" class="form-control"  name="category_name" value="<?=$cat['category_name'];?>">
-									<input type="hidden" class="form-control"  name="cid" value="<?=$cat['category_id'];?>"/>
+									<select name="materiel_model_id[]" class="control-label">
+										{foreach item="k" name="models"}
+										<option value="{$k.materiel_model_id}">{$k.model_name}</option>
+										{/foreach}
+									</select>
 								</div>
-							</div>
-						</div>
-						<div class="hr-line-dashed"></div>
-						<div class="form-group" > 
-							<div class="col-sm-6 tr_area">
-								<label class="col-sm-3 control-label">路径:</label>
+								<label class="col-sm-3 control-label">数量:</label>
 								<div class="col-sm-6">
-									<input type="text" class="form-control"  name="url" value="<?=$cat['url'];?>">
-								</div>
-							</div>
-							<div class="col-sm-6 tr_service">
-								<label class="col-sm-3 control-label">图标:(暂不开通)</label>
-								<div class="col-sm-6">
-									<ul>
-										<li>
-										<?php if(isset($icons)):?>
-										<?php foreach($icons as $k => $v):?>
-										<i class="fa {$v}"></i>
-										<?php endforeach;?>
-										<?php endif;?>
-										</li>
-									</ul>
+									<input name="num[]"/>
 								</div>
 							</div>
 						</div>
 						<div class="hr-line-dashed"></div>
 						<div class="form-group col-sm-7">
+
 							<div class=" col-sm-offset-3  recharge-btn">
 								<button class="btn btn-primary " type="submit" name="sub" value="1">确定</button>
+								<button class="btn btn-blue" type="button" onclick="addItem()">增加物料</button>
+							</div>
+							<div class=" col-sm-offset-7  recharge-btn">
 							</div>
 						</div>
 						<div class="form-group" > </div>
@@ -63,6 +51,12 @@
 		</div>
 	</div>
 </div>
+	<script>
+		function addItem(){
+			var list = ' <div class="col-sm-10" style="margin:10px auto" id="lines"> <label class="col-sm-3 control-label">名称:</label> <div class="col-sm-6"> <select name="materiel_model_id[]" class="control-label"> {foreach item="k" name="models"} <option value="{$k.materiel_model_id}">{$k.model_name}</option> {/foreach} </select> </div> <label class="col-sm-3 control-label">数量:</label> <div class="col-sm-6"> <input name="num[]"/> </div> </div>';
+			$("#materiel_list").append(list);
+		}
+	</script>
 
 {include file="./static/public_template/footer.html"/}
 </div>
@@ -88,11 +82,7 @@
 
 
 <script type="text/javascript">
-	{if condition="isset($error)"}
-	<script>
-		alert("{$error}");
-<script>
-	{/if}
+
 
 function  changeSelect(index){
 	//选择对象
@@ -105,10 +95,10 @@ function  changeSelect(index){
 
 	//循环将数组中的数据写入<option>标记中
 	for (var j = 0; j<arr_city[index].length;j++) {
-		city.options[j].text = arr_city[index][j];
-		city.options[j].value = arr_city[index][j];
+	city.options[j].text = arr_city[index][j];
+	city.options[j].value = arr_city[index][j];
 	}
-}
+	}
 
 </script>
 

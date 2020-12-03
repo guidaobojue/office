@@ -17,7 +17,7 @@
 			</div>
 			<div class="col-lg-2">
 				<p class="wrapper-title" style="float:right">
-				<a class="btn btn-primary " href="/index/category/update">更新缓存</a>
+				<a class="btn btn-primary " href="/index/manager/updateCache">更新存缓</a>
 				</p>
 			</div>
 		</div>
@@ -64,38 +64,11 @@
 
 	<script src="/public/static/Template/plugins/datepicker/bootstrap-datepicker.js"></script>
 <script type="text/javascript">
-	function delUser(id){
-		var fs = confirm("确认删除吗?");
-		$.ajax({
-			url:"/index/manager/delUser}",
-			data:{'user_id':id},
-			dataType:'json',
-			type:'POST',
-			success:function(rs){
 
-				$("#tr_"+id).hide();
-				alert("删除成功");
 
-			}
-		})
+	function confirmdel(cid){
+		if(confirm("确定删除") == true){
+			window.location.href="/index/manager/delCategory/cid/"+cid;
+		}
 	}
-
-	//Date picker
-
-
-$('.submit').click(function(){
-	$(this).parents('form').attr('action', $(this).attr('action'));
-	$(this).parents('form').submit();
-})
-
-$('#start_time').datepicker({
-	autoclose: true,
-	format: "yyyy-mm-dd",
-});
-
-$('#end_time').datepicker({
-	autoclose: true,
-	format: "yyyy-mm-dd",
-});
-
 </script>

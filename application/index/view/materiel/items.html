@@ -9,25 +9,17 @@
 		<div class="row">
 			<div class="col-lg-9">
 				<form action="/index/manager/search" method="POST">
-				<p class="wrapper-title"><i class="fa fa-file-text-o"></i> 物料列表 
+				<p class="wrapper-title"><i class="fa fa-file-text-o"></i> 墨盒列表 
+				<!--
 					<input style="width:30%" type="text" name="search"/>
 					<button class="btn btn-primary " >搜索</button>
+				-->
 				</p>
 				</form>
 			</div>
 			<div class="col-lg-1">
 				<p class="wrapper-title" style="float:right">
-				<a class="btn btn-primary " href="/index/materiel/add" target="_blank">进货</a>
-				</p>
-			</div>
-			<div class="col-lg-1">
-				<p class="wrapper-title" style="float:right">
-				<a class="btn btn-primary " href="/index/materiel/addItem" target="_blank">新增物料种类</a>
-				</p>
-			</div>
-			<div class="col-lg-1">
-				<p class="wrapper-title" style="float:right">
-				<a class="btn btn-primary " href="/index/printer/index" target="_blank">打印机种类</a>
+				<a class="btn btn-primary " href="/index/materiel/addItem">新增墨盒种类</a>
 				</p>
 			</div>
 		</div>
@@ -47,25 +39,20 @@
 											<th style="width:16%">名称</th>
 											<th style="width:16%">总计</th>
 											<th style="width:16%">消耗</th>
-											<th style="width:16%">操作</th>
 										</tr>
 										{if condition="!empty($list)" }
 										{foreach name="list" item="k"}
-										<tr id="tr_{$k.machine_id}">
-											<td>{$k.machine_id}</td>
-											<td>{$k.machine_name}</td>
+										<tr id="tr_{$k.materiel_model_id}">
+											<td>{$k.materiel_model_id}</td>
+											<td>{$k.model_name}</td>
 											<td>{$k.total}</td>
 											<td>
-												<div style="width:20%;float:left">
+												<div style="width:30%;float:left">
 													<!--	<span style="width:60%"><input type="submit" class="btn btn-primary " name="sub" value="消耗"/></span>-->
-													<a href="/index/materiel/materiel_list/machine_id/{$k.machine_id}">消耗</a>
+													<a href="/index/materiel/editItem/model_id/{$k.materiel_model_id}">修改</a>  |
+													<a href="javascript:delItem({$k.materiel_model_id})">删除</a>
 												</div>
 											</td>
-											<td>
-												<a href="/index/materiel/stat/model_id/{$k.machine_id}">统计</a>
-
-											</td>
-
 
 
 										</tr>
@@ -106,42 +93,10 @@
 <script type="text/javascript">
 	function delItem(id){
 		var fs = confirm("确认删除吗?");
-		if(fs){
-			$.ajax({
-				url:"/index/materiel/del",
-				data:{'model_id':id},
-				dataType:'json',
-				type:'POST',
-				success:function(rs){
-					$("#tr_"+id).hide();
-
-				}
-			})
-		}
+		if(fs)
+			window.location.href="/index/materiel/delItem/model_id"+id;
 	}
 
 //Date picker
-
-var name = "";
-$(".user_name").change(function(){
-	name = $(this).val();
-	$.ajax({
-		"url": "/index/api/user/method/searchname",
-		"data": {"param":name},
-		"dataType":'json',
-		"type":"POST",
-		"success":function(data){
-			if(data != null){
-				$("#user_name").css("background-color","rgb(223, 251, 216)");
-				$("#user_id").val(data.user_id);
-				$("#user_name").val(data.uname);
-			}
-		},
-	})
-})
-
-$("#user_name").click(function(){
-	$("#user_name").css("background-color","");
-});
 
 </script>

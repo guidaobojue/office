@@ -24,11 +24,15 @@
 		<link href="<?=VIP_CSS;?>sweetalert/sweetalert.css" rel="stylesheet">
 		<link rel="stylesheet" href="<?=VIP_CSS;?>content.css">
 		<link rel="stylesheet" type="text/css" href="/public/static/layui/css/layui.css"/>
-
-
-
 		<link rel="stylesheet" href="<?=VIP_CSS;?>jasny-bootstrap.min.css">
 		<link rel="stylesheet" href="<?=VIP_CSS;?>bootstrap-social.css">
+
+
+		<!--		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">-->
+		<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">-->
+		<link rel="stylesheet" href="{:TEMPLATE}plugins/morris/morris.css">
+		<link rel="stylesheet" href="{:TEMPLATE}dist/css/skins/_all-skins.min.css">
+
 
 
 		<style>
@@ -93,47 +97,6 @@ label {
 						<?php }?>
 						<?php endif;?>
 
-
-						<?php if(in_array(1,$hpis)):?>
-						<li class="nav_list_1">
-							<a href="/Index/index"><i class="fa fa-th-large"></i> <span class="nav-label">首页</span></a>
-						</li>
-						<?php endif;?>
-						<?php if(in_array(2,$hpis)):?>
-						<li class="nav_list_2">
-							<a href="/Card/open"><i class="fa fa-credit-card"></i> <span class="nav-label">开卡</span></a>
-						</li>
-						<?php endif;?>
-						<?php if(in_array(3,$hpis)):?>
-						<li class="nav_list_3">
-							<a href="/Member/lists"><i class="fa fa-diamond"></i> <span class="nav-label">会员管理</span></a>
-						</li>
-						<?php endif;?>
-						<?php if(in_array(4,$hpis)):?>
-						<li class="nav_list_4">
-							<a href="/Record/dlist"><i class="fa fa-desktop"></i> <span class="nav-label">消费查询</span></a>
-						</li>
-						<?php endif;?>
-						<?php if(in_array(5,$hpis)):?>
-						<li class="nav_list_5">
-							<a href="/Card/search"><i class="fa fa-search"></i> <span class="nav-label">余额查询</span></a>
-						</li>
-						<?php endif;?>
-						<?php if(in_array(6,$hpis)):?>
-						<li class="nav_list_6">
-							<a href="/Record/summary"><i class="fa fa-line-chart "></i> <span class="nav-label">消费统计</span></a>
-						</li>
-						<?php endif;?>
-						<?php if(in_array(7,$hpis)):?>
-						<li class="nav_list_7">
-							<a href="/Card/summary"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">开卡统计</span></a>
-						</li>
-						<?php endif;?>
-						<?php if(in_array(8,$hpis)):?>
-						<li class="nav_list_8">
-							<a href="/Record/export"><i class="fa fa-files-o"></i> <span class="nav-label">资料导入</span></a>
-						</li>
-						<?php endif;?>
 					</ul>
 
 				</div>

@@ -1,5 +1,4 @@
 <?php
-exit;
 namespace app\index\controller;
 use \think\view;
 use \think\Request;
@@ -193,6 +192,9 @@ class Question extends \think\Controller
 	}
 
 
+	public function test(){
+		var_export(get_class_methods($this));
+	}
 
 
 

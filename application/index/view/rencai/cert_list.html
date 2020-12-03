@@ -8,11 +8,11 @@
 
 		<div class="row">
 			<div class="col-lg-9">
-				<form action="/index/common/certlist" method="POST">
+				<form action="/index/rencai/certlist" method="POST">
 				<p class="wrapper-title"><i class="fa fa-file-text-o"></i> 工作居住证列表
 					<input style="" type="text" name="search">
 					<button class="btn btn-primary ">搜索</button>
-					<button class="btn btn-warning" onclick="window.location.href='/index/common/certlist'">返回</button>
+					<button class="btn btn-warning" onclick="window.location.href='/index/rencai/certlist'">返回</button>
 				<!--
 					<input style="width:30%" type="text" name="search"/>
 					<button class="btn btn-primary " >搜索</button>
@@ -22,7 +22,7 @@
 			</div>
 			<div class="col-lg-2">
 				<p class="wrapper-title" style="float:right">
-				<a class="btn btn-primary " href="/index/common/cert" target="_blank">新增单位</a>
+				<a class="btn btn-primary " href="/index/rencai/addCert">新增单位</a>
 				</p>
 			</div>
 		</div>
@@ -55,7 +55,7 @@
 										<tr id="tr_{$k.cert_id}">
 											<td>{$k.cert_id}</td>
 											<td>
-												<a href="/index/common/chgCert/id/{$k.cert_id}" target="_blank">{$k.company_name}</a>
+												<a href="/index/rencai/chgCert/id/{$k.cert_id}" target="_blank">{$k.company_name}</a>
 											</td>
 											<!--
 		   <td>{$k.user_name}</td>
@@ -130,7 +130,7 @@
 	function newAdd(id){
 		$("#new_num_"+id).siblings().attr("disabled","disabled");
 		$.ajax({
-			url:"/index/common/addNewNum",
+			url:"/index/rencai/addNewNum",
 			data:{'cert_id':id},
 			dataType:'json',
 			type:'POST',
@@ -145,7 +145,7 @@
 function newSub(id){
 	$("#new_num_"+id).siblings().attr("disabled","disabled");
 	$.ajax({
-		url:"/index/common/subNewNum",
+		url:"/index/rencai/subNewNum",
 		data:{'cert_id':id},
 		dataType:'json',
 		type:'POST',
@@ -161,7 +161,7 @@ function newSub(id){
 function hasAdd(id){
 	$("#has_num_"+id).siblings().attr("disabled","disabled");
 	$.ajax({
-		url:"/index/common/addHasNum",
+		url:"/index/rencai/addHasNum",
 		data:{'cert_id':id},
 		dataType:'json',
 		type:'POST',
@@ -176,7 +176,7 @@ function hasAdd(id){
 function hasSub(id){
 	$("#has_num_"+id).siblings().attr("disabled","disabled");
 	$.ajax({
-		url:"/index/common/subHasNum",
+		url:"/index/rencai/subHasNum",
 		data:{'cert_id':id},
 		dataType:'json',
 		type:'POST',

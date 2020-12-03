@@ -8,12 +8,14 @@
 
 		<div class="row">
 			<div class="col-lg-9">
-				<p class="wrapper-title"><i class="fa fa-file-text-o"></i> 群组列表</p>
+				<form action="/index/manager/search" method="POST">
+				<p class="wrapper-title"><i class="fa fa-file-text-o"></i> 权限列表 
+				</p>
+				</form>
 			</div>
-			<div class="col-lg-3">
-				<p>
-				<a class="btn btn-primary " href="/index/manager/updateCache">更新存缓</a>
-				<a class="btn btn-primary " href="/index/manager/addGroup">新增群组</a>
+			<div class="col-lg-2">
+				<p class="wrapper-title" style="float:right">
+				<a class="btn btn-primary " href="/index/manager/addPri" target="_blank">新增权限</a>
 				</p>
 			</div>
 		</div>
@@ -29,40 +31,28 @@
 								<div >
 									<table class="table table-bordered table-hover" style="float:left" >						
 										<tr>
-											<th>编号</th>
-											<th>名称</th>
+											<th>模块</th>
+											<th>方法</th>
+											<th>描述</th>
 											<th>操作</th>
-											<th>权限</th>
-										</tr>
-										<tr id="tr_0">
-											<td>0</td>
-											<td>游客</td>
-											<td>
-											</td>
-											<td>
-												<a href="/index/manager/editGroupPri/group_id/0">权限设置</a>
-											</td>
-
-
-
 										</tr>
 										{if condition="!empty($list)" }
-										{foreach name="list" item="k"}
-										<tr id="tr_{$k.group_id}">
-											<td>{$k.group_id}</td>
-											<td>{$k.group_name}</td>
-											<td>
-												<a href="/index/manager/editGroup/group_id/{$k.group_id}" target="_blank">编缉</a> |  <a href="javascript:delGroup({$k.group_id})" >删除</a>
-											</td>
-											<td>
-												<a href="/index/manager/menu/group_id/{$k.group_id}">菜单设置</a>
-												 |
-												<a href="/index/manager/editGroupPri/group_id/{$k.group_id}">权限设置</a>
-											</td>
-
-
+										{foreach name="list" item="k" key="n"}
+										<tr>
+											<td>{$n}</td>
+											<td></td>
+											<td></td>
+											<td></td>
 
 										</tr>
+										{foreach name="k", item="ik"}
+											<td></td>
+											<td>{$ik.name}</td>
+											<td>{$ik.desc} </td>
+											<td><a href="/index/manager/editPri/pid/{$ik.pri_id}">修改</a> </td>
+
+										</tr>
+										{/foreach}
 										{/foreach}
 
 
@@ -83,7 +73,6 @@
 		<!-- /.row -->
 		<div class="box-footer">
 			<ul class="pagination pagination-sm no-margin pull-right">
-				{$page}
 			</ul>
 		</div> 
 	</section>
@@ -96,22 +85,23 @@
 
 	<script src="/public/static/Template/plugins/datepicker/bootstrap-datepicker.js"></script>
 <script type="text/javascript">
-	function delGroup(id){
+	function delUser(id){
 		var fs = confirm("确认删除吗?");
-		$.ajax({
-			url:"/index/manager/delGroup",
-			data:{'group_id':id},
-			dataType:'json',
-			type:'POST',
-			success:function(rs){
-				$("#tr_"+id).hide();
-				alert("删除成功");
+		if(fs){
+			$.ajax({
+				url:"/index/manager/delUser",
+				data:{'user_id':id},
+				dataType:'json',
+				type:'POST',
+				success:function(rs){
+					$("#tr_"+id).hide();
 
-			}
-		})
+				}
+			})
+		}
 	}
 
-	//Date picker
+//Date picker
 
 
 $('.submit').click(function(){

@@ -1,0 +1,125 @@
+{include file="./static/public_template/dxheader.html"/}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+
+	<!-- Main content -->
+	<section class="content">
+
+		<div class="row">
+			<div class="col-lg-9">
+				<form action="/index/manager/search" method="POST">
+				<p class="wrapper-title"><i class="fa fa-file-text-o"></i>编缉群组权限
+				</p>
+				</form>
+			</div>
+			<form action="/index/manager/editGroupPri/group_id/{$group_id}" method="post" name="form1">
+			<div class="col-lg-2">
+				<p class="wrapper-title" style="float:right">
+				<a class="btn btn-primary " href="javascript:dosubmit();">提交修改</a>
+
+				<input type="hidden" name="pids" id="pids" value=""/>
+				<input type="hidden" name="group_id" value="{$group_id}"/>
+				</p>
+			</div>
+			</form>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="box">
+					<div class="box-header">
+					</div>
+					<div class="box-body">
+						<div class="table" >
+							<div class="table-responsive">
+
+								<div >
+									<table class="table table-bordered table-hover" style="float:left" >						
+										<tr>
+											<th>模块</th>
+											<th>文法</th>
+											<th>描述</th>
+											<th>操作</th>
+										</tr>
+										{if condition="!empty($list)" }
+										{foreach name="list" item="k" key="n"}
+										<tr>
+											<td>{$n}</td>
+											<td></td>
+											<td></td>
+
+										</tr>
+										{foreach name="k", item="ik" key="m"}
+										{if condition="$ik.selected eq true"}
+										<tr style="background-color:#b0ffae" pid="{$ik.pri_id}"  class="tr" st="true">
+										{else}
+										<tr pid="{$ik.pri_id}" class="tr">
+										{/if}
+											<td></td>
+											<td>{$ik.name}</td>
+											<td>{$ik.desc} </td>
+
+										</tr>
+										{/foreach}
+										{/foreach}
+
+
+										{/if}
+
+									</table>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<!-- /.box-body -->
+				</div>
+				<!-- /.box -->
+			</div>
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
+		<div class="box-footer">
+			<ul class="pagination pagination-sm no-margin pull-right">
+			</ul>
+		</div> 
+	</section>
+	<!-- /.content -->
+</div>
+{include file="./static/public_template/footer.html"/}
+<!-- /.content-wrapper -->
+<!-- 制作图表js -->
+
+<script type="text/javascript">
+
+	var selected = {$has};
+	$(".tr").click(function(){
+		var status = $(this).attr("st");
+		var pid = $(this).attr("pid");
+		if(status == "true"){
+			$(this).attr("st","false");
+			$(this).css("background-color","#ffffff");
+			for(var i in selected){
+				if(selected[i] == pid)
+					selected.splice(i,1);
+			}
+		}
+		else{
+			$(this).attr("st","true");
+			$(this).css("background-color","#b0ffae");
+			if(false ==(pid in selected)){
+				selected.push(pid);
+			}
+		}
+				console.log(selected);
+	});
+function dosubmit(){
+	var  t ="";
+	for(var i in selected){
+		t+=selected[i]+",";
+	}
+	$("#pids").val(t);
+	form1.submit();
+}
+
+</script>

@@ -203,16 +203,6 @@ class Ftzj extends \think\Controller
 		return $this->fetch("admin");
 	}
 
-	public function checkId(){
-		$model = model("company");
-		$company_id = input("company_id");
-		$rs = $model->hasCompanyId($company_id);
-		if($rs)
-			return json_encode(true);
-		else{
-			return json_encode(false);
-		}
-	}
 
 	public function addTime(){
 		$post = $_POST;
@@ -694,5 +684,8 @@ class Ftzj extends \think\Controller
 			return $this->fetch("importJobs");
 		}
 	}
+
+
+
 
 }

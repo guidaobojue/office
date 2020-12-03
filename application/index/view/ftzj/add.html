@@ -87,7 +87,7 @@
 		  $("#company_id").blur(function(){
 		  var company_id = $("#company_id").val();
 		  $.ajax({
-			  url : '/index/ftzj/checkId',
+			  url : '/index/api/ftzj/method/checkId/param/'+company_id,
 			  data: {'company_id':company_id},
 			  dataType : "json",
 			  type : 'post',

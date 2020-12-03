@@ -1,8 +1,7 @@
-﻿
-{include file="./static/public_template/dxheader.html"/}
+﻿{include file="./static/public_template/dxheader.html"/}
 <div class="row wrapper white-bg">
 	<div class="col-lg-10">
-		<p class="wrapper-title"><i class="fa"></i> 增加群组</p>
+		<p class="wrapper-title"><i class="fa"></i> 增加模块</p>
 	</div>
 
 	<div class="col-lg-2">
@@ -14,20 +13,27 @@
 		<div class="col-lg-12">
 			<div class="ibox float-e-margins">
 				<div class="ibox-title">
-					<h5>增加群组</h5>
+					<h5>模块</h5>
 				</div>
 				<div class="ibox-content">
-					<form method="POST" class="form-horizontal" name="form1" action="/index/manager/addGroup">
+					<form method="POST" class="form-horizontal" name="form1" action="/index/manager/addModule">
 						<div class="form-group" > 
 							<div class="col-sm-6 tr_department">
-								<label class="col-sm-3 control-label">群组名:</label>
+								<label class="col-sm-3 control-label">模块名:</label>
 								<div class="col-sm-6">
-									<input type="text" class="form-control"  name="group_name" value="">
-									<span style="color:red" class="error_group_name"></span>
+									<input type="text" class="form-control"  name="module_name" value="">
+								</div>
+							</div>
+							<div class="col-sm-6 tr_area">
+								<label class="col-sm-3 control-label">文件名:</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control"  name="filename" value="">
 								</div>
 							</div>
 						</div>
+						<div class="hr-line-dashed"></div>
 						<div class="form-group col-sm-7">
+
 							<div class=" col-sm-offset-3  recharge-btn">
 								<button class="btn btn-primary " type="submit" name="sub" value="1">确定</button>
 							</div>
@@ -50,27 +56,38 @@
 <script src="<?=VIP_JS;?>bootstrap.min.js"></script>
 <script src="<?=VIP_JS;?>plugins/metisMenu/jquery.metisMenu.js"></script>
 
+
+
+<!-- Peity -->
+
+
 <!-- Custom and plugin javascript -->
 <script src="<?=VIP_JS;?>plugins/pace/pace.min.js"></script>
 <script src="<?=VIP_JS;?>inspinia.js"></script>
 <script src="<?=VIP_JS;?>echarts.min.js"></script>
-<script>
-{if condition="isset($error)"}
-{foreach name="error" key="k" item="v"}
-$(".error_{$k}").html("{$v}");
-{/foreach}
-{/if}
-
-{if condition="isset($status)"}
-alert("增加成功，2秒后跳转");
-setTimeout(function(){
-window.location.href="/index/manager/group";
-},2000);
-{/if}
-
-</script>
 
 </body>
 </html>
+
+
+<script type="text/javascript">
+
+function  changeSelect(index){
+	//选择对象
+	var city = document.form1.location;
+	//修改省份列表的选择项
+	form1.area.selectedIndex = index;
+
+	//指定城市中<option>标记的个数
+	city.length = arr_city[index].length;
+
+	//循环将数组中的数据写入<option>标记中
+	for (var j = 0; j<arr_city[index].length;j++) {
+	city.options[j].text = arr_city[index][j];
+	city.options[j].value = arr_city[index][j];
+	}
+	}
+
+</script>
 
 

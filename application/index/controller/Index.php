@@ -70,28 +70,6 @@ class Index extends \think\Controller
 		return $this->fetch("login");
 	}
 
-	public function register(){
-		if(input('?post.uname')){
-			$uname = input("post.uname");
-			$pwd = input("post.pwd");
-
-			$pwd = md5($pwd);
-			$data['uname'] = $uname;
-			$data['pwd'] = $pwd;
-			M("user")->add($data);
-		}
-		else{
-
-			$uname = 'matengfei';
-			$pwd = 123456;
-
-			$pwd = md5($pwd);
-			$data['uname'] = $uname;
-			$data['pwd'] = $pwd;
-			M("user")->add($data);
-			$this->display("register");
-		}
-	}
 
 
 	public function logout(){

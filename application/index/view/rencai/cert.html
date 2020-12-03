@@ -97,7 +97,7 @@ $("#company_name").bind('input propertychange',function(){
 		return false;
 	}
 	$.ajax({
-		url:"/index/common/checkcompany",
+		url:"/index/api/rencai/method/checkcompany/company_name/"+company_name,
 		type:"POST",
 		dataType:"json",
 		data:{"company_name":company_name},
@@ -127,7 +127,7 @@ $("#company_name_text").click(function(){
 	var company_name = $("#company_name").val();
 	no = true;
 	$.ajax({
-		url:"/index/common/checkcompany",
+		url:"/index/api/rencai/method/checkcompany/company_name/"+company_name,
 		type:"POST",
 		dataType:"json",
 		data:{"company_name":company_name},

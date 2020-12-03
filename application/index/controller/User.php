@@ -92,27 +92,6 @@ class User extends \think\Controller
 	}
 
 
-	public function getUserByDep(){
-		$dep_id = Request::instance()->get("dep_id");
-		$userModel = model("user");
-		$depModel = model("department");
-		$deps = $depModel->getAll();
-		$users = $userModel->getListByDep($dep_id);
-
-		echo json_encode($users);
-		/*
-		foreach($users as $k => $v){
-			if(!isset($data[$v['department_id']])){
-				$data[$v['department_id']]['users'][] =$v;
-				$data[$v['department_id']]['name'] =$deps[$v['department_id']];
-			}
-			else{
-				$data[$v['department_id']]['users'][] =$v;
-			}
-
-		}
-		 */
-	}
 
 	/*
 	 * my 我的消息
@@ -138,14 +117,5 @@ class User extends \think\Controller
 		return $this->fetch("my_list");
 	}
 
-
-	public function read(){
-		$message_id = Request::instance()->post('message_id',0);
-		if(empty($message_id) || !is_numeric($message_id))
-			return false;
-		$model = model("UserMessage");
-		$rs = $model->read($message_id);
-		echo json_encode($rs);
-	}
 }
 

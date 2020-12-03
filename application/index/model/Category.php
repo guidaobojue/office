@@ -76,7 +76,7 @@ class category extends Model
 			unset($childs[$isExist]);
 		}
 		$childs = json_encode($childs);
-		$this->update(['childs'=>$childs],['category_id'=>$cid]);
+		$this->where(['category_id'=>$pid])->update(['childs'=>$childs]);
 
 
 		$this->delChild($cid);
@@ -95,11 +95,8 @@ class category extends Model
 				foreach($childs as $k => $v){
 					$this->delChild($v);
 				}
-				$this->where("category_id=".$cid)->delete();
 			}
-			else{
-				$this->where("category_id=".$cid)->delete();
-			}
+			$this->where("category_id=".$cid)->delete();
 
 		}
 

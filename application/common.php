@@ -83,7 +83,7 @@ function writeExcel($data,$title = null,$file_name = null){
 
 	$keys = [];
 	$range = [];
-	$width = count($data[0]);
+	$width = count(current($data));
 	for($i=0;$i<=$width-1;$i++){
 		$keys[] = chr(ord('A') + $i)."1";
 		$range[] = chr(ord('A') + $i);

@@ -15,45 +15,60 @@ class Pri extends Model
 		return $this->select();
 	}
 
-	public function addPri($module,$controller_name,$actions){
-		$datas = [];
-		foreach($actions as $k => $v){
-			$datas[] = [
-				'pri_name' => $v['pri_name'],
-				'module_name' => $module,
-				'controller_name' => $controller_name,
-				'method' => $v['method'],
-			];
-		}
-		$this->saveAll($datas);
+	public function getByGroupId($group_id){
+		return $this->table("vp_group_pri")->where(['group_id'=>$group_id])->select();
 	}
 
-	public function getModules(){
-		return $this->field("controller_name")->select();
+	public function savePris($list){
+		$this->saveAll($list);
 	}
 
-	public function delByModule($name){
-		$this->where(['controller_name'=>$name])->delete();
-	}
-	public function addModule($arr){
+
+	public function editGroupPri($gid,$pids){
+		$rs = $this->table("vp_group_pri")->where(["group_id"=>$gid])->select();
 		$temp = [];
-		foreach($arr['a'] as $k => $v){
-			$temp[] = [
-				'pri_name' => $v['pri_name'],
-				'module_name'=> $arr['m'],
-				'controller_name' => $arr['c'], 
-				'method'=>$v['method'],
-			];
-		}
-		$save = [];
-		foreach($temp as $k => $v){
-			$rs = $this->where($v)->find();
-			if(!$rs){
-				$save[] = $v;
+		$list = [];
+		foreach($rs as $k => $v){
+			$list[] = $v->pri_id;
+			if(!in_array($v->pri_id,$pids)){
+				$this->table("vp_group_pri")->where(['group_id'=>$gid,"pri_id"=>$v->pri_id])->delete();
 			}
 		}
-		$this->saveAll($save);
+		
+		foreach($pids as $k => $v){
+			if(!in_array($v,$list))
+				$this->table("vp_group_pri")->insert(['group_id'=>$gid,"pri_id"=>$v]);
+		}
+		return true;
+	}
 
+	public function getAllGroupPri(){
+		return $this->table("vp_group_pri")->select();
+	}
+
+	public function addPri($action,$desc){
+		$rs = $this->where(['action'=>$action])->find();
+		if(empty($rs)){
+			$this->insert(['action'=>$action,"comment"=>$desc]);
+			return true;
+		}
+		else
+			return false;
+		
+	}
+
+	public function getByPid($pid){
+		return $this->where(['pri_id'=>$pid])->find();
+
+	}
+
+	public function editPri($pid,$action,$comment){
+		$rs = $this->where(['pri_id'=>$pid])->find();
+		if(empty($rs))
+			return false;
+
+		$rs = $this->where(['pri_id'=>$pid])->update(['action'=>$action,"comment"=>$comment]);
+		return $rs;
 	}
 
 }

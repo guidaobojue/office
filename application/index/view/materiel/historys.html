@@ -31,13 +31,12 @@
 									<table class="table table-bordered table-hover" style="float:left" >						
 										<tr>
 											<th style="width:16%">编号</th>
-											<th style="width:16%">名称</th>
-											<th style="width:16%">总计</th>
-											<th style="width:16%">消耗</th>
+											<th style="width:16%">使用人名称</th>
+											<th style="width:16%">时间</th>
 										</tr>
-										{if condition="!empty($materiels)" }
-										{foreach name="materiels" item="k"}
-										<tr id="tr_{$k.machine_id}">
+										{if condition="!empty($list)" }
+										{foreach name="list" item="k"}
+										<tr id="tr_{$k.materiel_model_id}">
 											<td>
 												{$k.materiel_model_id}
 											</td>
@@ -45,18 +44,7 @@
 												{$k.model_name}
 											</td>
 											<td>
-												{$k.total}
-											</td>
-											<td>
-												<form action="/index/materiel/consume" method="POST">
-												<div style="width:20%;float:left">
-													<input type="hidden" name="materiel_model_id" value="{$k.materiel_model_id}"/>
-													<input type="hidden" class="user_id" name="user_id" value=""/>
-													<input type="text" class="user_name" name="user_name" value=""/>
-													<input type="text" name="num" value="0"/>
-													<span style="width:60%"><input type="submit" class="btn btn-primary " name="sub" value="消耗"/></span>
-												</div>
-												</form>
+												{:date("Y-m-d H:i:s",$k.time)}
 											</td>
 
 

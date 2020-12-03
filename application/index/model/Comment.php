@@ -16,16 +16,20 @@ class comment extends Model
 
 	public function getOne($id){
 		$data = $this->find(['comment_id'=>$id]);
-		$data = $data->data;
 		if(empty($data))
 			return [];
+		$data = $data->data;
 
 		$qrcode = $data['qrcode'];
 		if(!empty($qrcode)){
 			$rs = $this->query("select * from vp_upload where qrcode='$qrcode'");
-			if(!empty($rs))
+			if(!empty($rs)){
 				$rs = array_pop($rs);
-			$data['qr_thumb'] = $rs['thumb'];
+				$data['qr_thumb'] = $rs['thumb'];
+			}
+			else{
+				$data['qr_thumb'] = "";
+			}
 		}
 		else
 			$data['qr_thumb'] = "";

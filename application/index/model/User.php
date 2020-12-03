@@ -51,6 +51,9 @@ class user extends Model
 	}
 
 
+	public function getByUid($uid){
+		return $this->where(['user_id'=>$uid])->find();
+	}
 
 	public function login($uname,$pwd){
 		$rs = $this->where("uname = '$uname'")->find();
